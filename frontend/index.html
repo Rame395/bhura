@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Wear Your Identity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bhuraBlack: '#111111',
+                        bhuraWhite: '#FFFFFF',
+                        bhuraOffWhite: '#F7F7F5',
+                        bhuraLightGrey: '#EAEAEA',
+                        bhuraTextGrey: '#777777',
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'],
+                    },
+                    letterSpacing: { widest: '0.2em', mega: '0.3em' }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::selection { background-color: #111111; color: #FFFFFF; }
+        .editorial-image-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .editorial-image-zoom { transform: scale(1.04); }
+        .product-secondary-img { transition: opacity 0.4s ease-in-out; }
+        .group:hover .product-primary-img { opacity: 0; }
+        .group:hover .product-secondary-img { opacity: 1; }
+        .product-quick-action {
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        .group:hover .product-quick-action { transform: translateY(0); opacity: 1; }
+        .hero-word-inner {
+            display: block;
+            transform: translateY(110%);
+            animation: heroWordUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .hero-word:nth-child(1) .hero-word-inner { animation-delay: 0.15s; }
+        .hero-word:nth-child(2) .hero-word-inner { animation-delay: 0.30s; }
+        .hero-word:nth-child(3) .hero-word-inner { animation-delay: 0.45s; }
+        @keyframes heroWordUp {
+            to { transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-word-inner { animation: none; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-transparent text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="hover:text-bhuraTextGrey transition-colors">Men</a>
+                <a href="women.html" class="hover:text-bhuraTextGrey transition-colors">Women</a>
+                <a href="#latest-drop" class="hover:text-bhuraTextGrey transition-colors">New Arrivals</a>
+                <a href="collections.html" class="hover:text-bhuraTextGrey transition-colors">Collection</a>
+            <a href="blog.html" class="hover:text-bhuraTextGrey transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <a href="gallery.html" class="hidden sm:block hover:opacity-75 transition-opacity">Gallery</a>
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Men</a>
+            <a href="women.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Women</a>
+            <a href="#latest-drop" class="mobile-link hover:text-bhuraTextGrey transition-colors">New Arrivals</a>
+            <a href="collections.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Collection</a>
+            <a href="#story" class="mobile-link hover:text-bhuraTextGrey transition-colors">The Story</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+            <span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="relative h-screen w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2000&auto=format&fit=crop" alt="BHURA Editorial Campaign" class="w-full h-full object-cover object-center opacity-70 filter grayscale contrast-125 scale-105 editorial-image-zoom transition-opacity duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
+        </div>
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+            <div>
+                <p id="hero-eyebrow" class="text-xs font-mono tracking-mega text-bhuraLightGrey mb-4 uppercase">Premium Clothing / Proudly Made in <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+                <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter uppercase leading-[0.9]">
+                    <span class="hero-word block overflow-hidden"><span class="hero-word-inner">Wear</span></span>
+                    <span class="hero-word block overflow-hidden"><span class="hero-word-inner">Your</span></span>
+                    <span class="hero-word block overflow-hidden"><span class="hero-word-inner">Identity.</span></span>
+                </h1>
+                <p id="hero-subheading" class="hidden text-sm text-bhuraLightGrey mt-4 max-w-md uppercase tracking-wider"></p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a id="hero-cta" href="#latest-drop" class="inline-flex items-center justify-center bg-bhuraWhite text-bhuraBlack px-8 py-4 text-xs font-medium tracking-widest uppercase hover:bg-bhuraLightGrey transition-colors">Shop Collection</a>
+                <a href="#story" class="inline-flex items-center justify-center border border-white/40 text-bhuraWhite px-8 py-4 text-xs font-medium tracking-widest uppercase hover:bg-white/10 transition-colors">Explore BHURA</a>
+            </div>
+        </div>
+        <div id="hero-dots" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-10 gap-2"></div>
+    </section>
+
+    <section id="latest-drop" class="py-32 bg-bhuraOffWhite text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="text-xs font-mono tracking-widest uppercase text-bhuraTextGrey block mb-2">Drop 01 / 2026</span>
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight uppercase">The Latest Drop</h2>
+                </div>
+                <p class="text-sm text-bhuraTextGrey max-w-sm">Designed for those who wear their identity. Crafted from heavyweight raw cotton and structured silhouettes.</p>
+            </div>
+
+            <div id="latest-drop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="col-span-full text-center py-16 text-xs uppercase tracking-widest text-bhuraTextGrey">Loading the latest drop…</div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <a href="collections.html" class="inline-block border-b border-bhuraBlack pb-1 text-xs font-semibold uppercase tracking-widest hover:opacity-75 transition-opacity">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="on-sale" class="hidden py-32 bg-bhuraLightGrey text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="text-xs font-mono tracking-widest uppercase text-bhuraTextGrey block mb-2">Limited Time</span>
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight uppercase">On Sale</h2>
+                </div>
+                <p class="text-sm text-bhuraTextGrey max-w-sm">Selected pieces at a reduced price, while stock lasts.</p>
+            </div>
+
+            <div id="on-sale-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        </div>
+    </section>
+
+    <section class="relative h-[85vh] w-full flex items-center justify-center bg-bhuraBlack text-bhuraWhite overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img id="story-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=2000&auto=format&fit=crop" alt="BHURA Editorial Story" class="w-full h-full object-cover object-center opacity-60 filter grayscale editorial-image-zoom">
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-4">Editorial 01</span>
+            <h2 id="story-heading" class="text-4xl sm:text-6xl font-black tracking-tight uppercase mb-6">Wear Your Identity.</h2>
+            <p id="story-subheading" class="text-base sm:text-lg text-bhuraLightGrey font-light leading-relaxed mb-10 max-w-xl mx-auto">
+                Clothing is more than what you wear. It is how you express who you are in a rapidly changing world.
+            </p>
+            <a id="story-link" href="gallery.html" class="inline-block bg-bhuraWhite text-bhuraBlack px-8 py-4 text-xs font-medium tracking-widest uppercase hover:bg-bhuraLightGrey transition-colors">Explore The BHURA Story</a>
+        </div>
+    </section>
+
+    <section class="py-24 bg-bhuraOffWhite text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a id="tile-men-link" href="men.html" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
+                    <div class="absolute inset-0 z-0">
+                        <img id="tile-men-img" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop" alt="Men Category" class="w-full h-full object-cover object-center filter grayscale contrast-110 editorial-image-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 flex justify-between items-end">
+                        <h3 id="tile-men-heading" class="text-2xl font-black uppercase tracking-tight">Men</h3>
+                        <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">Shop Men →</span>
+                    </div>
+                </a>
+                <a id="tile-women-link" href="women.html" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
+                    <div class="absolute inset-0 z-0">
+                        <img id="tile-women-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop" alt="Women Category" class="w-full h-full object-cover object-center filter grayscale contrast-110 editorial-image-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 flex justify-between items-end">
+                        <h3 id="tile-women-heading" class="text-2xl font-black uppercase tracking-tight">Women</h3>
+                        <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">Shop Women →</span>
+                    </div>
+                </a>
+                <a id="tile-new-link" href="#latest-drop" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
+                    <div class="absolute inset-0 z-0">
+                        <img id="tile-new-img" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=1000&auto=format&fit=crop" alt="New Arrivals Category" class="w-full h-full object-cover object-center filter grayscale contrast-110 editorial-image-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 flex justify-between items-end">
+                        <h3 id="tile-new-heading" class="text-2xl font-black uppercase tracking-tight">New Arrivals</h3>
+                        <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">Discover →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="story" class="py-36 bg-bhuraBlack text-bhuraWhite">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-6">Our Philosophy</span>
+            <h2 class="text-4xl sm:text-6xl font-black tracking-tight uppercase mb-10">Wear Your Identity.</h2>
+            <div class="w-12 h-[1px] bg-white/30 mx-auto mb-10"></div>
+            <p class="text-lg sm:text-xl font-light text-bhuraLightGrey leading-relaxed mb-8">
+                BHURA is a clothing brand built around individuality, confidence, and timeless design.
+            </p>
+            <p class="text-sm font-mono tracking-wider text-bhuraTextGrey uppercase">Proudly made in Nepal. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+        </div>
+    </section>
+
+    <section class="py-24 bg-bhuraOffWhite text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight">Follow The Identity</h2>
+                    <p class="text-xs font-mono text-bhuraTextGrey mt-1 uppercase">@bhura.nepal</p>
+                </div>
+                <a href="https://instagram.com" target="_blank" class="text-xs font-semibold uppercase tracking-widest underline underline-offset-4 hover:opacity-75">Follow Us</a>
+            </div>
+            <div id="instagram-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="relative aspect-square bg-bhuraLightGrey overflow-hidden group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop" alt="Instagram Post 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="relative aspect-square bg-bhuraLightGrey overflow-hidden group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop" alt="Instagram Post 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="relative aspect-square bg-bhuraLightGrey overflow-hidden group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=600&auto=format&fit=crop" alt="Instagram Post 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="relative aspect-square bg-bhuraLightGrey overflow-hidden group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=600&auto=format&fit=crop" alt="Instagram Post 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-28 bg-bhuraBlack text-bhuraWhite">
+        <div class="max-w-xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-black tracking-tight uppercase mb-4">Stay In The Loop.</h2>
+            <p class="text-xs text-bhuraTextGrey uppercase tracking-wider mb-8">Be the first to know about new drops, collections and BHURA stories.</p>
+            <form id="newsletter-form" onsubmit="handleNewsletterSubmit(event)" class="flex flex-col sm:flex-row gap-3">
+                <input name="email" type="email" required placeholder="YOUR EMAIL" class="flex-1 bg-transparent border border-white/20 px-4 py-4 text-xs tracking-widest text-bhuraWhite placeholder-white/40 focus:outline-none focus:border-white">
+                <select name="category" class="bg-transparent border border-white/20 px-4 py-4 text-xs tracking-widest text-bhuraWhite focus:outline-none focus:border-white uppercase">
+                    <option value="all" class="text-bhuraBlack">I'm Interested In...</option>
+                    <option value="men" class="text-bhuraBlack">Men's Drops</option>
+                    <option value="women" class="text-bhuraBlack">Women's Drops</option>
+                    <option value="other" class="text-bhuraBlack">Everything Else</option>
+                </select>
+                <button type="submit" class="bg-bhuraWhite text-bhuraBlack px-8 py-4 text-xs font-semibold tracking-widest uppercase hover:bg-bhuraLightGrey transition-colors">Subscribe</button>
+            </form>
+            <p id="newsletter-message" class="hidden text-xs uppercase tracking-widest mt-4"></p>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-20 pb-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-4">BHURA</span>
+                    <p class="text-xs text-bhuraTextGrey tracking-wider uppercase leading-relaxed">Wear your identity.<br>Independent fashion label from Kathmandu.</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="#latest-drop" class="hover:text-bhuraWhite transition-colors">New Arrivals</a></li>
+                        <li><a href="collections.html" class="hover:text-bhuraWhite transition-colors">Collections</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p>
+                <p>PROUDLY MADE IN <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        const header = document.getElementById('site-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.remove('bg-transparent', 'text-bhuraWhite', 'border-white/10');
+                header.classList.add('bg-bhuraBlack', 'text-bhuraWhite', 'border-black/10');
+            } else {
+                header.classList.add('bg-transparent', 'text-bhuraWhite', 'border-white/10');
+                header.classList.remove('bg-bhuraBlack', 'border-black/10');
+            }
+        });
+
+        function productCardHTML(p) {
+            const secondary = p.secondary_image || p.primary_image;
+            const priceHTML = p.compare_at_price
+                ? `<span class="text-sm font-semibold tracking-tight">${formatNPR(p.price)}</span> <span class="text-xs text-bhuraTextGrey line-through">${formatNPR(p.compare_at_price)}</span>`
+                : `<span class="text-sm font-semibold tracking-tight">${formatNPR(p.price)}</span>`;
+            return `
+            <a href="product.html?slug=${p.slug}" class="group cursor-pointer block">
+                <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-4">
+                    <img src="${p.primary_image || ''}" alt="${p.title}" class="product-primary-img absolute inset-0 w-full h-full object-cover object-center">
+                    <img src="${secondary}" alt="${p.title}" class="product-secondary-img absolute inset-0 w-full h-full object-cover object-center opacity-0">
+                    ${p.compare_at_price ? '<span class="absolute top-3 left-3 bg-bhuraBlack text-bhuraWhite text-[10px] font-semibold uppercase tracking-widest px-2 py-1 z-10">Sale</span>' : ''}
+                    <div class="absolute inset-x-0 bottom-0 p-3 product-quick-action bg-gradient-to-t from-black/60 to-transparent">
+                        <button onclick="event.preventDefault(); quickAdd(${p.id}, '${p.slug}', '${p.title.replace(/'/g, "\\'")}')" class="w-full bg-bhuraWhite text-bhuraBlack py-3 text-[11px] font-semibold uppercase tracking-widest hover:bg-bhuraBlack hover:text-bhuraWhite transition-colors">
+                            Add To Cart +
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-sm font-bold uppercase tracking-wider">${p.title}</h3>
+                        <p class="text-xs text-bhuraTextGrey uppercase mt-1">${p.subcategory}</p>
+                    </div>
+                    <div class="text-right">${priceHTML}</div>
+                </div>
+            </a>`;
+        }
+
+        async function quickAdd(productId, slug, title) {
+            try {
+                await addToCart(productId, '', '');
+                await refreshCartBadge();
+                showToast(`Added to Cart: ${title}`);
+            } catch (e) {
+                showToast('Please pick a size on the product page');
+                window.location.href = `product.html?slug=${slug}`;
+            }
+        }
+
+        async function loadLatestDrop() {
+            const grid = document.getElementById('latest-drop-grid');
+            try {
+                const products = await apiGet('/api/products?is_new_arrival=true');
+                if (!products.length) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">No new arrivals yet — check back soon.</p>';
+                    return;
+                }
+                grid.innerHTML = products.slice(0, 4).map(productCardHTML).join('');
+            } catch (e) {
+                grid.innerHTML = '<p class="col-span-full text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">Could not load products right now.</p>';
+            }
+        }
+
+        async function loadOnSaleSection() {
+            try {
+                const products = await apiGet('/api/products?on_sale=true');
+                if (!products.length) return; // section stays hidden — no sale live right now
+                document.getElementById('on-sale-grid').innerHTML = products.slice(0, 4).map(productCardHTML).join('');
+                document.getElementById('on-sale').classList.remove('hidden');
+            } catch (e) {
+                // fails silently — an empty/missing sale section is not worth showing an error for
+            }
+        }
+
+        loadLatestDrop();
+        loadOnSaleSection();
+        async function loadHeroImages() {
+            let heroes = [];
+            try {
+                heroes = await apiGet('/api/site-images/homepage_hero');
+            } catch (e) {
+                return; // keep the default hardcoded hero — never let this break the homepage
+            }
+            if (!heroes.length) return; // no admin-added heroes yet — default stays as-is
+
+            let current = 0;
+            const bgImg = document.getElementById('hero-bg-img');
+            const eyebrow = document.getElementById('hero-eyebrow');
+            const subheading = document.getElementById('hero-subheading');
+            const cta = document.getElementById('hero-cta');
+            const dotsWrap = document.getElementById('hero-dots');
+            const defaultEyebrow = eyebrow.textContent;
+
+            function applyHero(index) {
+                const h = heroes[index];
+                bgImg.style.opacity = '0';
+                setTimeout(() => {
+                    bgImg.src = h.url;
+                    bgImg.style.opacity = '';
+                }, 350);
+                eyebrow.textContent = h.heading || defaultEyebrow;
+                if (h.subheading) {
+                    subheading.textContent = h.subheading;
+                    subheading.classList.remove('hidden');
+                } else {
+                    subheading.classList.add('hidden');
+                }
+                cta.href = h.link_url || '#latest-drop';
+                if (dotsWrap.children.length) {
+                    Array.from(dotsWrap.children).forEach((dot, i) => {
+                        dot.className = `w-1.5 h-1.5 rounded-full ${i === index ? 'bg-bhuraWhite' : 'bg-white/40'}`;
+                    });
+                }
+            }
+
+            if (heroes.length > 1) {
+                dotsWrap.classList.remove('hidden');
+                dotsWrap.classList.add('flex');
+                dotsWrap.innerHTML = heroes.map((_, i) => `<span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>`).join('');
+                setInterval(() => {
+                    current = (current + 1) % heroes.length;
+                    applyHero(current);
+                }, 6000);
+            }
+            applyHero(0);
+        }
+        async function loadSingleSlotOverride(slot, applyFn) {
+            try {
+                const images = await apiGet(`/api/site-images/${slot}`);
+                if (images.length) applyFn(images[0]);
+            } catch (e) {
+                // Fetch failed — the page's hardcoded default stays exactly as it was.
+            }
+        }
+
+        function loadStoryOverride() {
+            loadSingleSlotOverride('homepage_story', (img) => {
+                document.getElementById('story-img').src = img.url;
+                if (img.heading) document.getElementById('story-heading').textContent = img.heading;
+                if (img.subheading) document.getElementById('story-subheading').textContent = img.subheading;
+                if (img.link_url) document.getElementById('story-link').href = img.link_url;
+            });
+        }
+
+        function loadTileOverrides() {
+            [['homepage_tile_men', 'tile-men'], ['homepage_tile_women', 'tile-women'], ['homepage_tile_new', 'tile-new']].forEach(([slot, prefix]) => {
+                loadSingleSlotOverride(slot, (img) => {
+                    document.getElementById(`${prefix}-img`).src = img.url;
+                    if (img.heading) document.getElementById(`${prefix}-heading`).textContent = img.heading;
+                    if (img.link_url) document.getElementById(`${prefix}-link`).href = img.link_url;
+                    if (img.width && img.height) {
+                        document.getElementById(`${prefix}-link`).style.aspectRatio = `${img.width} / ${img.height}`;
+                    }
+                });
+            });
+        }
+
+        async function loadInstagramGrid() {
+            try {
+                const images = await apiGet('/api/site-images/instagram_grid');
+                if (!images.length) return; // keep the 4 hardcoded defaults
+                document.getElementById('instagram-grid').innerHTML = images.map((img) => `
+                    <div class="relative aspect-square bg-bhuraLightGrey overflow-hidden group cursor-pointer">
+                        <img src="${img.url}" alt="Instagram Post" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>`).join('');
+            } catch (e) {
+                // Fetch failed — the 4 hardcoded defaults stay exactly as they were.
+            }
+        }
+
+        async function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const msgEl = document.getElementById('newsletter-message');
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            try {
+                await apiJSON('POST', '/api/subscribe', {
+                    email: form.elements.email.value.trim(),
+                    category: form.elements.category.value,
+                });
+                msgEl.textContent = "You're on the list — thanks for subscribing.";
+                msgEl.className = 'text-xs uppercase tracking-widest mt-4 text-white';
+                form.reset();
+            } catch (e) {
+                msgEl.textContent = e.message || 'Could not subscribe right now — please try again.';
+                msgEl.className = 'text-xs uppercase tracking-widest mt-4 text-red-400';
+            } finally {
+                msgEl.classList.remove('hidden');
+                btn.disabled = false;
+            }
+        }
+
+        loadHeroImages();
+        loadStoryOverride();
+        loadTileOverrides();
+        loadInstagramGrid();
+    </script>
+</body>
+</html>

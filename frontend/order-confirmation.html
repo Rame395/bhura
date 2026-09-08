@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Order Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>::selection { background-color: #111111; color: #FFFFFF; }</style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <div class="text-[11px] font-mono tracking-widest uppercase text-bhuraTextGrey">Order Confirmed ✓</div>
+        </div>
+    </header>
+
+    <section class="pt-40 pb-24 bg-bhuraOffWhite text-bhuraBlack min-h-screen">
+        <div class="max-w-2xl mx-auto px-6">
+
+            <div id="loading-state" class="text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">Loading your order…</div>
+
+            <div id="not-found" class="hidden text-center py-16 space-y-4">
+                <p class="text-sm uppercase tracking-widest text-bhuraTextGrey">We couldn't find that order.</p>
+                <a href="index.html" class="inline-block bg-bhuraBlack text-bhuraWhite px-8 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Return to Homepage</a>
+            </div>
+
+            <div id="confirmation-root" class="hidden bg-bhuraWhite border border-bhuraLightGrey p-8 sm:p-10 text-center space-y-6">
+                <span class="text-4xl"><svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+                <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight">Order Placed Successfully</h1>
+                <p class="text-xs text-bhuraTextGrey uppercase tracking-wider leading-relaxed">
+                    Thank you for wearing your identity, <span id="c-name" class="text-bhuraBlack font-semibold"></span>.
+                    We've received order <span id="c-number" class="text-bhuraBlack font-semibold"></span> and will contact you via phone/WhatsApp to confirm dispatch.
+                </p>
+
+                <div class="text-left border-t border-b border-bhuraLightGrey py-6 space-y-3">
+                    <div id="c-items" class="space-y-3 text-xs uppercase tracking-wider"></div>
+                    <div class="flex justify-between pt-3 border-t border-bhuraLightGrey text-sm font-bold">
+                        <span>Total</span><span id="c-total"></span>
+                    </div>
+                </div>
+
+                <div class="text-left text-[11px] text-bhuraTextGrey uppercase tracking-wider space-y-1">
+                    <p><span class="text-bhuraBlack font-semibold">Ship to:</span> <span id="c-address"></span></p>
+                    <p><span class="text-bhuraBlack font-semibold">Payment:</span> <span id="c-payment"></span></p>
+                    <p id="c-email-note"></p>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <a id="c-receipt-link" href="#" class="inline-block w-full bg-bhuraBlack text-bhuraWhite py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">
+                        Download PDF Receipt
+                    </a>
+                    <a href="index.html" class="inline-block w-full border border-bhuraBlack text-bhuraBlack py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraLightGrey transition-colors">
+                        Return to Homepage
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-10 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const orderNumber = params.get('order');
+            const email = params.get('email');
+            const loading = document.getElementById('loading-state');
+
+            if (!orderNumber || !email) {
+                loading.classList.add('hidden');
+                document.getElementById('not-found').classList.remove('hidden');
+                return;
+            }
+
+            let order;
+            try {
+                order = await apiGet(`/api/orders/${encodeURIComponent(orderNumber)}?email=${encodeURIComponent(email)}`);
+            } catch (e) {
+                loading.classList.add('hidden');
+                document.getElementById('not-found').classList.remove('hidden');
+                return;
+            }
+
+            loading.classList.add('hidden');
+            document.getElementById('confirmation-root').classList.remove('hidden');
+            document.getElementById('c-name').textContent = order.first_name;
+            document.getElementById('c-number').textContent = `#${order.order_number}`;
+            document.getElementById('c-items').innerHTML = order.items.map((i) => `
+                <div class="flex justify-between">
+                    <span class="flex items-center gap-1.5">${i.color_hex ? `<span class="inline-block w-2.5 h-2.5 rounded-full border border-bhuraLightGrey flex-shrink-0" style="background:${i.color_hex}"></span>` : ''}${i.product_title} <span class="text-bhuraTextGrey">(${[i.color, i.size].filter(Boolean).join(' / ') || 'One size'} × ${i.quantity})</span></span>
+                    <span>${formatNPR(i.line_total)}</span>
+                </div>`).join('');
+            document.getElementById('c-total').textContent = formatNPR(order.total);
+            document.getElementById('c-address').textContent = `${order.address}, ${order.city} ${order.postal_code}`;
+            document.getElementById('c-payment').textContent = order.payment_method === 'cod' ? 'Cash on Delivery' : 'Mobile Banking (Fonepay/eSewa)';
+            document.getElementById('c-email-note').textContent = order.email_sent
+                ? `A copy of this receipt has also been emailed to ${order.email}.`
+                : '';
+            document.getElementById('c-receipt-link').href = `/api/orders/${encodeURIComponent(order.order_number)}/receipt.pdf?email=${encodeURIComponent(order.email)}`;
+        }
+        init();
+    </script>
+</body>
+</html>

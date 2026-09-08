@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Editorial & Studio Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bhuraBlack: '#111111',
+                        bhuraWhite: '#FFFFFF',
+                        bhuraOffWhite: '#F7F7F5',
+                        bhuraLightGrey: '#EAEAEA',
+                        bhuraTextGrey: '#777777',
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        widest: '0.2em',
+                        mega: '0.3em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::selection {
+            background-color: #111111;
+            color: #FFFFFF;
+        }
+        .editorial-image-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .editorial-image-zoom {
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">
+                BHURA
+            </a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="gallery.html" class="text-bhuraWhite font-bold underline underline-offset-4">Gallery</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+                <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(1)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="gallery.html" class="mobile-link text-bhuraWhite font-bold">Gallery</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+            <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+            <span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+
+    <section class="relative h-[55vh] w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2000&auto=format&fit=crop" alt="BHURA Studio Editorial" class="w-full h-full object-cover object-center opacity-60 filter grayscale contrast-125 editorial-image-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-16">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-3">Visual Archive / 2026</span>
+            <h1 class="text-5xl sm:text-7xl font-black tracking-tighter uppercase">
+                The Gallery.
+            </h1>
+            <p class="text-sm text-bhuraLightGrey font-light mt-4 max-w-lg">
+                Studio product shoots, architectural silhouettes, and cinematic storytelling from Kathmandu and beyond. Clothing as identity.
+            </p>
+        </div>
+    </section>
+
+
+    <div class="border-b border-bhuraLightGrey bg-bhuraOffWhite sticky top-20 z-30">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-16 flex items-center justify-between text-xs font-semibold uppercase tracking-widest overflow-x-auto">
+            <div class="flex items-center space-x-8 whitespace-nowrap">
+                <button onclick="filterGallery('all')" class="gallery-filter-btn text-bhuraBlack font-bold underline underline-offset-4">All Series (<span id="gallery-all-count">9</span>)</button>
+                <button onclick="filterGallery('studio')" class="gallery-filter-btn text-bhuraTextGrey hover:text-bhuraBlack transition-colors">Studio Product Shoot</button>
+                <button onclick="filterGallery('editorial')" class="gallery-filter-btn text-bhuraTextGrey hover:text-bhuraBlack transition-colors">Urban Editorial</button>
+                <button onclick="filterGallery('details')" class="gallery-filter-btn text-bhuraTextGrey hover:text-bhuraBlack transition-colors">Fabric & Craft</button>
+            </div>
+            <span class="text-bhuraTextGrey font-mono text-[10px] hidden sm:block">KATHMANDU, NEPAL <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+        </div>
+    </div>
+
+
+    <section class="py-24 bg-bhuraOffWhite text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="gallery-item studio group cursor-pointer" onclick="openGalleryLightbox(0)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1000&auto=format&fit=crop" alt="Identity Boxy Hoodie Studio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Studio Series 01 — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Identity Boxy Hoodie (Studio Shot)</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">480 GSM COTTON</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item editorial group cursor-pointer" onclick="openGalleryLightbox(1)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop" alt="Urban Kathmandu Editorial" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Editorial Series — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Concrete Architecture, Kathmandu</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">DROP 01</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item details group cursor-pointer" onclick="openGalleryLightbox(2)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Fabric Close-up" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Craft Detail — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Raw Heavyweight Cotton Weave</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">CRAFT</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item studio group cursor-pointer" onclick="openGalleryLightbox(3)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=1000&auto=format&fit=crop" alt="Utility Trouser Studio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Studio Series — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Kathmandu Utility Trouser</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">STUDIO SHOT</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item editorial group cursor-pointer" onclick="openGalleryLightbox(4)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1000&auto=format&fit=crop" alt="Cinematic Streetwear" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Editorial Series — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Monolith Heavyweight Silhouette</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">OUTDOOR</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item details group cursor-pointer" onclick="openGalleryLightbox(5)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=1000&auto=format&fit=crop" alt="Hardware & Stitching Details" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Craft Detail — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Matte Hardware & Reinforced Stitch</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">MADE IN NEPAL</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item studio group cursor-pointer" onclick="openGalleryLightbox(6)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1000&auto=format&fit=crop" alt="Minimal Tee Studio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Studio Series — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Monolith Heavy Tee (Charcoal)</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">STUDIO SHOT</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item editorial group cursor-pointer" onclick="openGalleryLightbox(7)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000&auto=format&fit=crop" alt="Himalayan Modern Streetwear" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Editorial Series — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">Independent Label Identity</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">KATHMANDU</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item details group cursor-pointer" onclick="openGalleryLightbox(8)">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000&auto=format&fit=crop" alt="Label Monogram Detail" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Craft Detail — Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">BHURA Monogram Branding</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">DETAIL</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <div id="gallery-lightbox" class="fixed inset-0 bg-bhuraBlack/95 z-50 hidden flex items-center justify-center px-4">
+        <button onclick="closeGalleryLightbox()" class="absolute top-6 right-8 text-bhuraWhite text-xl font-mono uppercase tracking-widest hover:text-bhuraTextGrey">✕ Close</button>
+        <button onclick="prevGalleryImage()" class="absolute left-6 text-bhuraWhite text-2xl px-4 py-2 hover:opacity-75">←</button>
+        <button onclick="nextGalleryImage()" class="absolute right-6 text-bhuraWhite text-2xl px-4 py-2 hover:opacity-75">→</button>
+        <div class="max-w-5xl max-h-[85vh] overflow-hidden text-center">
+            <img id="lightbox-main-img" src="" alt="Expanded Gallery Photo" class="max-w-full max-h-[75vh] object-contain mx-auto mb-4">
+            <p id="lightbox-caption" class="text-xs font-mono uppercase tracking-widest text-bhuraLightGrey"></p>
+        </div>
+    </div>
+
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-3">BHURA</span>
+                    <p class="text-[11px] text-bhuraTextGrey tracking-wider uppercase leading-relaxed">
+                        Wear your identity.<br>Independent fashion label from Kathmandu.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="index.html#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p>
+                <p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        // Lightbox Array
+        const galleryData = [
+            { src: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1400&auto=format&fit=crop", caption: "Identity Boxy Hoodie (Studio Series 01)" },
+            { src: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1400&auto=format&fit=crop", caption: "Concrete Architecture, Kathmandu (Urban Editorial)" },
+            { src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1400&auto=format&fit=crop", caption: "Raw Heavyweight Cotton Weave (Craft Detail)" },
+            { src: "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=1400&auto=format&fit=crop", caption: "Kathmandu Utility Trouser (Studio Shot)" },
+            { src: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1400&auto=format&fit=crop", caption: "Monolith Heavyweight Silhouette (Outdoor Editorial)" },
+            { src: "https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=1400&auto=format&fit=crop", caption: "Matte Hardware & Reinforced Stitch (Craft Detail)" },
+            { src: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1400&auto=format&fit=crop", caption: "Monolith Heavy Tee in Charcoal (Studio Shot)" },
+            { src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1400&auto=format&fit=crop", caption: "Independent Label Identity (Kathmandu Street Culture)" },
+            { src: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1400&auto=format&fit=crop", caption: "BHURA Monogram Branding (Detail)" }
+        ];
+
+        let activeGalleryIndex = 0;
+
+        function openGalleryLightbox(index) {
+            activeGalleryIndex = index;
+            updateLightboxContent();
+            document.getElementById('gallery-lightbox').classList.remove('hidden');
+        }
+
+        function closeGalleryLightbox() {
+            document.getElementById('gallery-lightbox').classList.add('hidden');
+        }
+
+        function nextGalleryImage() {
+            activeGalleryIndex = (activeGalleryIndex + 1) % galleryData.length;
+            updateLightboxContent();
+        }
+
+        function prevGalleryImage() {
+            activeGalleryIndex = (activeGalleryIndex - 1 + galleryData.length) % galleryData.length;
+            updateLightboxContent();
+        }
+
+        function updateLightboxContent() {
+            const item = galleryData[activeGalleryIndex];
+            document.getElementById('lightbox-main-img').src = item.src;
+            document.getElementById('lightbox-caption').textContent = item.caption;
+        }
+
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.gallery-filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('text-bhuraBlack', 'font-bold', 'underline', 'underline-offset-4');
+                btn.classList.add('text-bhuraTextGrey');
+            });
+            event.target.classList.remove('text-bhuraTextGrey');
+            event.target.classList.add('text-bhuraBlack', 'font-bold', 'underline', 'underline-offset-4');
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        (async function loadGalleryHeroOverride() {
+            try {
+                const images = await apiGet('/api/site-images/gallery_hero');
+                if (images.length) document.getElementById('hero-bg-img').src = images[0].url;
+            } catch (e) { /* keep the default */ }
+        })();
+
+        (async function loadGalleryGridOverride() {
+            let images = [];
+            try {
+                images = await apiGet('/api/site-images/gallery_grid');
+            } catch (e) {
+                return; // keep the 9 hardcoded defaults + their existing galleryData
+            }
+            if (!images.length) return; // no admin photos added yet — defaults stay exactly as they were
+
+            // Custom photos replace both the visible grid and the lightbox data together,
+            // so clicking any tile still opens the matching enlarged image + caption.
+            galleryData.length = 0;
+            images.forEach((img) => galleryData.push({ src: img.url, caption: img.heading || '' }));
+
+            document.getElementById('gallery-all-count').textContent = images.length;
+            document.getElementById('gallery-grid').innerHTML = images.map((img, i) => `
+                <div class="gallery-item ${img.tag || ''} group cursor-pointer" onclick="openGalleryLightbox(${i})">
+                    <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                        <img src="${img.url}" alt="${img.heading || 'BHURA Gallery'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                            <span class="text-bhuraWhite text-xs font-semibold uppercase tracking-widest">Expand ↗</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs uppercase tracking-wider">
+                        <span class="font-medium">${img.heading || ''}</span>
+                        <span class="text-bhuraTextGrey font-mono text-[10px]">${img.subheading || ''}</span>
+                    </div>
+                </div>`).join('');
+        })();
+    </script>
+</body>
+</html>

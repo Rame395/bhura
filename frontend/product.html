@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">BHURA — Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>
+        ::selection { background-color: #111111; color: #FFFFFF; }
+        .size-btn-active { border-color: #111111 !important; background: #111111; color: #fff; }
+        .size-btn-disabled { opacity: 0.6; pointer-events: none; text-decoration: line-through; color: #DC2626; border-color: #DC2626 !important; }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="index.html#latest-drop" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">New Arrivals</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+            <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <a href="gallery.html" class="hidden sm:block hover:opacity-75 transition-opacity">Gallery</a>
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="index.html#latest-drop" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">New Arrivals</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+        <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span><span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="pt-28 pb-20 bg-bhuraOffWhite text-bhuraBlack min-h-screen">
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+
+            <div id="breadcrumb" class="text-[11px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-6">
+                <a href="index.html" class="hover:text-bhuraBlack">Home</a> / <span>Loading…</span>
+            </div>
+
+            <div id="product-root" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+                <div class="lg:col-span-7">
+                    <div id="photo-grid" class="grid grid-cols-2 gap-3"></div>
+                </div>
+
+                <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
+                    <div>
+                        <span id="p-eyebrow" class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1"></span>
+                        <h1 id="p-title" class="text-2xl sm:text-3xl font-black uppercase tracking-tight"></h1>
+                        <p id="p-price" class="text-base font-semibold tracking-tight mt-1"></p>
+                        <a id="p-rating-summary" href="#reviews" class="hidden text-[11px] text-bhuraTextGrey uppercase tracking-wider mt-1 hover:text-bhuraBlack"></a>
+                    </div>
+
+                    <p id="p-description" class="text-[11px] text-bhuraTextGrey leading-relaxed uppercase tracking-wider"></p>
+
+                    <div id="color-block">
+                        <div class="flex justify-between text-[11px] font-semibold uppercase tracking-widest mb-2">
+                            <span>Color: <span id="selected-color-name" class="font-normal text-bhuraTextGrey"></span></span>
+                        </div>
+                        <div id="color-swatches" class="flex space-x-3"></div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-[11px] font-semibold uppercase tracking-widest mb-2">
+                            <span>Available Sizes <span class="text-bhuraTextGrey font-normal normal-case">(chosen at checkout)</span></span>
+                            <a href="#" class="text-bhuraTextGrey underline underline-offset-4 font-normal">Size Guide</a>
+                        </div>
+                        <div id="size-buttons" class="grid grid-cols-5 gap-2"></div>
+                        <p id="size-hint" class="text-[10px] text-bhuraTextGrey mt-2 uppercase tracking-wider"></p>
+                    </div>
+
+                    <div class="space-y-2.5 pt-2">
+                        <button id="add-to-cart-btn" disabled onclick="handleAddToCart()" class="w-full bg-bhuraLightGrey text-bhuraTextGrey py-3 text-[11px] font-semibold uppercase tracking-widest transition-colors cursor-not-allowed">
+                            Select A Size
+                        </button>
+                        <button id="buy-now-btn" disabled onclick="handleBuyNow()" class="w-full border border-bhuraLightGrey text-bhuraTextGrey py-3 text-[11px] font-semibold uppercase tracking-widest transition-colors cursor-not-allowed">
+                            Buy It Now
+                        </button>
+                        <button onclick="orderViaWhatsApp()" class="w-full bg-[#25D366] text-white py-3 text-[11px] font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                            <span>Order via WhatsApp</span> 💬
+                        </button>
+                    </div>
+
+                    <div class="border-t border-bhuraLightGrey pt-4 space-y-3 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <div class="flex justify-between py-1.5 border-b border-bhuraLightGrey">
+                            <span class="text-bhuraBlack font-semibold">Material</span>
+                            <span id="p-material"></span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-bhuraLightGrey">
+                            <span class="text-bhuraBlack font-semibold">Manufacturing</span>
+                            <span>Proudly Made in Nepal <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-bhuraLightGrey">
+                            <span class="text-bhuraBlack font-semibold">Shipping & Returns</span>
+                            <span>Free standard shipping across Nepal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="not-found" class="hidden text-center py-24 space-y-4">
+                <p class="text-sm uppercase tracking-widest text-bhuraTextGrey">We couldn't find that product.</p>
+                <a href="men.html" class="inline-block bg-bhuraBlack text-bhuraWhite px-8 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Browse The Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="max-w-[1000px] mx-auto px-6 lg:px-12 py-16 border-t border-bhuraLightGrey">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+                <h2 class="text-xl font-black uppercase tracking-tight mb-1">Reviews</h2>
+                <p id="reviews-summary-line" class="text-xs text-bhuraTextGrey uppercase tracking-wider"></p>
+            </div>
+            <button onclick="toggleReviewForm()" class="border border-bhuraBlack text-bhuraBlack px-6 py-3 text-[11px] font-semibold uppercase tracking-widest hover:bg-bhuraLightGrey transition-colors self-start">Write A Review</button>
+        </div>
+
+        <form id="review-form" onsubmit="submitReview(event)" class="hidden bg-bhuraOffWhite border border-bhuraLightGrey p-6 mb-10 space-y-4">
+            <div>
+                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Your Rating</label>
+                <div id="rating-picker" class="flex gap-1"></div>
+            </div>
+            <div>
+                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Your Name</label>
+                <input name="customer_name" required placeholder="YOUR NAME" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+            </div>
+            <div>
+                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Review</label>
+                <textarea name="comment" rows="3" placeholder="What did you think?" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack"></textarea>
+            </div>
+            <div>
+                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Order Number <span class="normal-case text-bhuraTextGrey">(optional — shows "Verified Purchase")</span></label>
+                <input name="order_number" placeholder="BH-XXXXX" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest uppercase focus:outline-none focus:border-bhuraBlack">
+            </div>
+            <p id="review-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider"></p>
+            <button id="review-submit-btn" type="submit" class="bg-bhuraBlack text-bhuraWhite px-8 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Submit Review</button>
+        </form>
+
+        <div id="reviews-list" class="space-y-6"></div>
+    </section>
+
+    <div id="lightbox-modal" class="fixed inset-0 bg-bhuraBlack/95 z-50 hidden flex items-center justify-center px-4">
+        <button onclick="closeLightbox()" class="absolute top-6 right-8 text-bhuraWhite text-xl font-mono uppercase tracking-widest hover:text-bhuraTextGrey">✕ Close</button>
+        <button onclick="prevImage()" class="absolute left-6 text-bhuraWhite text-2xl px-4 py-2 hover:opacity-75">←</button>
+        <button onclick="nextImage()" class="absolute right-6 text-bhuraWhite text-2xl px-4 py-2 hover:opacity-75">→</button>
+        <div class="max-w-4xl max-h-[85vh] overflow-hidden">
+            <img id="lightbox-img" src="" alt="Expanded Photo" class="max-w-full max-h-[85vh] object-contain mx-auto">
+        </div>
+    </div>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-3">BHURA</span>
+                    <p class="text-[11px] text-bhuraTextGrey tracking-wider uppercase leading-relaxed">Wear your identity.<br>Independent fashion label from Kathmandu.</p>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="index.html#latest-drop" class="hover:text-bhuraWhite transition-colors">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="index.html#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        const slug = new URLSearchParams(window.location.search).get('slug');
+        let product = null;
+        let selectedColor = null;
+        let selectedSize = null;
+        let images = [];
+        let lightboxIndex = 0;
+
+        function buildPhotoGrid() {
+            const grid = document.getElementById('photo-grid');
+            const urls = images.map((i) => i.url);
+            const VISIBLE = 4;
+            let html = '';
+            urls.forEach((url, idx) => {
+                if (idx < 3 || urls.length <= VISIBLE) {
+                    html += `<div class="w-full aspect-[4/5] bg-bhuraLightGrey overflow-hidden cursor-pointer" onclick="openLightbox(${idx})">
+                        <img src="${url}" alt="${product.title} ${idx + 1}" class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500">
+                    </div>`;
+                }
+            });
+            if (urls.length > VISIBLE) {
+                html += `<div id="more-card" class="relative w-full aspect-[4/5] bg-bhuraLightGrey overflow-hidden cursor-pointer group" onclick="expandPhotos()">
+                    <img src="${urls[3]}" alt="${product.title} more" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-bhuraWhite transition-colors group-hover:bg-black/60">
+                        <span class="text-3xl font-light mb-1">+${urls.length - 3}</span>
+                        <span class="text-[10px] font-mono uppercase tracking-widest underline underline-offset-4">View All Photos</span>
+                    </div>
+                </div>`;
+                for (let idx = 3; idx < urls.length; idx++) {
+                    html += `<div class="hidden-photo hidden w-full aspect-[4/5] bg-bhuraLightGrey overflow-hidden cursor-pointer" onclick="openLightbox(${idx})">
+                        <img src="${urls[idx]}" alt="${product.title} ${idx + 1}" class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500">
+                    </div>`;
+                }
+                html += `<div id="collapse-container" class="col-span-2 mt-1 text-center hidden">
+                    <button onclick="collapsePhotos()" class="text-[11px] font-mono uppercase tracking-widest text-bhuraTextGrey underline underline-offset-4 hover:text-bhuraBlack">Show Fewer Photos</button>
+                </div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        function expandPhotos() {
+            document.querySelectorAll('.hidden-photo').forEach((el) => el.classList.remove('hidden'));
+            document.getElementById('more-card').style.display = 'none';
+            document.getElementById('collapse-container').classList.remove('hidden');
+        }
+        function collapsePhotos() {
+            document.querySelectorAll('.hidden-photo').forEach((el) => el.classList.add('hidden'));
+            document.getElementById('more-card').style.display = 'block';
+            document.getElementById('collapse-container').classList.add('hidden');
+        }
+        function openLightbox(index) {
+            lightboxIndex = index;
+            document.getElementById('lightbox-img').src = images[index].url;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        }
+        function closeLightbox() { document.getElementById('lightbox-modal').classList.add('hidden'); }
+        function nextImage() { lightboxIndex = (lightboxIndex + 1) % images.length; document.getElementById('lightbox-img').src = images[lightboxIndex].url; }
+        function prevImage() { lightboxIndex = (lightboxIndex - 1 + images.length) % images.length; document.getElementById('lightbox-img').src = images[lightboxIndex].url; }
+
+        function variantsForColor(colorName) {
+            return product.variants.filter((v) => v.color_name === colorName);
+        }
+
+        function renderColors() {
+            const block = document.getElementById('color-block');
+            if (!product.colors.length) { block.classList.add('hidden'); return; }
+            document.getElementById('selected-color-name').textContent = selectedColor;
+            document.getElementById('color-swatches').innerHTML = product.colors.map((c) => {
+                const active = c.name === selectedColor ? 'ring-2 ring-bhuraBlack' : 'ring-1 ring-transparent hover:ring-bhuraBlack';
+                const border = c.hex_code.toLowerCase() === '#ffffff' || c.hex_code.toLowerCase() === '#f7f7f5' ? 'border border-bhuraLightGrey' : '';
+                return `<button onclick="selectColor('${c.name.replace(/'/g, "\\'")}')" class="color-btn w-6 h-6 rounded-full ${border} ${active} ring-offset-2 focus:outline-none transition-all" style="background:${c.hex_code}" title="${c.name}"></button>`;
+            }).join('');
+        }
+
+        function imagesForColor(colorName) {
+            if (!product.images.length) return [{ url: '' }];
+            if (!colorName) return product.images;
+            const tagged = product.images.filter((img) => img.color_name === colorName);
+            if (tagged.length) return tagged;
+            const untagged = product.images.filter((img) => !img.color_name);
+            return untagged.length ? untagged : product.images;
+        }
+
+        function selectColor(name) {
+            selectedColor = name;
+            selectedSize = null;
+            renderColors();
+            renderSizes();
+            updateActionButtons();
+            images = imagesForColor(name);
+            lightboxIndex = 0;
+            buildPhotoGrid();
+        }
+
+        function renderSizes() {
+            const variants = variantsForColor(selectedColor);
+            const wrap = document.getElementById('size-buttons');
+            wrap.innerHTML = variants.map((v) => {
+                const outOfStock = v.stock_qty <= 0;
+                const active = selectedSize === v.size ? 'size-btn-active' : 'border-bhuraLightGrey hover:border-bhuraBlack';
+                const disabled = outOfStock ? 'size-btn-disabled' : '';
+                return `<button ${outOfStock ? 'disabled' : ''} onclick="selectSize('${v.size}')" class="size-btn border ${active} ${disabled} py-2 text-[11px] font-medium uppercase focus:outline-none transition-colors">${v.size}</button>`;
+            }).join('');
+            const hint = document.getElementById('size-hint');
+            const allOutOfStock = variants.length > 0 && variants.every((v) => v.stock_qty <= 0);
+            hint.textContent = allOutOfStock ? 'Currently out of stock in this color.' : '';
+            hint.classList.toggle('text-red-600', allOutOfStock);
+            hint.classList.toggle('text-bhuraTextGrey', !allOutOfStock);
+        }
+
+        function selectSize(size) {
+            selectedSize = size;
+            renderSizes();
+        }
+
+        function updateActionButtons() {
+            const addBtn = document.getElementById('add-to-cart-btn');
+            const buyBtn = document.getElementById('buy-now-btn');
+            const ready = !product.colors.length || !!selectedColor;
+            if (ready) {
+                addBtn.disabled = false;
+                addBtn.className = 'w-full bg-bhuraBlack text-bhuraWhite py-3 text-[11px] font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors';
+                addBtn.textContent = `Add To Cart — ${formatNPR(product.price)}`;
+                buyBtn.disabled = false;
+                buyBtn.className = 'w-full border border-bhuraBlack text-bhuraBlack py-3 text-[11px] font-semibold uppercase tracking-widest hover:bg-bhuraLightGrey transition-colors';
+                buyBtn.textContent = 'Buy It Now';
+            } else {
+                addBtn.disabled = true;
+                addBtn.className = 'w-full bg-bhuraLightGrey text-bhuraTextGrey py-3 text-[11px] font-semibold uppercase tracking-widest transition-colors cursor-not-allowed';
+                addBtn.textContent = 'Select A Color';
+                buyBtn.disabled = true;
+                buyBtn.className = 'w-full border border-bhuraLightGrey text-bhuraTextGrey py-3 text-[11px] font-semibold uppercase tracking-widest transition-colors cursor-not-allowed';
+                buyBtn.textContent = 'Select A Color';
+            }
+        }
+
+        async function handleAddToCart() {
+            try {
+                await addToCart(product.id, selectedColor || '', selectedSize || '');
+                await refreshCartBadge();
+                showToast(`Added: ${product.title}${selectedColor ? ' (' + selectedColor + ')' : ''} — choose your size at checkout`);
+            } catch (e) {
+                showToast(e.message || 'Could not add to cart');
+            }
+        }
+
+        async function handleBuyNow() {
+            try {
+                await addToCart(product.id, selectedColor || '', selectedSize || '');
+                window.location.href = 'checkout.html';
+            } catch (e) {
+                showToast(e.message || 'Could not add to cart');
+            }
+        }
+
+        async function orderViaWhatsApp() {
+            const contact = await promptWhatsAppContact();
+            if (!contact) return;
+
+            let orderNumber = null;
+            try {
+                await addToCart(product.id, selectedColor || '', selectedSize || '', 1);
+                const order = await createWhatsAppOrder(contact);
+                orderNumber = order.order_number;
+                await refreshCartBadge();
+            } catch (e) {
+                showToast(e.message || "Couldn't start this order — please try again.");
+                return;
+            }
+
+            const settings = await apiGet('/api/settings').catch(() => ({ whatsapp_number: '9779768785693' }));
+            const lines = [
+                'Hello BHURA, I would like to place an order:', '',
+                `*Order:* #${orderNumber}`,
+                `*Product:* ${product.title}`,
+                `*Color:* ${selectedColor || 'N/A'}`,
+                `*Size:* ${selectedSize || 'N/A'}`,
+                `*Price:* ${formatNPR(product.price)}`, '',
+                'Please confirm availability and shipping details.',
+            ];
+            const message = encodeURIComponent(lines.join('\n'));
+            window.open(`https://wa.me/${settings.whatsapp_number}?text=${message}`, '_blank');
+        }
+
+        async function loadProduct() {
+            if (!slug) { document.getElementById('not-found').classList.remove('hidden'); return; }
+            try {
+                product = await apiGet(`/api/products/${encodeURIComponent(slug)}`);
+            } catch (e) {
+                document.getElementById('not-found').classList.remove('hidden');
+                return;
+            }
+            images = product.images.length ? product.images : [{ url: '' }];
+            document.title = `BHURA — ${product.title}`;
+            document.getElementById('breadcrumb').innerHTML = `
+                <a href="index.html" class="hover:text-bhuraBlack">Home</a> /
+                <a href="${product.category_slug === 'unisex' ? 'men' : product.category_slug}.html" class="hover:text-bhuraBlack">${{men:'Men',women:'Women',unisex:'Unisex'}[product.category_slug] || product.category_slug}</a> /
+                <span class="text-bhuraBlack font-semibold">${product.title}</span>`;
+            document.getElementById('p-eyebrow').textContent = `${product.subcategory}${product.collection_tag ? ' / Drop' : ''}`;
+            document.getElementById('p-title').textContent = product.title;
+            document.getElementById('p-price').innerHTML = product.compare_at_price
+                ? `${formatNPR(product.price)} <span class="text-bhuraTextGrey text-sm font-normal line-through ml-2">${formatNPR(product.compare_at_price)}</span> <span class="text-[10px] bg-bhuraBlack text-bhuraWhite px-2 py-0.5 ml-1 align-middle uppercase tracking-widest">Sale</span>`
+                : formatNPR(product.price);
+            document.getElementById('p-description').textContent = product.description;
+            document.getElementById('p-material').textContent = product.material || '—';
+
+            renderRatingSummary();
+
+            selectedColor = product.colors.length ? product.colors[0].name : null;
+            images = imagesForColor(selectedColor);
+            buildPhotoGrid();
+            renderColors();
+            renderSizes();
+            updateActionButtons();
+            initRatingPicker();
+            loadReviews();
+
+            document.getElementById('product-root').classList.remove('hidden');
+        }
+
+        function renderRatingSummary() {
+            const ratingEl = document.getElementById('p-rating-summary');
+            if (product.review_count > 0) {
+                ratingEl.textContent = `★ ${product.avg_rating} (${product.review_count} review${product.review_count === 1 ? '' : 's'})`;
+                ratingEl.classList.remove('hidden');
+            } else {
+                ratingEl.classList.add('hidden');
+            }
+        }
+
+        let selectedRating = 5;
+        function initRatingPicker() {
+            renderRatingPicker();
+        }
+        function renderRatingPicker() {
+            document.getElementById('rating-picker').innerHTML = [1, 2, 3, 4, 5].map((n) => `
+                <button type="button" onclick="setRating(${n})" class="text-2xl leading-none ${n <= selectedRating ? 'text-bhuraBlack' : 'text-bhuraLightGrey'}">★</button>
+            `).join('');
+        }
+        function setRating(n) {
+            selectedRating = n;
+            renderRatingPicker();
+        }
+
+        function toggleReviewForm() {
+            document.getElementById('review-form').classList.toggle('hidden');
+        }
+
+        async function loadReviews() {
+            const listEl = document.getElementById('reviews-list');
+            let reviews = [];
+            try {
+                reviews = await apiGet(`/api/products/${encodeURIComponent(slug)}/reviews`);
+            } catch (e) {
+                listEl.innerHTML = '';
+                return;
+            }
+            document.getElementById('reviews-summary-line').textContent = reviews.length
+                ? `${product.avg_rating} average · ${reviews.length} review${reviews.length === 1 ? '' : 's'}`
+                : 'No reviews yet — be the first.';
+            listEl.innerHTML = reviews.map((r) => `
+                <div class="border-b border-bhuraLightGrey pb-6">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-bhuraBlack text-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                        ${r.is_verified ? '<span class="text-[9px] bg-bhuraBlack text-bhuraWhite px-1.5 py-0.5 uppercase tracking-widest">Verified Purchase</span>' : ''}
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-wide">${r.customer_name}</p>
+                    ${r.comment ? `<p class="text-xs text-bhuraTextGrey mt-1.5 leading-relaxed">${r.comment}</p>` : ''}
+                    <p class="text-[10px] font-mono text-bhuraTextGrey mt-2">${new Date(r.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</p>
+                </div>
+            `).join('');
+        }
+
+        async function submitReview(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = document.getElementById('review-submit-btn');
+            const errorEl = document.getElementById('review-error');
+            errorEl.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Submitting…';
+            try {
+                await apiJSON('POST', `/api/products/${encodeURIComponent(slug)}/reviews`, {
+                    customer_name: form.elements.customer_name.value.trim(),
+                    rating: selectedRating,
+                    comment: form.elements.comment.value.trim(),
+                    order_number: form.elements.order_number.value.trim(),
+                });
+                form.reset();
+                selectedRating = 5;
+                renderRatingPicker();
+                form.classList.add('hidden');
+                product = await apiGet(`/api/products/${encodeURIComponent(slug)}`); // refresh avg_rating/count
+                renderRatingSummary();
+                await loadReviews();
+                showToast('Thanks for your review!');
+            } catch (e) {
+                errorEl.textContent = e.message || 'Could not submit your review — please try again.';
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Review';
+            }
+        }
+
+        loadProduct();
+    </script>
+</body>
+</html>

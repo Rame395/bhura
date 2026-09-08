@@ -1,0 +1,8 @@
+backend/venv/
+backend/__pycache__/
+backend/.env
+backend/bhura.db
+backend/media/*
+!backend/media/.keep
+.pytest_cache/
+*.pyc

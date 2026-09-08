@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Men's Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>
+        ::selection { background-color: #111111; color: #FFFFFF; }
+        .editorial-image-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .editorial-image-zoom { transform: scale(1.04); }
+        .product-secondary-img { transition: opacity 0.4s ease-in-out; }
+        .group:hover .product-primary-img { opacity: 0; }
+        .group:hover .product-secondary-img { opacity: 1; }
+        .product-quick-action { transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; opacity: 0; }
+        .group:hover .product-quick-action { transform: translateY(0); opacity: 1; }
+        .filter-active { color: #111111 !important; font-weight: 700; }
+        .size-btn-active { border-color: #111111 !important; background: #111111; color: #fff; }
+        .price-active { accent-color: #111111; }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraWhite font-bold underline underline-offset-4">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="index.html#latest-drop" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">New Arrivals</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+            <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <a href="gallery.html" class="hidden sm:block hover:opacity-75 transition-opacity">Gallery</a>
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraWhite font-bold">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="index.html#latest-drop" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">New Arrivals</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+        <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span><span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="relative h-[45vh] w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2000&auto=format&fit=crop" alt="BHURA Men Collection" class="w-full h-full object-cover object-center opacity-60 filter grayscale contrast-125 editorial-image-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
+        </div>
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-12">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-2">Category / Men</span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tighter uppercase">Men's Identity.</h1>
+        </div>
+    </section>
+
+    <section class="py-16 bg-bhuraOffWhite text-bhuraBlack">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center mb-10 pb-4 border-b border-bhuraLightGrey">
+                <span id="results-count" class="text-xs font-semibold tracking-widest uppercase text-bhuraTextGrey">Showing products</span>
+                <div class="flex items-center space-x-3 text-xs font-semibold uppercase tracking-widest">
+                    <span class="text-bhuraTextGrey font-normal">Sort By:</span>
+                    <select id="sort-select" class="bg-transparent border-none text-xs font-semibold uppercase tracking-widest focus:outline-none cursor-pointer">
+                        <option value="latest">Latest Drop</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+                <aside class="space-y-10">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-4 pb-2 border-b border-bhuraLightGrey">Category</h3>
+                        <ul id="department-list" class="space-y-3 text-xs font-medium uppercase tracking-wider">
+                            <li class="text-bhuraTextGrey">Loading…</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-4 pb-2 border-b border-bhuraLightGrey">Subcategory</h3>
+                        <ul id="subcategory-list" class="space-y-3 text-xs font-medium uppercase tracking-wider">
+                            <li class="text-bhuraTextGrey">Loading…</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-4 pb-2 border-b border-bhuraLightGrey">Size</h3>
+                        <div id="size-filter" class="grid grid-cols-3 gap-2">
+                            <!-- injected -->
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-4 pb-2 border-b border-bhuraLightGrey">Price Range</h3>
+                        <div id="price-filter" class="space-y-3 text-xs uppercase tracking-wider">
+                            <!-- injected -->
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="lg:col-span-3">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="col-span-full text-center py-16 text-xs uppercase tracking-widest text-bhuraTextGrey">Loading products…</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-20 pb-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-4">BHURA</span>
+                    <p class="text-xs text-bhuraTextGrey tracking-wider uppercase leading-relaxed">Wear your identity.<br>Independent fashion label from Kathmandu.</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="collections.html" class="hover:text-bhuraWhite transition-colors">Collections</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="index.html#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        const CATEGORY = 'men';
+        const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+        const PRICE_BRACKETS = [
+            { label: 'Under NPR 5,000', min: null, max: 4999 },
+            { label: 'NPR 5,000 — NPR 10,000', min: 5000, max: 10000 },
+            { label: 'NPR 10,000+', min: 10001, max: null },
+        ];
+
+        const params = new URLSearchParams(window.location.search);
+        const state = {
+            department: params.get('department') || null,
+            subcategory: params.get('subcategory') || null,
+            size: params.get('size') || null,
+            priceIndex: params.has('price') ? Number(params.get('price')) : null,
+            collection: params.get('collection') || null,
+            is_new_arrival: params.get('new') === 'true' ? true : null,
+            sort: params.get('sort') || 'latest',
+        };
+
+        let allProductsUnfiltered = [];
+
+        function productCardHTML(p) {
+            const secondary = p.secondary_image || p.primary_image;
+            const priceHTML = p.compare_at_price
+                ? `<span class="text-xs font-semibold tracking-tight">${formatNPR(p.price)}</span> <span class="text-[10px] text-bhuraTextGrey line-through">${formatNPR(p.compare_at_price)}</span>`
+                : `<span class="text-xs font-semibold tracking-tight">${formatNPR(p.price)}</span>`;
+            return `
+            <a href="product.html?slug=${p.slug}" class="group cursor-pointer block">
+                <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                    <img src="${p.primary_image || ''}" alt="${p.title}" class="product-primary-img absolute inset-0 w-full h-full object-cover object-center">
+                    <img src="${secondary}" alt="${p.title}" class="product-secondary-img absolute inset-0 w-full h-full object-cover object-center opacity-0">
+                    ${p.compare_at_price ? '<span class="absolute top-3 left-3 bg-bhuraBlack text-bhuraWhite text-[10px] font-semibold uppercase tracking-widest px-2 py-1 z-10">Sale</span>' : ''}
+                    <div class="absolute inset-x-0 bottom-0 p-3 product-quick-action bg-gradient-to-t from-black/60 to-transparent">
+                        <button onclick="event.preventDefault(); quickAdd(${p.id}, '${p.slug}', '${p.title.replace(/'/g, "\\'")}')" class="w-full bg-bhuraWhite text-bhuraBlack py-2.5 text-[10px] font-semibold uppercase tracking-widest hover:bg-bhuraBlack hover:text-bhuraWhite transition-colors">
+                            Add To Cart +
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider">${p.title}</h3>
+                        <p class="text-[10px] text-bhuraTextGrey uppercase mt-0.5">${p.subcategory}</p>
+                    </div>
+                    <div class="text-right">${priceHTML}</div>
+                </div>
+            </a>`;
+        }
+
+        async function quickAdd(productId, slug, title) {
+            try {
+                await addToCart(productId, '', '');
+                await refreshCartBadge();
+                showToast(`Added to Cart: ${title}`);
+            } catch (e) {
+                window.location.href = `product.html?slug=${slug}`;
+            }
+        }
+
+        function renderDepartmentFacets() {
+            const counts = {};
+            allProductsUnfiltered.forEach((p) => {
+                const d = p.department || 'Clothing';
+                counts[d] = (counts[d] || 0) + 1;
+            });
+            const list = document.getElementById('department-list');
+            const allActive = !state.department ? 'filter-active' : 'text-gray-700';
+            let html = `<li><a href="#" onclick="setDepartment(null); return false;" class="${allActive} flex justify-between items-center hover:text-bhuraBlack transition-colors">All <span>(${allProductsUnfiltered.length})</span></a></li>`;
+            Object.keys(counts).sort().forEach((d) => {
+                if (!counts[d]) return;
+                const active = state.department === d ? 'filter-active' : 'text-gray-700';
+                html += `<li><a href="#" onclick="setDepartment('${d}'); return false;" class="${active} flex justify-between items-center hover:text-bhuraBlack transition-colors">${d} <span>(${counts[d]})</span></a></li>`;
+            });
+            list.innerHTML = html;
+        }
+
+        function renderSubcategoryFacets() {
+            const scoped = state.department
+                ? allProductsUnfiltered.filter((p) => (p.department || 'Clothing') === state.department)
+                : allProductsUnfiltered;
+            const counts = {};
+            scoped.forEach((p) => {
+                counts[p.subcategory] = (counts[p.subcategory] || 0) + 1;
+            });
+            const list = document.getElementById('subcategory-list');
+            const allActive = !state.subcategory ? 'filter-active' : 'text-bhuraTextGrey';
+            let html = `<li><a href="#" onclick="setSubcategory(null); return false;" class="${allActive} flex justify-between items-center hover:text-bhuraBlack transition-colors">All <span>(${scoped.length})</span></a></li>`;
+            Object.keys(counts).sort().forEach((sub) => {
+                const active = state.subcategory === sub ? 'filter-active' : 'text-bhuraTextGrey';
+                html += `<li><a href="#" onclick="setSubcategory('${sub}'); return false;" class="${active} flex justify-between items-center hover:text-bhuraBlack transition-colors">${sub} <span>(${counts[sub]})</span></a></li>`;
+            });
+            list.innerHTML = html;
+        }
+
+        function renderSizeFacet() {
+            const el = document.getElementById('size-filter');
+            el.innerHTML = SIZES.map((s) => {
+                const active = state.size === s ? 'size-btn-active' : 'border-bhuraLightGrey hover:border-bhuraBlack';
+                return `<button onclick="toggleSize('${s}')" class="border ${active} py-2 text-xs font-medium uppercase transition-colors">${s}</button>`;
+            }).join('');
+        }
+
+        function renderPriceFacet() {
+            const el = document.getElementById('price-filter');
+            el.innerHTML = PRICE_BRACKETS.map((b, i) => {
+                const checked = state.priceIndex === i ? 'checked' : '';
+                return `<label class="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" ${checked} onclick="togglePrice(${i})" class="accent-bhuraBlack price-active">
+                    <span class="text-bhuraTextGrey">${b.label}</span>
+                </label>`;
+            }).join('');
+        }
+
+        function setDepartment(dept) { state.department = dept; state.subcategory = null; loadProducts(); }
+        function setSubcategory(sub) { state.subcategory = sub; loadProducts(); }
+        function toggleSize(s) { state.size = state.size === s ? null : s; loadProducts(); }
+        function togglePrice(i) { state.priceIndex = state.priceIndex === i ? null : i; loadProducts(); }
+
+        function buildQuery() {
+            const qs = new URLSearchParams();
+            qs.set('category', CATEGORY);
+            if (state.size) qs.set('size', state.size);
+            if (state.collection) qs.set('collection', state.collection);
+            if (state.is_new_arrival) qs.set('is_new_arrival', 'true');
+            if (state.priceIndex !== null) {
+                const b = PRICE_BRACKETS[state.priceIndex];
+                if (b.min !== null) qs.set('min_price', b.min);
+                if (b.max !== null) qs.set('max_price', b.max);
+            }
+            qs.set('sort', state.sort);
+            return qs.toString();
+        }
+
+        async function loadProducts() {
+            const grid = document.getElementById('product-grid');
+            try {
+                // Fetched broad (no department/subcategory) so facet counts for BOTH stay
+                // accurate; department and subcategory are then applied together client-side.
+                allProductsUnfiltered = await apiGet(`/api/products?${buildQuery()}`);
+                renderDepartmentFacets();
+                renderSubcategoryFacets();
+                renderSizeFacet();
+                renderPriceFacet();
+
+                const filtered = allProductsUnfiltered.filter((p) => {
+                    if (state.department && (p.department || 'Clothing') !== state.department) return false;
+                    if (state.subcategory && p.subcategory !== state.subcategory) return false;
+                    return true;
+                });
+
+                document.getElementById('results-count').textContent = `Showing ${filtered.length} Product${filtered.length === 1 ? '' : 's'}`;
+                grid.innerHTML = filtered.length
+                    ? filtered.map(productCardHTML).join('')
+                    : '<p class="col-span-full text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">No products match these filters.</p>';
+            } catch (e) {
+                grid.innerHTML = '<p class="col-span-full text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">Could not load products right now.</p>';
+            }
+        }
+
+        document.getElementById('sort-select').value = state.sort;
+        document.getElementById('sort-select').addEventListener('change', (e) => {
+            state.sort = e.target.value;
+            loadProducts();
+        });
+
+        (async function loadHeroOverride() {
+            try {
+                const images = await apiGet('/api/site-images/men_hero');
+                if (images.length) document.getElementById('hero-bg-img').src = images[0].url;
+            } catch (e) { /* keep the default */ }
+        })();
+        loadProducts();
+    </script>
+</body>
+</html>

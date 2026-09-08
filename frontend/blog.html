@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bhuraBlack: '#111111',
+                        bhuraWhite: '#FFFFFF',
+                        bhuraOffWhite: '#F7F7F5',
+                        bhuraLightGrey: '#EAEAEA',
+                        bhuraTextGrey: '#777777',
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        widest: '0.2em',
+                        mega: '0.3em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::selection {
+            background-color: #111111;
+            color: #FFFFFF;
+        }
+        .editorial-image-zoom {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .editorial-image-zoom {
+            transform: scale(1.04);
+        }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">
+                BHURA
+            </a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="gallery.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Gallery</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+                <a href="blog.html" class="text-bhuraWhite font-bold underline underline-offset-4">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(1)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="gallery.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Gallery</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+            <a href="blog.html" class="mobile-link text-bhuraWhite font-bold">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+            <span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+
+    <section class="relative h-[65vh] w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=2000&auto=format&fit=crop" alt="BHURA Blog" class="w-full h-full object-cover object-center opacity-60 filter grayscale contrast-125 editorial-image-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-16">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-3">Notes / 2026</span>
+            <h1 class="text-5xl sm:text-7xl font-black tracking-tighter uppercase">
+                Journal.
+            </h1>
+            <p class="text-sm text-bhuraLightGrey font-light mt-4 max-w-lg">
+                Stories behind the drops — process, materials, and the ideas that shape BHURA.
+            </p>
+        </div>
+    </section>
+
+
+    <section class="py-28 bg-bhuraOffWhite text-bhuraBlack">
+        <div id="blog-posts" class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-32">
+            <p class="text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">Loading journal entries…</p>
+        </div>
+    </section>
+
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-3">BHURA</span>
+                    <p class="text-[11px] text-bhuraTextGrey tracking-wider uppercase leading-relaxed">
+                        Wear your identity.<br>Independent fashion label from Kathmandu.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="blog.html" class="hover:text-bhuraWhite transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="index.html#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p>
+                <p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        async function loadHeroOverride() {
+            try {
+                const images = await apiGet('/api/site-images/blog_hero');
+                if (images.length) document.getElementById('hero-bg-img').src = images[0].url;
+            } catch (e) { /* keep the default */ }
+        }
+
+        function postCardHTML(post, index) {
+            const reversed = index % 2 === 1;
+            const ratio = (post.width && post.height) ? `${post.width} / ${post.height}` : '16 / 10';
+            return `
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 bg-bhuraLightGrey overflow-hidden group ${reversed ? 'order-1 lg:order-2' : ''}" style="aspect-ratio: ${ratio}">
+                    <img src="${post.url}" alt="${post.heading || 'BHURA Journal'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                </div>
+                <div class="lg:col-span-5 space-y-6 ${reversed ? 'order-2 lg:order-1' : ''}">
+                    <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight">${post.heading || 'Untitled Entry'}</h2>
+                    ${post.subheading ? `<p class="text-xs text-bhuraTextGrey leading-relaxed uppercase tracking-wider">${post.subheading}</p>` : ''}
+                    ${post.link_url ? `
+                        <div class="pt-4">
+                            <a href="${post.link_url}" class="inline-block bg-bhuraBlack text-bhuraWhite px-8 py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">
+                                Read More →
+                            </a>
+                        </div>` : ''}
+                </div>
+            </div>`;
+        }
+
+        async function loadBlogPosts() {
+            const container = document.getElementById('blog-posts');
+            try {
+                const posts = await apiGet('/api/site-images/blog_posts');
+                container.innerHTML = posts.length
+                    ? posts.map((p, i) => postCardHTML(p, i)).join('')
+                    : '<p class="text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">No journal entries yet — check back soon.</p>';
+            } catch (e) {
+                container.innerHTML = '<p class="text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-16">Could not load journal entries right now.</p>';
+            }
+        }
+
+        loadHeroOverride();
+        loadBlogPosts();
+    </script>
+</body>
+</html>

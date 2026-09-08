@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Secure Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>::selection { background-color: #111111; color: #FFFFFF; }</style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <div class="text-[11px] font-mono tracking-widest uppercase text-bhuraTextGrey">Secure Checkout 🔒</div>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <a href="cart.html" class="hover:opacity-75 transition-opacity underline underline-offset-4">← Back to Cart</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-32 pb-24 bg-bhuraOffWhite text-bhuraBlack min-h-screen">
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+            <div class="mb-12 border-b border-bhuraLightGrey pb-6">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Step 01 of 02</span>
+                <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tight">Checkout</h1>
+            </div>
+
+            <div id="loading-state" class="py-24 text-center text-xs uppercase tracking-widest text-bhuraTextGrey">Loading your cart…</div>
+
+            <div id="empty-notice" class="hidden py-24 text-center space-y-4">
+                <p class="text-sm uppercase tracking-widest text-bhuraTextGrey">Your cart is empty — add something before checking out.</p>
+                <a href="men.html" class="inline-block bg-bhuraBlack text-bhuraWhite px-8 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Explore Collection</a>
+            </div>
+
+            <form id="checkout-form" onsubmit="handleCheckoutSubmit(event)" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+                <div class="lg:col-span-7 space-y-10">
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold uppercase tracking-widest pb-2 border-b border-bhuraLightGrey">1. Contact Information</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Email Address</label>
+                                <input name="email" type="email" required placeholder="YOUR EMAIL" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Phone Number (Nepal +977)</label>
+                                <input name="phone" type="tel" required placeholder="98XXXXXXXX" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold uppercase tracking-widest pb-2 border-b border-bhuraLightGrey">2. Shipping Address (Nepal)</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">First Name</label>
+                                <input name="first_name" type="text" required placeholder="FIRST NAME" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Last Name</label>
+                                <input name="last_name" type="text" required placeholder="LAST NAME" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Street Address / Landmark</label>
+                            <input name="address" type="text" required placeholder="STREET ADDRESS, AREA" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Province</label>
+                                <select name="province" id="province-select" required class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                                    <option value="">SELECT PROVINCE</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">District</label>
+                                <select name="city" id="district-select" required disabled class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack disabled:opacity-40">
+                                    <option value="">SELECT PROVINCE FIRST</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Postal Code <span class="normal-case text-bhuraTextGrey">(optional, 5 digits)</span></label>
+                            <input name="postal_code" id="postal-code-input" type="text" inputmode="numeric" maxlength="5" placeholder="44600" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            <p id="postal-code-error" class="hidden text-[10px] text-red-600 uppercase tracking-widest mt-1">Postal code must be exactly 5 digits, or left blank.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold uppercase tracking-widest pb-2 border-b border-bhuraLightGrey">3. Payment Method</h3>
+                        <div id="payment-options" class="space-y-3"></div>
+
+                        <div id="qr-panel" class="hidden bg-bhuraWhite border border-bhuraLightGrey p-6 space-y-4">
+                            <p class="text-[11px] font-semibold uppercase tracking-widest">Scan to Pay</p>
+                            <div id="qr-image-wrap" class="flex justify-center"></div>
+                            <p id="merchant-info" class="text-[11px] text-bhuraTextGrey uppercase tracking-wider text-center"></p>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Transaction Reference / ID</label>
+                                <input name="payment_reference" type="text" placeholder="e.g. TXN1234567" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Payment Screenshot (optional)</label>
+                                <input name="payment_proof" type="file" accept="image/*" class="w-full text-xs">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-bhuraWhite p-8 border border-bhuraLightGrey space-y-6 lg:sticky lg:top-28">
+                    <h3 class="text-xs font-bold uppercase tracking-widest pb-4 border-b border-bhuraLightGrey">Order Summary</h3>
+                    <div id="summary-items" class="space-y-4 pb-4 border-b border-bhuraLightGrey"></div>
+                    <div class="space-y-3 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                        <div class="flex justify-between"><span>Subtotal</span><span id="summary-subtotal" class="text-bhuraBlack font-semibold"></span></div>
+                        <div class="flex justify-between"><span>Shipping</span><span class="text-bhuraBlack font-semibold">Free (Nepal-wide)</span></div>
+                        <div class="flex justify-between pt-3 border-t border-bhuraLightGrey text-sm font-bold text-bhuraBlack"><span>Total</span><span id="summary-total"></span></div>
+                    </div>
+                    <div class="pt-2">
+                        <p id="size-gate-notice" class="hidden text-[11px] text-red-600 uppercase tracking-wider text-center mb-3"></p>
+                        <button id="submit-btn" type="submit" class="w-full bg-bhuraBlack text-bhuraWhite py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">
+                            Complete Order
+                        </button>
+                        <p id="submit-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider text-center mt-3"></p>
+                    </div>
+                    <p class="text-[10px] font-mono text-bhuraTextGrey text-center uppercase tracking-widest pt-2">Proudly Made in Nepal <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg> • Secure SSL Checkout</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        let cart = null;
+        let settings = null;
+
+        const productDetailCache = {};
+        async function getProductDetail(slug) {
+            if (!productDetailCache[slug]) productDetailCache[slug] = await apiGet(`/api/products/${encodeURIComponent(slug)}`);
+            return productDetailCache[slug];
+        }
+
+        async function renderSummary() {
+            const rows = await Promise.all(cart.items.map(async (i) => {
+                const full = await getProductDetail(i.slug);
+                const needsSize = full.variants.length > 0;
+                const sizeChoices = full.variants.filter((v) => v.color_name === i.color);
+                const sizeSelectHtml = needsSize ? `
+                    <select onchange="handleSizeChange(${i.id}, this.value)" class="mt-1.5 bg-transparent border border-bhuraLightGrey px-2 py-1.5 text-[10px] uppercase tracking-wider focus:outline-none focus:border-bhuraBlack">
+                        <option value="">Select Size</option>
+                        ${sizeChoices.map((v) => `<option value="${v.size}" ${v.stock_qty <= 0 ? 'disabled' : ''} ${i.size === v.size ? 'selected' : ''}>${v.size}${v.stock_qty <= 0 ? ' — Out of Stock' : ''}</option>`).join('')}
+                    </select>
+                ` : '';
+                return `
+                <div class="flex gap-4 items-center">
+                    <a href="product.html?slug=${i.slug}" target="_blank" class="w-16 aspect-[3/4] bg-bhuraLightGrey overflow-hidden flex-shrink-0 hover:opacity-75 transition-opacity">
+                        <img src="${i.image || ''}" alt="${i.title}" class="w-full h-full object-cover">
+                    </a>
+                    <div class="flex-1 text-xs uppercase tracking-wider">
+                        <a href="product.html?slug=${i.slug}" target="_blank" class="font-bold hover:underline underline-offset-2">${i.title}</a>
+                        <p class="text-[10px] text-bhuraTextGrey mt-0.5 flex items-center gap-1.5">
+                            ${i.color_hex ? `<span class="inline-block w-2 h-2 rounded-full border border-bhuraLightGrey flex-shrink-0" style="background:${i.color_hex}"></span>` : ''}
+                            ${i.color || 'One color'} (Qty: ${i.quantity})
+                        </p>
+                        ${sizeSelectHtml}
+                        <p class="font-semibold mt-1">${formatNPR(i.line_total)}</p>
+                    </div>
+                </div>`;
+            }));
+            document.getElementById('summary-items').innerHTML = rows.join('');
+            document.getElementById('summary-subtotal').textContent = formatNPR(cart.subtotal);
+            document.getElementById('summary-total').textContent = formatNPR(cart.total);
+            updateSizeGate();
+        }
+
+        function updateSizeGate() {
+            const missing = cart.items.filter((i) => {
+                const full = productDetailCache[i.slug];
+                return full && full.variants.length > 0 && !i.size;
+            });
+            const btn = document.getElementById('submit-btn');
+            const noticeEl = document.getElementById('size-gate-notice');
+            if (missing.length) {
+                btn.disabled = true;
+                btn.classList.add('opacity-40', 'cursor-not-allowed');
+                noticeEl.textContent = `Please select a size for: ${missing.map((i) => i.title).join(', ')}.`;
+                noticeEl.classList.remove('hidden');
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-40', 'cursor-not-allowed');
+                noticeEl.classList.add('hidden');
+            }
+        }
+
+        async function handleSizeChange(itemId, size) {
+            try {
+                cart = await apiJSON('PATCH', `/api/cart/items/${itemId}`, { size });
+                await renderSummary();
+            } catch (e) {
+                alert(e.message || "Couldn't update size — please try again.");
+                await renderSummary();
+            }
+        }
+
+        function renderPaymentOptions() {
+            const wrap = document.getElementById('payment-options');
+            let html = '';
+            if (settings.cod_enabled) {
+                html += `<label class="flex items-center space-x-3 p-4 border border-bhuraLightGrey bg-bhuraWhite cursor-pointer">
+                    <input type="radio" name="payment_method" value="cod" checked onchange="onPaymentChange()" class="accent-bhuraBlack">
+                    <span class="text-xs font-semibold uppercase tracking-wider">Cash on Delivery (COD) across Nepal</span>
+                </label>`;
+            }
+            if (settings.mobile_banking_enabled) {
+                html += `<label class="flex items-center space-x-3 p-4 border border-bhuraLightGrey bg-bhuraWhite cursor-pointer">
+                    <input type="radio" name="payment_method" value="mobile_banking" ${!settings.cod_enabled ? 'checked' : ''} onchange="onPaymentChange()" class="accent-bhuraBlack">
+                    <span class="text-xs font-semibold uppercase tracking-wider">Fonepay / eSewa / Mobile Banking</span>
+                </label>`;
+            }
+            wrap.innerHTML = html || '<p class="text-xs text-bhuraTextGrey uppercase">No payment methods are currently enabled — please contact us on WhatsApp.</p>';
+            onPaymentChange();
+        }
+
+        function onPaymentChange() {
+            const selected = document.querySelector('input[name="payment_method"]:checked');
+            const qrPanel = document.getElementById('qr-panel');
+            if (selected && selected.value === 'mobile_banking') {
+                qrPanel.classList.remove('hidden');
+                document.getElementById('qr-image-wrap').innerHTML = settings.qr_image_url
+                    ? `<img src="${settings.qr_image_url}" alt="Payment QR" class="w-48 h-48 object-contain border border-bhuraLightGrey p-2">`
+                    : `<p class="text-xs text-bhuraTextGrey uppercase text-center py-8">QR code not uploaded yet — enter your transaction reference and we'll confirm manually.</p>`;
+                document.getElementById('merchant-info').textContent = [settings.merchant_name, settings.merchant_number].filter(Boolean).join(' · ');
+            } else {
+                qrPanel.classList.add('hidden');
+            }
+        }
+
+        async function handleCheckoutSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = document.getElementById('submit-btn');
+            const errorEl = document.getElementById('submit-error');
+            errorEl.classList.add('hidden');
+
+            const postalCode = form.elements.postal_code.value.trim();
+            if (postalCode && !/^\d{5}$/.test(postalCode)) {
+                document.getElementById('postal-code-error').classList.remove('hidden');
+                form.elements.postal_code.focus();
+                return;
+            }
+            document.getElementById('postal-code-error').classList.add('hidden');
+
+            btn.disabled = true;
+            btn.textContent = 'Placing Order…';
+
+            const formData = new FormData(form);
+            if (!formData.get('payment_method')) formData.set('payment_method', 'cod');
+
+            try {
+                const order = await apiForm('POST', '/api/orders', formData);
+                sessionStorage.setItem('bhura_last_order', JSON.stringify(order));
+                window.location.href = `order-confirmation.html?order=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+            } catch (e) {
+                errorEl.textContent = e.message || 'Something went wrong placing your order. Please try again.';
+                errorEl.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Complete Order';
+            }
+        }
+
+        async function loadNepalLocations() {
+            const provinceSelect = document.getElementById('province-select');
+            const districtSelect = document.getElementById('district-select');
+            let locations;
+            try {
+                locations = await apiGet('/api/nepal-locations');
+            } catch (e) {
+                provinceSelect.innerHTML = '<option value="">Could not load provinces</option>';
+                return;
+            }
+            provinceSelect.innerHTML = '<option value="">SELECT PROVINCE</option>' +
+                Object.keys(locations).map((p) => `<option value="${p}">${p}</option>`).join('');
+
+            provinceSelect.addEventListener('change', () => {
+                const districts = locations[provinceSelect.value] || [];
+                if (districts.length) {
+                    districtSelect.disabled = false;
+                    districtSelect.innerHTML = '<option value="">SELECT DISTRICT</option>' +
+                        districts.map((d) => `<option value="${d}">${d}</option>`).join('');
+                } else {
+                    districtSelect.disabled = true;
+                    districtSelect.innerHTML = '<option value="">SELECT PROVINCE FIRST</option>';
+                }
+            });
+        }
+
+        document.getElementById('postal-code-input').addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
+            document.getElementById('postal-code-error').classList.add('hidden');
+        });
+
+        async function init() {
+            try {
+                [cart, settings] = await Promise.all([getCart(), apiGet('/api/settings')]);
+            } catch (e) {
+                document.getElementById('loading-state').textContent = 'Could not load checkout right now.';
+                return;
+            }
+            document.getElementById('loading-state').classList.add('hidden');
+            if (!cart.items.length) {
+                document.getElementById('empty-notice').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('checkout-form').classList.remove('hidden');
+            await renderSummary();
+            renderPaymentOptions();
+            loadNepalLocations();
+        }
+        init();
+    </script>
+</body>
+</html>

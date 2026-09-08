@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Collections</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bhuraBlack: '#111111',
+                        bhuraWhite: '#FFFFFF',
+                        bhuraOffWhite: '#F7F7F5',
+                        bhuraLightGrey: '#EAEAEA',
+                        bhuraTextGrey: '#777777',
+                    },
+                    fontFamily: {
+                        sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        widest: '0.2em',
+                        mega: '0.3em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::selection { background-color: #111111; color: #FFFFFF; }
+        .editorial-image-zoom { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .editorial-image-zoom { transform: scale(1.04); }
+        .product-secondary-img { transition: opacity 0.5s ease; }
+        .group:hover .product-secondary-img { opacity: 1 !important; }
+        .product-quick-action { transform: translateY(100%); opacity: 0; transition: all 0.3s ease; }
+        .group:hover .product-quick-action { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">
+                BHURA
+            </a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="collections.html" class="text-bhuraWhite font-bold underline underline-offset-4">Collections</a>
+                <a href="gallery.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Gallery</a>
+                <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                    <span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="collections.html" class="mobile-link text-bhuraWhite font-bold">Collections</a>
+            <a href="gallery.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Gallery</a>
+            <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+            <span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="relative h-[40vh] w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=2000&auto=format&fit=crop" alt="BHURA Collections" class="w-full h-full object-cover object-center opacity-60 filter grayscale contrast-125 editorial-image-zoom">
+            <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/30 to-transparent"></div>
+        </div>
+        <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-16">
+            <span class="text-xs font-mono tracking-mega text-bhuraLightGrey uppercase block mb-3">The Full Range</span>
+            <h1 class="text-5xl sm:text-7xl font-black tracking-tighter uppercase">Collections.</h1>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center mb-10">
+                <p id="results-count" class="text-xs uppercase tracking-widest text-bhuraTextGrey">Loading…</p>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+                <div class="col-span-full text-center py-24 text-xs uppercase tracking-widest text-bhuraTextGrey">Loading the collection…</div>
+            </div>
+
+            <div id="pagination" class="hidden flex justify-center items-center gap-2 mt-16"></div>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite pt-20 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10 pb-16 border-b border-white/10">
+                <div class="col-span-2 md:col-span-1">
+                    <span class="text-xl font-black tracking-widest uppercase block mb-4">BHURA</span>
+                    <p class="text-xs text-bhuraTextGrey leading-relaxed">Independent fashion label from Kathmandu. Wear your identity.</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest mb-4">Shop</h4>
+                    <ul class="space-y-3 text-xs text-bhuraTextGrey uppercase tracking-wider">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="collections.html" class="hover:text-bhuraWhite transition-colors">Collections</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest mb-4">Explore</h4>
+                    <ul class="space-y-3 text-xs text-bhuraTextGrey uppercase tracking-wider">
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                        <li><a href="blog.html" class="hover:text-bhuraWhite transition-colors">Blog</a></li>
+                        <li><a href="track-order.html" class="hover:text-bhuraWhite transition-colors">Track Order</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest mb-4">Connect</h4>
+                    <ul class="space-y-3 text-xs text-bhuraTextGrey uppercase tracking-wider">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p>
+                <p>PROUDLY MADE IN <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        const PAGE_SIZE = 12;
+        let allProducts = [];
+        let currentPage = 1;
+
+        function productCardHTML(p) {
+            const secondary = p.secondary_image || p.primary_image;
+            const priceHTML = p.compare_at_price
+                ? `<span class="text-xs font-semibold tracking-tight">${formatNPR(p.price)}</span> <span class="text-[10px] text-bhuraTextGrey line-through">${formatNPR(p.compare_at_price)}</span>`
+                : `<span class="text-xs font-semibold tracking-tight">${formatNPR(p.price)}</span>`;
+            return `
+            <a href="product.html?slug=${p.slug}" class="group cursor-pointer block">
+                <div class="relative w-full aspect-[3/4] bg-bhuraLightGrey overflow-hidden mb-3">
+                    <img src="${p.primary_image || ''}" alt="${p.title}" class="absolute inset-0 w-full h-full object-cover object-center">
+                    <img src="${secondary}" alt="${p.title}" class="product-secondary-img absolute inset-0 w-full h-full object-cover object-center opacity-0">
+                    ${p.compare_at_price ? '<span class="absolute top-3 left-3 bg-bhuraBlack text-bhuraWhite text-[10px] font-semibold uppercase tracking-widest px-2 py-1 z-10">Sale</span>' : ''}
+                    <div class="absolute inset-x-0 bottom-0 p-3 product-quick-action bg-gradient-to-t from-black/60 to-transparent">
+                        <button onclick="event.preventDefault(); quickAdd(${p.id}, '${p.slug}', '${p.title.replace(/'/g, "\\'")}')" class="w-full bg-bhuraWhite text-bhuraBlack py-2.5 text-[10px] font-semibold uppercase tracking-widest hover:bg-bhuraBlack hover:text-bhuraWhite transition-colors">
+                            Add To Cart +
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider">${p.title}</h3>
+                        <p class="text-[10px] text-bhuraTextGrey uppercase mt-0.5">${p.category_slug} · ${p.subcategory}</p>
+                    </div>
+                    <div class="text-right">${priceHTML}</div>
+                </div>
+            </a>`;
+        }
+
+        async function quickAdd(productId, slug, title) {
+            try {
+                await addToCart(productId, '', '');
+                await refreshCartBadge();
+                showToast(`Added to Cart: ${title}`);
+            } catch (e) {
+                window.location.href = `product.html?slug=${slug}`;
+            }
+        }
+
+        function renderPage(page) {
+            currentPage = page;
+            const start = (page - 1) * PAGE_SIZE;
+            const pageItems = allProducts.slice(start, start + PAGE_SIZE);
+            document.getElementById('product-grid').innerHTML = pageItems.map(productCardHTML).join('');
+            document.getElementById('results-count').textContent = `Showing ${start + 1}–${start + pageItems.length} of ${allProducts.length} Products`;
+            renderPagination();
+            window.scrollTo({ top: document.getElementById('product-grid').offsetTop - 120, behavior: 'smooth' });
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(allProducts.length / PAGE_SIZE);
+            const wrap = document.getElementById('pagination');
+            if (totalPages <= 1) { wrap.classList.add('hidden'); return; }
+            wrap.classList.remove('hidden');
+
+            let html = `<button ${currentPage === 1 ? 'disabled' : ''} onclick="renderPage(${currentPage - 1})" class="px-4 py-2 text-xs uppercase tracking-widest border border-bhuraLightGrey hover:bg-bhuraLightGrey disabled:opacity-30 disabled:pointer-events-none transition-colors">Previous</button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button onclick="renderPage(${i})" class="w-9 h-9 text-xs uppercase tracking-widest ${i === currentPage ? 'bg-bhuraBlack text-bhuraWhite' : 'border border-bhuraLightGrey hover:bg-bhuraLightGrey'} transition-colors">${i}</button>`;
+            }
+            html += `<button ${currentPage === totalPages ? 'disabled' : ''} onclick="renderPage(${currentPage + 1})" class="px-4 py-2 text-xs uppercase tracking-widest border border-bhuraLightGrey hover:bg-bhuraLightGrey disabled:opacity-30 disabled:pointer-events-none transition-colors">Next</button>`;
+            wrap.innerHTML = html;
+        }
+
+        async function loadAllProducts() {
+            try {
+                allProducts = await apiGet('/api/products?sort=latest');
+                renderPage(1);
+            } catch (e) {
+                document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-xs uppercase tracking-widest text-bhuraTextGrey py-24">Could not load products right now.</p>';
+            }
+        }
+
+        (async function loadHeroOverride() {
+            try {
+                const images = await apiGet('/api/site-images/collections_hero');
+                if (images.length) document.getElementById('hero-bg-img').src = images[0].url;
+            } catch (e) { /* keep the default */ }
+        })();
+
+        loadAllProducts();
+    </script>
+</body>
+</html>

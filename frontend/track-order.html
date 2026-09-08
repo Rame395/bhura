@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Track Your Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>::selection { background-color: #111111; color: #FFFFFF; }</style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="index.html#latest-drop" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">New Arrivals</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+            <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="index.html#latest-drop" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">New Arrivals</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+        <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span><span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="pt-40 pb-24 bg-bhuraOffWhite text-bhuraBlack min-h-screen">
+        <div class="max-w-lg mx-auto px-6">
+            <div class="text-center mb-10">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Your Account</span>
+                <h1 class="text-3xl font-black uppercase tracking-tight">Track Your Order</h1>
+                <p class="text-xs text-bhuraTextGrey uppercase tracking-wider mt-3">BHURA doesn't require an account to shop — enter your order number and either the email or phone number you checked out with to view its status.</p>
+            </div>
+
+            <form id="lookup-form" onsubmit="handleLookup(event)" class="bg-bhuraWhite border border-bhuraLightGrey p-8 space-y-4">
+                <div>
+                    <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey mb-1">Order Number</label>
+                    <input name="order_number" required placeholder="BH-XXXXX" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack uppercase">
+                </div>
+                <div>
+                    <div class="flex gap-4 mb-2">
+                        <button type="button" id="method-email-btn" onclick="setLookupMethod('email')" class="text-[10px] font-mono uppercase tracking-widest pb-1 border-b-2 border-bhuraBlack text-bhuraBlack">Use Email</button>
+                        <button type="button" id="method-phone-btn" onclick="setLookupMethod('phone')" class="text-[10px] font-mono uppercase tracking-widest pb-1 border-b-2 border-transparent text-bhuraTextGrey">Use Phone</button>
+                    </div>
+                    <input id="method-email-input" name="email" type="email" required placeholder="YOUR EMAIL" class="w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                    <input id="method-phone-input" name="phone" type="tel" placeholder="98XXXXXXXX" class="hidden w-full bg-transparent border border-bhuraLightGrey px-4 py-3 text-xs tracking-widest focus:outline-none focus:border-bhuraBlack">
+                </div>
+                <p id="lookup-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider"></p>
+                <button id="lookup-btn" type="submit" class="w-full bg-bhuraBlack text-bhuraWhite py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">
+                    Track Order
+                </button>
+            </form>
+
+            <div id="order-result" class="hidden bg-bhuraWhite border border-bhuraLightGrey p-8 mt-6 space-y-4">
+                <div class="flex justify-between items-start pb-4 border-b border-bhuraLightGrey">
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-wide" id="r-number"></h3>
+                        <p class="text-[11px] text-bhuraTextGrey uppercase mt-1" id="r-date"></p>
+                    </div>
+                    <span id="r-status" class="text-[11px] font-semibold uppercase tracking-widest px-3 py-1 border border-bhuraBlack"></span>
+                </div>
+                <div id="r-items" class="space-y-2 text-xs uppercase tracking-wide"></div>
+                <div class="flex justify-between pt-3 border-t border-bhuraLightGrey text-sm font-bold">
+                    <span>Total</span><span id="r-total"></span>
+                </div>
+                <p class="text-[11px] text-bhuraTextGrey uppercase tracking-wider" id="r-address"></p>
+                <a id="r-receipt" href="#" target="_blank" class="inline-block w-full text-center border border-bhuraBlack text-bhuraBlack py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraLightGrey transition-colors">
+                    Download Receipt PDF
+                </a>
+                <button id="r-cancel-btn" onclick="handleCancelOrder()" class="hidden w-full text-center border border-red-600 text-red-600 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-red-50 transition-colors">
+                    Cancel This Order
+                </button>
+                <p id="r-cancel-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider text-center"></p>
+
+                <button id="r-return-btn" onclick="toggleReturnForm()" class="hidden w-full text-center border border-bhuraBlack text-bhuraBlack py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraLightGrey transition-colors">
+                    Request A Return
+                </button>
+                <form id="return-form" onsubmit="handleReturnRequest(event)" class="hidden space-y-3 border border-bhuraLightGrey p-5">
+                    <label class="block text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey">Reason For Return</label>
+                    <textarea name="reason" required rows="3" placeholder="What's the issue?" class="w-full bg-transparent border border-bhuraLightGrey px-3 py-2 text-xs focus:outline-none focus:border-bhuraBlack"></textarea>
+                    <p id="return-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider"></p>
+                    <button type="submit" class="w-full bg-bhuraBlack text-bhuraWhite py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Submit Return Request</button>
+                </form>
+                <div id="return-status-box" class="hidden border border-bhuraLightGrey p-5 space-y-2">
+                    <p class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey">Return Status</p>
+                    <p id="return-status-text" class="text-sm font-bold uppercase tracking-wide"></p>
+                    <p id="return-status-note" class="hidden text-xs text-bhuraTextGrey"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        const STATUS_LABELS = { pending: 'Pending', confirmed: 'Confirmed', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled' };
+        const CANCELLABLE_STATUSES = ['pending', 'confirmed']; // must match backend's CANCELLABLE_STATUSES
+        let currentOrder = null;
+        let currentCredential = { type: 'email', value: '' };
+
+        function setLookupMethod(method) {
+            const isEmail = method === 'email';
+            document.getElementById('method-email-input').classList.toggle('hidden', !isEmail);
+            document.getElementById('method-phone-input').classList.toggle('hidden', isEmail);
+            document.getElementById('method-email-input').required = isEmail;
+            document.getElementById('method-phone-input').required = !isEmail;
+            document.getElementById('method-email-btn').className = `text-[10px] font-mono uppercase tracking-widest pb-1 border-b-2 ${isEmail ? 'border-bhuraBlack text-bhuraBlack' : 'border-transparent text-bhuraTextGrey'}`;
+            document.getElementById('method-phone-btn').className = `text-[10px] font-mono uppercase tracking-widest pb-1 border-b-2 ${!isEmail ? 'border-bhuraBlack text-bhuraBlack' : 'border-transparent text-bhuraTextGrey'}`;
+        }
+
+        async function handleLookup(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = document.getElementById('lookup-btn');
+            const errorEl = document.getElementById('lookup-error');
+            errorEl.classList.add('hidden');
+            document.getElementById('order-result').classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Looking Up…';
+
+            const orderNumber = form.elements.order_number.value.trim().toUpperCase();
+            const usingEmail = !document.getElementById('method-email-input').classList.contains('hidden');
+            currentCredential = usingEmail
+                ? { type: 'email', value: form.elements.email.value.trim() }
+                : { type: 'phone', value: form.elements.phone.value.trim() };
+            const param = `${currentCredential.type}=${encodeURIComponent(currentCredential.value)}`;
+
+            try {
+                const order = await apiGet(`/api/orders/${encodeURIComponent(orderNumber)}?${param}`);
+                renderOrder(order);
+            } catch (e) {
+                errorEl.textContent = `We couldn't find a matching order — check the order number and ${currentCredential.type}.`;
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Track Order';
+            }
+        }
+
+        function renderOrder(order) {
+            currentOrder = order;
+            document.getElementById('r-number').textContent = `#${order.order_number}`;
+            document.getElementById('r-date').textContent = new Date(order.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('r-status').textContent = STATUS_LABELS[order.status] || order.status;
+            document.getElementById('r-items').innerHTML = order.items.map((i) => `
+                <div class="flex justify-between">
+                    <span class="flex items-center gap-1.5">${i.color_hex ? `<span class="inline-block w-2.5 h-2.5 rounded-full border border-bhuraLightGrey flex-shrink-0" style="background:${i.color_hex}"></span>` : ''}${i.product_title} <span class="text-bhuraTextGrey">(${[i.color, i.size].filter(Boolean).join(' / ') || 'One size'} × ${i.quantity})</span></span>
+                    <span>${formatNPR(i.line_total)}</span>
+                </div>`).join('');
+            document.getElementById('r-total').textContent = formatNPR(order.total);
+            document.getElementById('r-address').textContent = `Shipping to: ${order.address}, ${order.city} ${order.postal_code}`;
+            document.getElementById('r-receipt').href = `/api/orders/${encodeURIComponent(order.order_number)}/receipt.pdf?${currentCredential.type}=${encodeURIComponent(currentCredential.value)}`;
+
+            const cancelBtn = document.getElementById('r-cancel-btn');
+            document.getElementById('r-cancel-error').classList.add('hidden');
+            cancelBtn.classList.toggle('hidden', !CANCELLABLE_STATUSES.includes(order.status));
+            document.getElementById('order-result').classList.remove('hidden');
+
+            checkReturnStatus();
+        }
+
+        const RETURN_STATUS_LABELS = { requested: 'Requested', approved: 'Approved', rejected: 'Rejected', received: 'Received', refunded: 'Refunded' };
+
+        async function checkReturnStatus() {
+            const returnBtn = document.getElementById('r-return-btn');
+            const returnForm = document.getElementById('return-form');
+            const statusBox = document.getElementById('return-status-box');
+            returnBtn.classList.add('hidden');
+            returnForm.classList.add('hidden');
+            statusBox.classList.add('hidden');
+
+            if (currentOrder.status !== 'delivered') return;
+
+            try {
+                const ret = await apiGet(`/api/orders/${encodeURIComponent(currentOrder.order_number)}/returns?${currentCredential.type}=${encodeURIComponent(currentCredential.value)}`);
+                document.getElementById('return-status-text').textContent = RETURN_STATUS_LABELS[ret.status] || ret.status;
+                if (ret.admin_note) {
+                    document.getElementById('return-status-note').textContent = ret.admin_note;
+                    document.getElementById('return-status-note').classList.remove('hidden');
+                }
+                statusBox.classList.remove('hidden');
+            } catch (e) {
+                // No return request exists yet — offer the button instead.
+                returnBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleReturnForm() {
+            document.getElementById('return-form').classList.toggle('hidden');
+        }
+
+        async function handleReturnRequest(event) {
+            event.preventDefault();
+            const form = event.target;
+            const errorEl = document.getElementById('return-error');
+            errorEl.classList.add('hidden');
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Submitting…';
+            try {
+                await apiJSON('POST', `/api/orders/${encodeURIComponent(currentOrder.order_number)}/returns`, {
+                    reason: form.elements.reason.value.trim(),
+                    [currentCredential.type]: currentCredential.value,
+                });
+                await checkReturnStatus();
+                form.reset();
+            } catch (e) {
+                errorEl.textContent = e.message || "Couldn't submit your return request.";
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Submit Return Request';
+            }
+        }
+
+        async function handleCancelOrder() {
+            if (!currentOrder) return;
+            if (!confirm(`Cancel order #${currentOrder.order_number}? This can't be undone.`)) return;
+
+            const btn = document.getElementById('r-cancel-btn');
+            const errorEl = document.getElementById('r-cancel-error');
+            errorEl.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Cancelling…';
+
+            try {
+                const updated = await apiJSON(
+                    'POST',
+                    `/api/orders/${encodeURIComponent(currentOrder.order_number)}/cancel?${currentCredential.type}=${encodeURIComponent(currentCredential.value)}`,
+                );
+                renderOrder(updated);
+            } catch (e) {
+                errorEl.textContent = e.message || "Couldn't cancel this order — please try again.";
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Cancel This Order';
+            }
+        }
+    </script>
+</body>
+</html>

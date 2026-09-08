@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA — Your Shopping Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5', bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777' },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.2em', mega: '0.3em' }
+        } } }
+    </script>
+    <style>::selection { background-color: #111111; color: #FFFFFF; }</style>
+</head>
+<body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
+
+    <header id="site-header" class="fixed top-0 left-0 w-full z-50 bg-bhuraBlack text-bhuraWhite border-b border-white/10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
+            <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
+                <a href="men.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Men</a>
+                <a href="women.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Women</a>
+                <a href="index.html#latest-drop" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">New Arrivals</a>
+                <a href="collections.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Collection</a>
+            <a href="blog.html" class="text-bhuraTextGrey hover:text-bhuraWhite transition-colors">Blog</a>
+            </nav>
+            <div class="flex items-center space-x-6 text-xs font-medium tracking-wider uppercase">
+                <a href="gallery.html" class="hidden sm:block hover:opacity-75 transition-opacity">Gallery</a>
+                <button id="search-trigger" aria-label="Search" class="hidden sm:block hover:opacity-75 transition-opacity">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <a href="track-order.html" class="hidden sm:block hover:opacity-75 transition-opacity">Account</a>
+                <a href="cart.html" class="hover:opacity-75 transition-opacity flex items-center gap-1 text-bhuraWhite font-bold underline underline-offset-4">Cart <span id="cart-counter" class="text-[10px] font-normal">(0)</span></a>
+                <button id="menu-toggle" aria-label="Open Menu" class="lg:hidden flex flex-col justify-between w-6 h-4 focus:outline-none">
+                    <span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span><span class="w-full h-[2px] bg-current"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
+        <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
+            <a href="men.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Men</a>
+            <a href="women.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Women</a>
+            <a href="index.html#latest-drop" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">New Arrivals</a>
+            <a href="collections.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Collection</a>
+        <a href="blog.html" class="mobile-link text-bhuraTextGrey hover:text-bhuraWhite">Blog</a>
+        </nav>
+        <div class="mt-16 pt-8 border-t border-white/10 flex justify-between text-xs tracking-widest text-bhuraTextGrey uppercase">
+            <span>Kathmandu, <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span><span>© 2026 BHURA</span>
+        </div>
+    </div>
+
+    <section class="pt-32 pb-24 bg-bhuraOffWhite text-bhuraBlack min-h-screen">
+        <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12 border-b border-bhuraLightGrey pb-6">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Review Selection</span>
+                    <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tight">Your Cart</h1>
+                </div>
+                <a href="men.html" class="text-xs font-mono uppercase tracking-widest text-bhuraTextGrey underline underline-offset-4 hover:text-bhuraBlack mt-4 sm:mt-0">← Continue Shopping</a>
+            </div>
+
+            <div id="loading-state" class="py-24 text-center text-xs uppercase tracking-widest text-bhuraTextGrey">Loading your cart…</div>
+
+            <div id="cart-layout" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-6">
+                    <div id="cart-items"></div>
+                </div>
+
+                <div id="summary-card" class="lg:col-span-5 bg-bhuraWhite p-8 border border-bhuraLightGrey space-y-6">
+                    <h3 class="text-xs font-bold uppercase tracking-widest pb-4 border-b border-bhuraLightGrey">Order Summary</h3>
+                    <div class="space-y-3 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                        <div class="flex justify-between"><span>Subtotal</span><span id="subtotal-price" class="text-bhuraBlack font-semibold"></span></div>
+                        <div class="flex justify-between"><span>Shipping (Nepal)</span><span class="text-bhuraBlack font-semibold">Free</span></div>
+                        <div class="flex justify-between pt-3 border-t border-bhuraLightGrey text-sm font-bold text-bhuraBlack"><span>Total</span><span id="total-price"></span></div>
+                    </div>
+                    <div class="space-y-3 pt-4">
+                        <button onclick="window.location.href='checkout.html'" class="w-full bg-bhuraBlack text-bhuraWhite py-4 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">
+                            Proceed to Checkout
+                        </button>
+                        <button onclick="checkoutViaWhatsApp()" class="w-full bg-[#25D366] text-white py-4 text-xs font-semibold uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                            <span>Checkout via WhatsApp</span> 💬
+                        </button>
+                    </div>
+                    <p class="text-[10px] font-mono text-bhuraTextGrey text-center uppercase tracking-widest pt-2">Secure transactions • Proudly Made in Nepal <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+                </div>
+            </div>
+
+            <div id="empty-cart-notice" class="hidden py-24 text-center space-y-4">
+                <p class="text-sm uppercase tracking-widest text-bhuraTextGrey">Your cart is currently empty.</p>
+                <a href="men.html" class="inline-block bg-bhuraBlack text-bhuraWhite px-8 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-bhuraTextGrey transition-colors">Explore Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-bhuraBlack text-bhuraWhite border-t border-white/10 pt-16 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-1">
+                    <span class="text-2xl font-black tracking-widest uppercase block mb-3">BHURA</span>
+                    <p class="text-[11px] text-bhuraTextGrey tracking-wider uppercase leading-relaxed">Wear your identity.<br>Independent fashion label from Kathmandu.</p>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Shop</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
+                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
+                        <li><a href="index.html#latest-drop" class="hover:text-bhuraWhite transition-colors">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">About</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="index.html#story" class="hover:text-bhuraWhite transition-colors">Our Story</a></li>
+                        <li><a href="gallery.html" class="hover:text-bhuraWhite transition-colors">Gallery</a></li>
+                        <li><a href="#" data-contact-phone class="hover:text-bhuraWhite transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-bhuraWhite transition-colors">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-semibold tracking-widest uppercase mb-3 text-bhuraLightGrey">Social</h4>
+                    <ul class="space-y-2 text-[11px] tracking-wider uppercase text-bhuraTextGrey">
+                        <li><a href="#" data-social="instagram" class="hover:text-bhuraWhite transition-colors">Instagram</a></li>
+                        <li><a href="#" data-social="tiktok" class="hover:text-bhuraWhite transition-colors">TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-bhuraTextGrey uppercase">
+                <p>© 2026 BHURA. ALL RIGHTS RESERVED.</p><p>PROUDLY MADE IN NEPAL. <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shared.js"></script>
+    <script>
+        let currentCart = null;
+
+        function itemRowHTML(item) {
+            const stockNote = (item.max_stock !== null && item.max_stock <= item.quantity)
+                ? `<p class="text-[10px] text-bhuraTextGrey mt-1">Only ${item.max_stock} left in stock</p>` : '';
+            return `
+            <div class="flex gap-6 pb-6 border-b border-bhuraLightGrey items-center" data-item-id="${item.id}">
+                <a href="product.html?slug=${item.slug}" class="w-24 aspect-[3/4] bg-bhuraLightGrey overflow-hidden flex-shrink-0 block">
+                    <img src="${item.image || ''}" alt="${item.title}" class="w-full h-full object-cover object-center">
+                </a>
+                <div class="flex-1 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <a href="product.html?slug=${item.slug}"><h3 class="text-sm font-bold uppercase tracking-wider hover:opacity-70">${item.title}</h3></a>
+                            <p class="text-[11px] text-bhuraTextGrey uppercase mt-0.5 flex items-center gap-1.5">
+                                ${item.color_hex ? `<span class="inline-block w-2.5 h-2.5 rounded-full border border-bhuraLightGrey flex-shrink-0" style="background:${item.color_hex}"></span>` : ''}
+                                ${[item.color, item.size].filter(Boolean).join(' / ') || 'One size'}
+                            </p>
+                        </div>
+                        <span class="text-sm font-semibold tracking-tight">${formatNPR(item.line_total)}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <div class="flex items-center border border-bhuraLightGrey">
+                            <button onclick="changeQty(${item.id}, ${item.quantity - 1})" class="px-3 py-1 text-xs hover:bg-bhuraLightGrey transition-colors">-</button>
+                            <span class="px-3 text-xs font-medium">${item.quantity}</span>
+                            <button onclick="changeQty(${item.id}, ${item.quantity + 1})" class="px-3 py-1 text-xs hover:bg-bhuraLightGrey transition-colors">+</button>
+                        </div>
+                        <button onclick="deleteItem(${item.id})" class="text-[11px] font-mono uppercase tracking-widest text-bhuraTextGrey hover:text-bhuraBlack underline underline-offset-4">Remove</button>
+                    </div>
+                    ${stockNote}
+                </div>
+            </div>`;
+        }
+
+        function renderCart(cart) {
+            currentCart = cart;
+            document.getElementById('loading-state').classList.add('hidden');
+
+            if (!cart.items.length) {
+                document.getElementById('cart-layout').classList.add('hidden');
+                document.getElementById('empty-cart-notice').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('empty-cart-notice').classList.add('hidden');
+            document.getElementById('cart-layout').classList.remove('hidden');
+            document.getElementById('cart-items').innerHTML = cart.items.map(itemRowHTML).join('');
+            document.getElementById('subtotal-price').textContent = formatNPR(cart.subtotal);
+            document.getElementById('total-price').textContent = formatNPR(cart.total);
+        }
+
+        async function changeQty(itemId, newQty) {
+            try {
+                const cart = newQty < 1 ? await removeCartItem(itemId) : await updateCartItem(itemId, newQty);
+                renderCart(cart);
+                await refreshCartBadge();
+            } catch (e) {
+                showToast(e.message || 'Could not update quantity');
+            }
+        }
+
+        async function deleteItem(itemId) {
+            try {
+                const cart = await removeCartItem(itemId);
+                renderCart(cart);
+                await refreshCartBadge();
+            } catch (e) {
+                showToast('Could not remove item');
+            }
+        }
+
+        async function checkoutViaWhatsApp() {
+            if (!currentCart || !currentCart.items.length) return;
+            const contact = await promptWhatsAppContact();
+            if (!contact) return;
+
+            const cartBeforeOrder = currentCart;
+            let orderNumber = null;
+            try {
+                const order = await createWhatsAppOrder(contact);
+                orderNumber = order.order_number;
+            } catch (e) {
+                showToast(e.message || "Couldn't start this order — please try again.");
+                return;
+            }
+
+            const settings = await apiGet('/api/settings').catch(() => ({ whatsapp_number: '9779768785693' }));
+            await whatsAppOrderFromCart(cartBeforeOrder, settings, orderNumber);
+
+            // The order just consumed the cart server-side — refresh this page's view to match.
+            const freshCart = await getCart();
+            renderCart(freshCart);
+            await refreshCartBadge();
+        }
+
+        async function init() {
+            try {
+                const cart = await getCart();
+                renderCart(cart);
+            } catch (e) {
+                document.getElementById('loading-state').textContent = 'Could not load your cart right now.';
+            }
+        }
+        init();
+    </script>
+</body>
+</html>

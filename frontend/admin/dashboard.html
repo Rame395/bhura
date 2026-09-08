@@ -1,0 +1,2775 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHURA Admin — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: {
+                bhuraBlack: '#111111', bhuraWhite: '#FFFFFF', bhuraOffWhite: '#F7F7F5',
+                bhuraLightGrey: '#EAEAEA', bhuraTextGrey: '#777777',
+                bhuraCard: '#FFFFFF', bhuraBorder: '#EAEAEA',
+            },
+            fontFamily: { sans: ['Helvetica Neue', 'Inter', 'Manrope', 'sans-serif'] },
+            letterSpacing: { widest: '0.15em' }
+        } } }
+    </script>
+    <style>
+        :root {
+            --bg: #F7F7F5; --surface: #FFFFFF; --surface-raised: #FFFFFF;
+            --border: #EAEAEA; --border-strong: #111111;
+            --text: #111111; --text-muted: #777777; --text-faint: #AAAAAA;
+            --danger: #DC2626; --danger-dim: #FEE2E2;
+        }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); }
+
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 11px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); border-left: 2px solid transparent; transition: color .15s ease, border-color .15s ease, background .15s ease; }
+        .sidebar-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+        .sidebar-link.active { color: var(--text); border-left-color: var(--text); background: rgba(255,255,255,0.05); }
+        .sidebar-link .dot { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: currentColor; opacity: .55; }
+        .sidebar-link.active .dot { opacity: 1; }
+
+        table th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); padding: 12px 14px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        table td { padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 12.5px; vertical-align: middle; color: var(--text); }
+        table tbody tr { transition: background .12s ease; }
+        table tbody tr:hover { background: rgba(255,255,255,0.025); }
+        .num { font-variant-numeric: tabular-nums; }
+
+        .field-label { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color: var(--text-muted); margin-bottom:6px; font-weight: 600; }
+        .field-input { width:100%; border:1px solid var(--border); padding:9px 11px; font-size:12.5px; background: var(--surface-raised); color: var(--text); transition: border-color .15s ease; }
+        .field-input:focus { outline:none; border-color: var(--border-strong); }
+        .field-input option { background: var(--surface-raised); color: var(--text); }
+
+        .btn-dark { background: var(--text); color: var(--bg); padding:11px 20px; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; transition: opacity .15s ease; }
+        .btn-dark:hover { opacity: .8; }
+        .btn-dark:disabled { opacity:0.4; cursor:not-allowed; }
+        .btn-outline { border:1px solid var(--border-strong); color: var(--text); padding:11px 20px; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; transition: border-color .15s ease, background .15s ease; }
+        .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: var(--text); }
+        .btn-sm { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; padding:5px 11px; border:1px solid var(--border); color: var(--text-muted); font-weight: 600; transition: border-color .15s ease, color .15s ease; }
+        .btn-sm:hover { border-color: var(--text); color: var(--text); }
+        .btn-danger-sm { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; padding:5px 11px; border:1px solid var(--danger-dim); color: var(--danger); font-weight: 600; transition: border-color .15s ease, background .15s ease; }
+        .btn-danger-sm:hover { border-color: var(--danger); background: rgba(229,72,77,0.08); }
+
+        .panel { background: var(--surface); border: 1px solid var(--border); }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 22px; }
+        .stat-figure { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+
+        .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 9px; }
+        .badge-solid { background: var(--text); color: var(--bg); }
+        .badge-outline { border: 1px solid var(--border-strong); color: var(--text-muted); }
+
+        .status-select { border:1px solid var(--border); padding:6px 8px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; background: var(--surface-raised); color: var(--text); font-weight: 600; border-left-width: 3px; }
+
+        .bar-row { display: flex; align-items: center; gap: 10px; font-size: 11px; }
+        .bar-track { flex: 1; height: 6px; background: var(--border); position: relative; overflow: hidden; }
+        .bar-fill { position: absolute; inset: 0; background: var(--text); }
+
+        @media (max-width: 1023px) {
+            .admin-sidebar { display: none; }
+            .mobile-admin-topbar { display: flex !important; }
+        }
+        .mobile-admin-topbar { display: none; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--surface); }
+        .mobile-nav-overlay { position: fixed; inset: 0; z-index: 60; background: var(--bg); display: none; flex-direction: column; }
+        .mobile-nav-overlay.open { display: flex; }
+    </style>
+</head>
+
+<body class="font-sans antialiased" style="background: var(--bg); color: var(--text);">
+
+    <div id="auth-gate" class="min-h-screen flex items-center justify-center text-xs uppercase tracking-widest" style="color: var(--text-muted);">
+        Checking session…
+    </div>
+
+    <div id="app" class="hidden min-h-screen flex flex-col lg:flex-row">
+
+        <div class="mobile-admin-topbar">
+            <span class="text-base font-black tracking-widest uppercase">BHURA <span class="font-normal text-[10px]" style="color: var(--text-muted);">Admin</span></span>
+            <button onclick="toggleMobileNav(true)" aria-label="Open menu" style="color: var(--text);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <div id="mobile-nav-overlay" class="mobile-nav-overlay">
+            <div class="flex items-center justify-between px-5 py-6" style="border-bottom: 1px solid var(--border);">
+                <span class="text-lg font-black tracking-widest uppercase">BHURA</span>
+                <button onclick="toggleMobileNav(false)" aria-label="Close menu" style="color: var(--text);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <nav class="py-4 flex-1 overflow-y-auto">
+                <button onclick="showTab('products'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Products</button>
+                <button onclick="showTab('orders'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Orders</button>
+                <button onclick="showTab('reviews'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Reviews</button>
+                <button onclick="showTab('returns'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Returns</button>
+                <button onclick="showTab('ledger'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Ledger</button>
+                <button onclick="showTab('hero'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Site Photos</button>
+                <button onclick="showTab('subscribers'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Subscribers</button>
+                <button onclick="showTab('settings'); toggleMobileNav(false);" class="sidebar-link w-full" style="font-size:14px; padding:16px 20px;"><span class="dot"></span>Settings</button>
+            </nav>
+            <div class="px-5 py-5 text-[11px] uppercase tracking-widest" style="border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p class="mb-3">Signed in as <span id="whoami-mobile" style="color: var(--text);"></span></p>
+                <div class="flex flex-col gap-3 items-start">
+                    <a href="../index.html" target="_blank" style="color: var(--text);">View Storefront ↗</a>
+                    <button onclick="logout()" style="color: var(--text);">Sign Out</button>
+                </div>
+            </div>
+        </div>
+
+        <aside class="admin-sidebar w-[240px] flex-shrink-0 flex flex-col justify-between" style="background: var(--surface); border-right: 1px solid var(--border);">
+            <div>
+                <div class="px-5 py-6" style="border-bottom: 1px solid var(--border);">
+                    <span class="text-lg font-black tracking-widest uppercase block">BHURA</span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest" style="color: var(--text-muted);">Admin Console</span>
+                </div>
+                <nav class="py-4">
+                    <button onclick="showTab('products')" id="tab-btn-products" class="sidebar-link active w-full"><span class="dot"></span>Products</button>
+                    <button onclick="showTab('orders')" id="tab-btn-orders" class="sidebar-link w-full"><span class="dot"></span>Orders</button>
+                    <button onclick="showTab('reviews')" id="tab-btn-reviews" class="sidebar-link w-full"><span class="dot"></span>Reviews</button>
+                    <button onclick="showTab('returns')" id="tab-btn-returns" class="sidebar-link w-full"><span class="dot"></span>Returns</button>
+                    <button onclick="showTab('ledger')" id="tab-btn-ledger" class="sidebar-link w-full"><span class="dot"></span>Ledger</button>
+                    <button onclick="showTab('hero')" id="tab-btn-hero" class="sidebar-link w-full"><span class="dot"></span>Site Photos</button>
+                    <button onclick="showTab('subscribers')" id="tab-btn-subscribers" class="sidebar-link w-full"><span class="dot"></span>Subscribers</button>
+                    <button onclick="showTab('settings')" id="tab-btn-settings" class="sidebar-link w-full"><span class="dot"></span>Settings</button>
+                </nav>
+            </div>
+            <div class="px-5 py-5 text-[11px] uppercase tracking-widest" style="border-top: 1px solid var(--border); color: var(--text-muted);">
+                <p class="mb-3">Signed in as <span id="whoami" style="color: var(--text);"></span></p>
+                <div class="flex flex-col gap-2 items-start">
+                    <a href="../index.html" target="_blank" class="hover:opacity-75" style="color: var(--text);">View Storefront ↗</a>
+                    <button onclick="logout()" class="hover:opacity-75" style="color: var(--text);">Sign Out</button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 min-w-0">
+            <main class="max-w-[1200px] mx-auto px-6 lg:px-10 py-10">
+
+                <!-- ======================= PRODUCTS TAB ======================= -->
+
+                <section id="tab-products">
+
+                    <div id="products-list-view">
+
+                        <div class="flex justify-between items-center mb-8">
+                            <div>
+                                <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Catalog</span>
+                                <h1 class="text-2xl font-black uppercase tracking-tight">Products</h1>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-outline" onclick="toggleCategoryManager()">Manage Genders</button>
+                                <button class="btn-outline" onclick="toggleDepartmentManager()">Manage Category</button>
+                                <button class="btn-dark" onclick="openCreateProduct()">+ Add Product</button>
+                            </div>
+                        </div>
+
+                        <div id="category-manager" class="hidden bg-bhuraCard border border-bhuraBorder p-6 mb-6">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Genders / Audiences</h3>
+                            <div id="category-chips" class="flex flex-wrap gap-2 mb-4"></div>
+                            <form onsubmit="addCategory(event)" class="flex gap-2 items-end">
+                                <div><label class="field-label">Slug</label><input name="slug" placeholder="unisex" required class="field-input w-32"></div>
+                                <div><label class="field-label">Display Name</label><input name="name" placeholder="Unisex" required class="field-input w-40"></div>
+                                <button type="submit" class="btn-sm h-[38px] px-4">Add</button>
+                            </form>
+                        </div>
+
+                        <div id="department-manager" class="hidden bg-bhuraCard border border-bhuraBorder p-6 mb-6">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Categories</h3>
+                            <div id="department-chips" class="flex flex-wrap gap-2 mb-4"></div>
+                            <form onsubmit="addDepartment(event)" class="flex gap-2 items-end">
+                                <div><label class="field-label">Slug</label><input name="slug" placeholder="home-goods" required class="field-input w-32"></div>
+                                <div><label class="field-label">Display Name</label><input name="name" placeholder="Home Goods" required class="field-input w-40"></div>
+                                <button type="submit" class="btn-sm h-[38px] px-4">Add</button>
+                            </form>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <input id="filter-search" type="text" placeholder="Search title…" oninput="applyProductFilters()" class="field-input w-48">
+                            <select id="filter-gender" onchange="applyProductFilters()" class="field-input w-32">
+                                <option value="">All Genders</option>
+                            </select>
+                            <select id="filter-department" onchange="applyProductFilters()" class="field-input w-36">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="filter-status" onchange="applyProductFilters()" class="field-input w-32">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="hidden">Hidden</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th></th><th>Title</th><th>Gender</th><th>Category</th><th>Sub</th>
+                                        <th>Price</th><th>Stock</th><th>Status</th><th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div id="product-create-view" class="hidden max-w-xl">
+                        <button onclick="backToProductList()" class="text-[11px] uppercase tracking-widest text-bhuraTextGrey hover:text-bhuraWhite mb-5">← Back to products</button>
+                        <h1 class="text-2xl font-black uppercase tracking-tight mb-6">Add Product</h1>
+
+                        <form id="create-form" onsubmit="submitCreateProduct(event)" class="space-y-5 bg-bhuraCard border border-bhuraBorder p-7">
+                            <div>
+                                <label class="field-label">Title</label>
+                                <input name="title" required class="field-input">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="field-label">Gender</label>
+                                    <select name="category_slug" class="field-input">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="field-label">Category</label>
+                                    <select name="department" class="field-input" onchange="renderCreateSizes()">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="field-label">Subcategory</label>
+                                    <input name="subcategory" placeholder="Outerwear, Sneakers…" class="field-input">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="field-label">Price (NPR)</label>
+                                    <input name="price" type="number" min="0" required class="field-input">
+                                </div>
+                                <div>
+                                    <label class="field-label">Compare-At Price <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                    <input name="compare_at_price" type="number" min="0" class="field-input">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="field-label">Description</label>
+                                <textarea name="description" rows="3" class="field-input"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="field-label">Material</label>
+                                <input name="material" class="field-input">
+                            </div>
+
+                            <div>
+                                <label class="field-label">Collection Tag <span class="normal-case text-bhuraTextGrey">(optional, e.g. drop-01-monolith)</span></label>
+                                <input name="collection_tag" class="field-input">
+                            </div>
+
+                            <div>
+                                <label class="field-label">Colors <span class="normal-case text-bhuraTextGrey">(comma separated)</span></label>
+                                <input name="colors" placeholder="Pitch Black, Off-White" class="field-input">
+                            </div>
+
+                            <div>
+                                <label class="field-label">Sizes</label>
+                                <div id="create-sizes" class="flex gap-4 mt-1"></div>
+                            </div>
+
+                            <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                <input type="checkbox" name="is_new_arrival" class="accent-white">
+                                Mark as New Arrival
+                            </label>
+
+                            <div class="pt-2">
+                                <button type="submit" class="btn-dark w-full">Create Product</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div id="product-edit-view" class="hidden max-w-3xl">
+                        <button onclick="backToProductList()" class="text-[11px] uppercase tracking-widest text-bhuraTextGrey hover:text-bhuraWhite mb-5">← Back to products</button>
+                        <h1 class="text-2xl font-black uppercase tracking-tight mb-6">Edit Product</h1>
+
+                        <form id="edit-form" onsubmit="submitEditProduct(event)" class="space-y-5 bg-bhuraCard border border-bhuraBorder p-7 mb-8">
+                            <div>
+                                <label class="field-label">Title</label>
+                                <input name="title" required class="field-input">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="field-label">Gender</label>
+                                    <select name="category_slug" class="field-input">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="field-label">Category</label>
+                                    <select name="department" class="field-input" onchange="renderVariantSizeCheckboxes(this.value)">
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="field-label">Subcategory</label>
+                                    <input name="subcategory" class="field-input">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="field-label">Price (NPR)</label>
+                                    <input name="price" type="number" min="0" required class="field-input">
+                                </div>
+                                <div>
+                                    <label class="field-label">Compare-At Price <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                    <input name="compare_at_price" type="number" min="0" class="field-input">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="field-label">Description</label>
+                                <textarea name="description" rows="3" class="field-input"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="field-label">Material</label>
+                                <input name="material" class="field-input">
+                            </div>
+
+                            <div>
+                                <label class="field-label">Collection Tag</label>
+                                <input name="collection_tag" class="field-input">
+                            </div>
+
+                            <div class="flex gap-6">
+                                <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                    <input type="checkbox" name="is_new_arrival" class="accent-white">
+                                    New Arrival
+                                </label>
+                                <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                    <input type="checkbox" name="is_active" class="accent-white">
+                                    Active (visible in store)
+                                </label>
+                            </div>
+
+                            <div class="pt-2 flex gap-3">
+                                <button type="submit" class="btn-dark">Save Changes</button>
+                                <button type="button" onclick="deleteCurrentProduct()" class="btn-outline">Delete Product</button>
+                            </div>
+                        </form>
+
+                        <div class="bg-bhuraCard border border-bhuraBorder p-7 mb-8">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Images</h3>
+                            <div id="edit-images" class="flex flex-wrap gap-3 mb-4"></div>
+                            <div class="flex gap-2 items-end">
+                                <div>
+                                    <label class="field-label">Tag this photo to a color <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                    <select id="image-color-select" class="field-input w-40"></select>
+                                </div>
+                                <label class="btn-outline inline-block cursor-pointer h-[38px] flex items-center">
+                                    Upload Image
+                                    <input type="file" accept="image/*" class="hidden" onchange="uploadEditImage(event)">
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bg-bhuraCard border border-bhuraBorder p-7 mb-8">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Colors</h3>
+                            <div id="edit-colors" class="flex flex-wrap gap-2 mb-4"></div>
+                            <form onsubmit="addColor(event)" class="flex gap-2 items-end">
+                                <div><label class="field-label">Name</label><input name="color_name" required placeholder="Pitch Black" class="field-input w-40"></div>
+                                <div><label class="field-label">Swatch</label><input name="hex_code" type="color" value="#111111" class="field-input p-1 h-[38px] w-16 cursor-pointer"></div>
+                                <button type="submit" class="btn-sm h-[38px] px-4">Add Color</button>
+                            </form>
+                        </div>
+
+                        <div class="bg-bhuraCard border border-bhuraBorder p-7">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Variants (Size / Color / Stock)</h3>
+                            <table class="w-full mb-4">
+                                <thead><tr><th>Size</th><th>Color</th><th>Stock</th><th></th></tr></thead>
+                                <tbody id="edit-variants-body"></tbody>
+                            </table>
+                            <form onsubmit="addVariantsBulk(event)" class="space-y-3">
+                                <div class="flex gap-4 items-end flex-wrap">
+                                    <div><label class="field-label">Color</label><select id="variant-color-select" name="color_name" class="field-input w-40"></select></div>
+                                    <div><label class="field-label">Stock (applies to every size checked below)</label><input name="stock_qty" type="number" min="0" value="10" class="field-input w-32"></div>
+                                </div>
+                                <div>
+                                    <label class="field-label">Sizes <span class="normal-case text-bhuraTextGrey">(check as many as apply — no need to add one at a time)</span></label>
+                                    <div id="variant-size-checkboxes" class="flex flex-wrap gap-3 mt-1"></div>
+                                </div>
+                                <button type="submit" class="btn-sm h-[38px] px-4">Add Selected Sizes</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <!-- ======================= ORDERS TAB ======================= -->
+
+                <section id="tab-orders" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Fulfillment</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Orders</h1>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 mb-6">
+                        <input id="filter-order-search" type="text" placeholder="Search order # or name…" oninput="applyOrderFilters()" class="field-input w-56">
+                        <select id="filter-order-status" onchange="applyOrderFilters()" class="field-input w-36">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <select id="filter-order-payment" onchange="applyOrderFilters()" class="field-input w-40">
+                            <option value="">All Payment Methods</option>
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="mobile_banking">Mobile Banking</option>
+                            <option value="whatsapp">WhatsApp</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto mb-8">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th><th>Customer</th><th>Items</th><th>Total</th>
+                                    <th>Payment</th><th>Status</th><th>Date</th><th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="order-detail-panel" class="hidden bg-bhuraCard border border-bhuraBorder p-7 max-w-2xl"></div>
+
+                </section>
+
+
+                <!-- ======================= LEDGER TAB ======================= -->
+
+                <!-- ======================= REVIEWS TAB ======================= -->
+
+
+                <section id="tab-reviews" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Feedback</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Reviews</h1>
+                    </div>
+
+                    <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th>Product</th><th>Rating</th><th>Customer</th><th>Comment</th>
+                                    <th>Date</th><th>Status</th><th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviews-table-body"></tbody>
+                        </table>
+                    </div>
+
+                </section>
+
+
+                <!-- ======================= RETURNS TAB ======================= -->
+
+                <section id="tab-returns" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Post-Sale</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Returns</h1>
+                        <p class="text-xs text-bhuraTextGrey mt-2">Updating a status here emails the customer automatically.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-end gap-3 mb-6">
+                        <div><label class="field-label">From</label><input id="filter-return-start" type="date" onchange="applyReturnFilters()" class="field-input"></div>
+                        <div><label class="field-label">To</label><input id="filter-return-end" type="date" onchange="applyReturnFilters()" class="field-input"></div>
+                        <button class="btn-outline" style="padding:9px 16px;" onclick="document.getElementById('filter-return-start').value=''; document.getElementById('filter-return-end').value=''; applyReturnFilters();">Clear</button>
+                    </div>
+
+                    <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th><th>Reason</th><th>Status</th><th>Note</th><th>Requested</th><th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="returns-table-body"></tbody>
+                        </table>
+                    </div>
+
+                </section>
+
+
+                <section id="tab-ledger" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Bookkeeping</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Ledger</h1>
+                    </div>
+
+                    <div class="flex flex-wrap items-end gap-3 mb-8">
+                        <button class="btn-sm" onclick="setLedgerPreset('this_month')">This Month</button>
+                        <button class="btn-sm" onclick="setLedgerPreset('last_month')">Last Month</button>
+                        <button class="btn-sm" onclick="setLedgerPreset('all_time')">All Time</button>
+                        <div class="flex items-end gap-2 ml-2">
+                            <div><label class="field-label">From</label><input id="ledger-start" type="date" class="field-input"></div>
+                            <div><label class="field-label">To</label><input id="ledger-end" type="date" class="field-input"></div>
+                            <button class="btn-outline" style="padding:9px 16px;" onclick="loadLedger()">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        <div class="stat-card">
+                            <p class="field-label mb-2">Income</p>
+                            <p id="ledger-income" class="stat-figure num">—</p>
+                            <p id="ledger-order-count" class="text-[11px] text-bhuraTextGrey uppercase mt-1"></p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="field-label mb-2">Expenses</p>
+                            <p id="ledger-expenses" class="stat-figure num">—</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="field-label mb-2">Net</p>
+                            <p id="ledger-net" class="stat-figure num">—</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card mb-10">
+                        <p class="field-label mb-4">Expenses By Category</p>
+                        <div id="ledger-by-category" class="space-y-3"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-1">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Log an Expense</h3>
+                            <form id="expense-form" onsubmit="submitExpense(event)" class="space-y-4 bg-bhuraCard border border-bhuraBorder p-6">
+                                <div>
+                                    <label class="field-label">Category</label>
+                                    <select name="category" class="field-input">
+                                        <option>Rent</option><option>Wages</option><option>Inventory</option>
+                                        <option>Packaging & Shipping</option><option>Marketing</option>
+                                        <option>Utilities</option><option>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="field-label">Amount (NPR)</label>
+                                    <input name="amount" type="number" min="0" required class="field-input">
+                                </div>
+                                <div>
+                                    <label class="field-label">Date</label>
+                                    <input name="expense_date" type="date" required class="field-input">
+                                </div>
+                                <div>
+                                    <label class="field-label">Note</label>
+                                    <input name="note" placeholder="What was this for?" class="field-input">
+                                </div>
+                                <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                    <input type="checkbox" name="is_recurring" class="accent-white">
+                                    Recurring (label only, for your own reference)
+                                </label>
+                                <button type="submit" class="btn-dark w-full">Add Expense</button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Expenses in Range</h3>
+                            <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto">
+                                <table class="w-full">
+                                    <thead><tr><th>Date</th><th>Category</th><th>Note</th><th>Amount</th><th></th></tr></thead>
+                                    <tbody id="expenses-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <!-- ======================= SITE PHOTOS TAB ======================= -->
+
+                <section id="tab-hero" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Storefront</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Site Photos</h1>
+                        <p class="text-xs text-bhuraTextGrey mt-2 max-w-lg">Every non-product photo on the site — hero banners, editorial sections, category tiles, and the Instagram/gallery grids. Pick a spot below to change its photo or text, any time.</p>
+                    </div>
+
+                    <div class="max-w-md mb-8">
+                        <label class="field-label">Choose A Spot To Manage</label>
+                        <select id="site-image-slot-picker" onchange="loadSiteImageSlot(this.value)" class="field-input"></select>
+                    </div>
+
+                    <div id="site-image-current" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10"></div>
+
+                    <div class="max-w-md">
+                        <h3 id="site-image-form-title" class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Add A Photo</h3>
+                        <form id="site-image-form" onsubmit="submitSiteImage(event)" class="space-y-4 bg-bhuraCard border border-bhuraBorder p-6">
+                            <div>
+                                <label class="field-label">Image</label>
+                                <input name="file" type="file" accept="image/*" required class="field-input">
+                            </div>
+                            <div id="gallery-category-field" class="hidden">
+                                <label class="field-label">Category <span class="normal-case text-bhuraTextGrey">(so this photo shows up under the right filter on the Gallery page)</span></label>
+                                <select name="tag" class="field-input">
+                                    <option value="studio">Studio Product Shoot</option>
+                                    <option value="editorial">Urban Editorial</option>
+                                    <option value="details">Fabric & Craft</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">Heading <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                <input name="heading" placeholder="e.g. Monsoon Drop" class="field-input">
+                            </div>
+                            <div>
+                                <label class="field-label">Subheading / Body Text <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                <input name="subheading" placeholder="e.g. Limited pieces, while it lasts" class="field-input">
+                            </div>
+                            <div>
+                                <label class="field-label">Links To <span class="normal-case text-bhuraTextGrey">(optional, e.g. men.html)</span></label>
+                                <input name="link_url" placeholder="men.html" class="field-input">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="field-label">Width (px) <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                    <input name="width" type="number" min="1" placeholder="Auto-detected" class="field-input">
+                                </div>
+                                <div>
+                                    <label class="field-label">Height (px) <span class="normal-case text-bhuraTextGrey">(optional)</span></label>
+                                    <input name="height" type="number" min="1" placeholder="Auto-detected" class="field-input">
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-bhuraTextGrey normal-case">Leave dimensions blank to use the photo's real size automatically — only set these if you want the page to display it at a specific size.</p>
+                            <button type="submit" class="btn-dark w-full">Upload</button>
+                        </form>
+                    </div>
+
+                </section>
+
+
+                <!-- ======================= SUBSCRIBERS TAB ======================= -->
+
+                <section id="tab-subscribers" class="hidden">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Marketing</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Subscribers</h1>
+                        <p class="text-xs text-bhuraTextGrey mt-2">Everyone who signed up on the homepage. Select any number below and send them an offer.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-end gap-3 mb-6">
+                        <div><label class="field-label">From</label><input id="filter-sub-start" type="date" onchange="loadSubscribers()" class="field-input"></div>
+                        <div><label class="field-label">To</label><input id="filter-sub-end" type="date" onchange="loadSubscribers()" class="field-input"></div>
+                        <div>
+                            <label class="field-label">Category</label>
+                            <select id="filter-sub-category" onchange="loadSubscribers()" class="field-input w-40">
+                                <option value="">All Categories</option>
+                                <option value="men">Men</option>
+                                <option value="women">Women</option>
+                                <option value="other">Other</option>
+                                <option value="all">All (chose no preference)</option>
+                            </select>
+                        </div>
+                        <button class="btn-outline" style="padding:9px 16px;" onclick="document.getElementById('filter-sub-start').value=''; document.getElementById('filter-sub-end').value=''; document.getElementById('filter-sub-category').value=''; loadSubscribers();">Clear</button>
+                    </div>
+
+                    <div class="bg-bhuraCard border border-bhuraBorder overflow-x-auto mb-8">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="sub-select-all" onchange="toggleAllSubscribers(this.checked)"></th>
+                                    <th>Email</th><th>Category</th><th>Subscribed</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subscribers-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="max-w-lg bg-bhuraCard border border-bhuraBorder p-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-1 text-bhuraTextGrey">Send An Offer</h3>
+                        <p id="sub-selected-count" class="text-xs text-bhuraTextGrey mb-4">0 subscribers selected</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="field-label">Subject</label>
+                                <input id="offer-subject" placeholder="e.g. This Weekend Only — 20% Off" class="field-input">
+                            </div>
+                            <div>
+                                <label class="field-label">Message</label>
+                                <textarea id="offer-message" rows="5" placeholder="Write your offer here..." class="field-input"></textarea>
+                            </div>
+                            <button onclick="handleSendOffer()" class="btn-dark w-full">Send To Selected</button>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <section id="tab-settings" class="hidden max-w-lg">
+
+                    <div class="mb-8">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-bhuraTextGrey block mb-1">Configuration</span>
+                        <h1 class="text-2xl font-black uppercase tracking-tight">Settings</h1>
+                    </div>
+
+                    <form id="settings-form" onsubmit="saveSettings(event)" class="space-y-5 bg-bhuraCard border border-bhuraBorder p-7 mb-8">
+                        <div>
+                            <label class="field-label">WhatsApp Order Number</label>
+                            <input name="whatsapp_number" class="field-input" placeholder="9779768785693">
+                        </div>
+                        <div>
+                            <label class="field-label">Merchant Name</label>
+                            <input name="merchant_name" class="field-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Merchant Number</label>
+                            <input name="merchant_number" class="field-input">
+                        </div>
+                        <div>
+                            <label class="field-label">Public Contact Phone <span class="normal-case text-bhuraTextGrey">(shown in footer)</span></label>
+                            <input name="contact_phone" class="field-input" placeholder="9779768785693">
+                        </div>
+                        <div>
+                            <label class="field-label">Instagram URL</label>
+                            <input name="instagram_url" class="field-input" placeholder="https://instagram.com/yourhandle">
+                        </div>
+                        <div>
+                            <label class="field-label">TikTok URL</label>
+                            <input name="tiktok_url" class="field-input" placeholder="https://tiktok.com/@yourhandle">
+                        </div>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                <input type="checkbox" name="cod_enabled" class="accent-white">
+                                Cash on Delivery
+                            </label>
+                            <label class="flex items-center gap-2 text-xs uppercase tracking-wider text-bhuraTextGrey">
+                                <input type="checkbox" name="mobile_banking_enabled" class="accent-white">
+                                Mobile Banking
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-dark">Save Settings</button>
+                    </form>
+
+                    <div class="bg-bhuraCard border border-bhuraBorder p-7">
+                        <h3 class="text-xs font-bold uppercase tracking-widest mb-4 text-bhuraTextGrey">Fonepay / eSewa Payment QR</h3>
+                        <div id="qr-preview" class="mb-4"></div>
+                        <label class="btn-outline inline-block cursor-pointer">
+                            Upload QR Code
+                            <input type="file" accept="image/*" class="hidden" onchange="uploadQr(event)">
+                        </label>
+                    </div>
+
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+
+    <script>
+
+        const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+        const SHOE_SIZES = ['6', '7', '8', '9', '10', '11', '12', '13'];
+
+        function isDefaultDepartment(department) {
+            return departmentsCache.some((d) => d.name === department && d.is_default) || ['Clothing', 'Shoes', 'Accessories', 'Sports'].includes(department);
+        }
+
+        function sizesForDepartment(department) {
+            return department === 'Shoes' ? SHOE_SIZES : SIZES;
+        }
+
+        function renderCreateSizes() {
+            const department = document.getElementById('create-form').elements.department.value;
+            const container = document.getElementById('create-sizes');
+            if (isDefaultDepartment(department)) {
+                container.innerHTML = sizesForDepartment(department).map((s) => `
+                    <label class="flex items-center gap-1 text-xs uppercase">
+                        <input type="checkbox" name="size_${s}" value="${s}" class="accent-white" checked>${s}
+                    </label>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <input name="custom_sizes" placeholder="e.g. One Size — or a comma-separated list, or leave blank for no sizing" class="field-input w-full">
+                `;
+            }
+        }
+
+        let currentProductId = null;
+        let currentSettings = null;
+
+
+        async function api(method, path, body) {
+
+            const opts = {
+                method,
+                credentials: 'same-origin'
+            };
+
+            if (body !== undefined) {
+
+                opts.headers = {
+                    'Content-Type': 'application/json'
+                };
+
+                opts.body = JSON.stringify(body);
+            }
+
+            const res = await fetch(path, opts);
+
+            if (res.status === 401) {
+                window.location.href = 'login.html';
+                throw new Error('Not authenticated');
+            }
+
+            if (!res.ok) {
+
+                const d = await res.json().catch(() => ({}));
+
+                throw new Error(
+                    d.detail || `${method} ${path} failed`
+                );
+            }
+
+            return res.status === 204 ? null : res.json();
+        }
+
+
+        function formatNPR(n) {
+            return `NPR ${Number(n).toLocaleString('en-IN')}`;
+        }
+
+
+        function statusColor(status) {
+            const map = {
+                pending: '#D4D4D4', confirmed: '#999999', shipped: '#525252',
+                delivered: '#111111', cancelled: '#DC2626',
+                requested: '#D4D4D4', approved: '#999999', received: '#525252',
+                refunded: '#111111', rejected: '#DC2626',
+            };
+            return map[status] || '#D4D4D4';
+        }
+
+        // Cancelled/rejected need to be unmistakable at a glance, not just a thin
+        // border accent — every other status stays the default text color since the
+        // lighter progression shades (e.g. pending's light grey) read poorly as text.
+        function statusTextColor(status) {
+            return (status === 'cancelled' || status === 'rejected') ? '#DC2626' : '';
+        }
+
+
+        async function logout() {
+
+            await fetch('/api/admin/logout', {
+                method: 'POST',
+                credentials: 'same-origin'
+            });
+
+            window.location.href = 'login.html';
+        }
+
+
+        function toggleMobileNav(open) {
+            document.getElementById('mobile-nav-overlay').classList.toggle('open', open);
+        }
+
+        function showTab(name) {
+
+            ['products', 'orders', 'reviews', 'returns', 'ledger', 'hero', 'subscribers', 'settings'].forEach((t) => {
+
+                document
+                    .getElementById(`tab-${t}`)
+                    .classList
+                    .toggle('hidden', t !== name);
+
+                document
+                    .getElementById(`tab-btn-${t}`)
+                    .className =
+                    `sidebar-link w-full${t === name ? ' active' : ''}`;
+            });
+
+            if (name === 'orders') loadOrders();
+
+            if (name === 'ledger') loadLedger();
+
+            if (name === 'hero') loadHeroImages();
+
+            if (name === 'subscribers') loadSubscribers();
+
+            if (name === 'reviews') loadAllReviews();
+
+            if (name === 'returns') loadAllReturns();
+
+            if (name === 'settings') loadSettings();
+        }
+
+
+        /* ---------------- Products ---------------- */
+
+
+        function showProductView(view) {
+
+            const viewIds = {
+                list: 'products-list-view',
+                create: 'product-create-view',
+                edit: 'product-edit-view'
+            };
+
+            ['list', 'create', 'edit'].forEach((v) => {
+
+                const element = document.getElementById(viewIds[v]);
+
+                if (element) {
+                    element.classList.toggle('hidden', v !== view);
+                }
+
+            });
+        }
+
+
+        function backToProductList() {
+            showProductView('list');
+            loadProducts();
+        }
+
+
+        let allProductsCache = [];
+        let allOrdersCache = [];
+
+        async function loadProducts() {
+            allProductsCache = await api('GET', '/api/admin/products');
+            await loadCategoriesForFilters();
+            await loadDepartmentsForFilters();
+            renderProductsTable(allProductsCache);
+        }
+
+        function renderProductsTable(products) {
+            document.getElementById('products-table-body').innerHTML =
+
+                products.map((p) => `
+
+                    <tr>
+
+                        <td>
+                            <div class="w-10 h-12 bg-bhuraLightGrey overflow-hidden">
+                                ${
+                                    p.image
+                                    ?
+                                    `<img src="${p.image}" class="w-full h-full object-cover">`
+                                    :
+                                    ''
+                                }
+                            </div>
+                        </td>
+
+                        <td class="font-medium">
+                            ${p.title}
+                        </td>
+
+                        <td class="capitalize">
+                            ${p.category_slug}
+                        </td>
+
+                        <td>
+                            ${p.department || '—'}
+                        </td>
+
+                        <td>
+                            ${p.subcategory || '—'}
+                        </td>
+
+                        <td class="num text-right">
+                            ${p.compare_at_price ? `<span class="line-through text-bhuraTextGrey mr-1">${formatNPR(p.compare_at_price)}</span>` : ''}${formatNPR(p.price)}
+                        </td>
+
+                        <td class="num text-right">
+                            ${p.total_stock}
+                        </td>
+
+                        <td>
+                            ${
+                                p.is_active
+                                ?
+                                '<span class="badge badge-solid">Active</span>'
+                                :
+                                '<span class="badge badge-outline">Hidden</span>'
+                            }
+                        </td>
+
+                        <td>
+                            <button
+                                class="btn-sm"
+                                onclick="openEditProduct(${p.id})">
+                                Edit
+                            </button>
+                        </td>
+
+                    </tr>
+
+                `).join('')
+
+                ||
+
+                `
+                <tr>
+                    <td colspan="9"
+                        class="text-center text-bhuraTextGrey py-10">
+                        ${allProductsCache.length === 0 ? 'No products yet — click "+ Add Product" above to create your first one.' : 'No products match these filters.'}
+                    </td>
+                </tr>
+                `;
+        }
+
+        function applyProductFilters() {
+            const search = document.getElementById('filter-search').value.trim().toLowerCase();
+            const gender = document.getElementById('filter-gender').value;
+            const department = document.getElementById('filter-department').value;
+            const status = document.getElementById('filter-status').value;
+
+            const filtered = allProductsCache.filter((p) => {
+                if (search && !p.title.toLowerCase().includes(search)) return false;
+                if (gender && p.category_slug !== gender) return false;
+                if (department && p.department !== department) return false;
+                if (status === 'active' && !p.is_active) return false;
+                if (status === 'hidden' && p.is_active) return false;
+                return true;
+            });
+            renderProductsTable(filtered);
+        }
+
+        /* ---------------- Gender / Audience categories ---------------- */
+
+        function toggleCategoryManager() {
+            document.getElementById('category-manager').classList.toggle('hidden');
+        }
+
+        function toggleDepartmentManager() {
+            document.getElementById('department-manager').classList.toggle('hidden');
+        }
+
+        async function loadCategoriesForFilters() {
+            let cats = [];
+            try {
+                cats = await api('GET', '/api/admin/categories');
+            } catch (e) {
+                return;
+            }
+            document.getElementById('category-chips').innerHTML = cats.map((c) => `
+                <span class="inline-flex items-center gap-2 border border-bhuraBorder pl-3 pr-1 py-1">
+                    <span class="text-xs">${c.name} <span class="text-bhuraTextGrey">(${c.count})</span></span>
+                    <button onclick="deleteCategoryAdmin('${c.slug}')" class="text-bhuraTextGrey hover:text-white text-[10px] px-1.5">✕</button>
+                </span>
+            `).join('') || '<p class="text-xs text-bhuraTextGrey">No genders yet.</p>';
+
+            const genderSelect = document.getElementById('filter-gender');
+            const currentValue = genderSelect.value;
+            genderSelect.innerHTML = '<option value="">All Genders</option>' +
+                cats.map((c) => `<option value="${c.slug}">${c.name}</option>`).join('');
+            genderSelect.value = currentValue;
+
+            // Same category list feeds the actual Create/Edit product forms — without
+            // this, a newly-added gender/audience would show in the filter but never
+            // be selectable when creating or editing a product.
+            const genderOptionsHtml = cats.map((c) => `<option value="${c.slug}">${c.name}</option>`).join('');
+            ['create-form', 'edit-form'].forEach((formId) => {
+                const select = document.querySelector(`#${formId} select[name="category_slug"]`);
+                if (!select) return;
+                const selected = select.value;
+                select.innerHTML = genderOptionsHtml;
+                if (cats.some((c) => c.slug === selected)) select.value = selected;
+            });
+        }
+
+        async function addCategory(event) {
+            event.preventDefault();
+            const f = event.target;
+            try {
+                await api('POST', '/api/admin/categories', {
+                    slug: f.elements.slug.value.trim(),
+                    name: f.elements.name.value.trim(),
+                });
+                f.reset();
+                await loadCategoriesForFilters();
+            } catch (e) {
+                alert(e.message || 'Could not add this gender/audience.');
+            }
+        }
+
+        async function deleteCategoryAdmin(slug) {
+            if (!confirm(`Remove this gender/audience? Products using it must be reassigned first.`)) return;
+            try {
+                await api('DELETE', `/api/admin/categories/${slug}`);
+                await loadCategoriesForFilters();
+            } catch (e) {
+                alert(e.message || 'Could not remove this gender/audience.');
+            }
+        }
+
+        /* ---------------- Product Category (Department) ---------------- */
+
+        let departmentsCache = [];
+
+        async function loadDepartmentsForFilters() {
+            let depts = [];
+            try {
+                depts = await api('GET', '/api/admin/departments');
+                departmentsCache = depts;
+            } catch (e) {
+                return;
+            }
+            const chipsEl = document.getElementById('department-chips');
+            if (chipsEl) {
+                chipsEl.innerHTML = depts.map((d) => `
+                    <span class="inline-flex items-center gap-2 border border-bhuraBorder pl-3 pr-1 py-1">
+                        <span class="text-xs">${d.name} <span class="text-bhuraTextGrey">(${d.count})</span></span>
+                        <button onclick="deleteDepartmentAdmin('${d.slug}')" class="text-bhuraTextGrey hover:text-white text-[10px] px-1.5">✕</button>
+                    </span>
+                `).join('') || '<p class="text-xs text-bhuraTextGrey">No categories yet.</p>';
+            }
+
+            const deptSelect = document.getElementById('filter-department');
+            const currentValue = deptSelect.value;
+            deptSelect.innerHTML = '<option value="">All Categories</option>' +
+                depts.map((d) => `<option value="${d.name}">${d.name}</option>`).join('');
+            deptSelect.value = currentValue;
+
+            // Same list feeds the Create/Edit product forms' Category dropdown —
+            // without this, a newly-added category shows in the filter but is never
+            // actually selectable when creating or editing a product.
+            const deptOptionsHtml = depts.map((d) => `<option value="${d.name}">${d.name}</option>`).join('');
+            ['create-form', 'edit-form'].forEach((formId) => {
+                const select = document.querySelector(`#${formId} select[name="department"]`);
+                if (!select) return;
+                const selected = select.value;
+                select.innerHTML = deptOptionsHtml;
+                if (depts.some((d) => d.name === selected)) select.value = selected;
+            });
+        }
+
+        async function addDepartment(event) {
+            event.preventDefault();
+            const f = event.target;
+            try {
+                await api('POST', '/api/admin/departments', {
+                    slug: f.elements.slug.value.trim(),
+                    name: f.elements.name.value.trim(),
+                });
+                f.reset();
+                await loadDepartmentsForFilters();
+            } catch (e) {
+                alert(e.message || 'Could not add this category.');
+            }
+        }
+
+        async function deleteDepartmentAdmin(slug) {
+            if (!confirm(`Remove this category? Products using it must be reassigned first.`)) return;
+            try {
+                await api('DELETE', `/api/admin/departments/${slug}`);
+                await loadDepartmentsForFilters();
+            } catch (e) {
+                alert(e.message || 'Could not remove this category.');
+            }
+        }
+
+
+        function openCreateProduct() {
+
+            document
+                .getElementById('create-form')
+                .reset();
+
+            renderCreateSizes();
+
+            showProductView('create');
+        }
+
+
+        async function submitCreateProduct(event) {
+
+            event.preventDefault();
+
+            const f = event.target;
+
+            try {
+
+                const sizes = isDefaultDepartment(f.elements.department.value)
+                    ? sizesForDepartment(f.elements.department.value).filter(size => {
+
+                        const checkbox =
+                            f.elements[`size_${size}`];
+
+                        return checkbox && checkbox.checked;
+                    })
+                    : (f.elements.custom_sizes?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+
+
+                const colors = f.elements["colors"].value
+                    .split(",")
+                    .map(c => c.trim())
+                    .filter(Boolean);
+
+
+                const payload = {
+
+                    title:
+                        f.elements["title"].value.trim(),
+
+                    category_slug:
+                        f.elements["category_slug"].value,
+
+                    department:
+                        f.elements["department"].value,
+
+                    subcategory:
+                        f.elements["subcategory"].value.trim(),
+
+                    price:
+                        Number(f.elements["price"].value),
+
+                    compare_at_price:
+                        f.elements["compare_at_price"].value ? Number(f.elements["compare_at_price"].value) : null,
+
+                    description:
+                        f.elements["description"].value.trim(),
+
+                    material:
+                        f.elements["material"].value.trim(),
+
+                    collection_tag:
+                        f.elements["collection_tag"].value.trim(),
+
+                    is_new_arrival:
+                        f.elements["is_new_arrival"].checked,
+
+                    is_active:
+                        true,
+
+                    colors:
+                        colors,
+
+                    sizes:
+                        sizes
+                };
+
+
+                console.log(
+                    "CREATE PRODUCT PAYLOAD:",
+                    payload
+                );
+
+
+                if (!payload.title) {
+
+                    alert(
+                        "Please enter product title."
+                    );
+
+                    return;
+                }
+
+
+                if (!payload.category_slug) {
+
+                    alert(
+                        "Please select a category."
+                    );
+
+                    return;
+                }
+
+
+                if (!payload.price || payload.price <= 0) {
+
+                    alert(
+                        "Please enter a valid price."
+                    );
+
+                    return;
+                }
+
+
+                const product = await api(
+                    "POST",
+                    "/api/admin/products",
+                    payload
+                );
+
+
+                console.log(
+                    "PRODUCT CREATED:",
+                    product
+                );
+
+
+                alert(
+                    "Product created successfully!"
+                );
+
+
+                await loadProducts();
+
+
+                await openEditProduct(
+                    product.id
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "CREATE PRODUCT ERROR:",
+                    error
+                );
+
+
+                alert(
+                    "Failed to create product:\n\n" +
+                    error.message
+                );
+            }
+        }
+
+
+        async function openEditProduct(id) {
+
+            try {
+
+                currentProductId = id;
+
+
+                console.log(
+                    "Loading product:",
+                    id
+                );
+
+
+                const p = await api(
+                    'GET',
+                    `/api/admin/products/${id}`
+                );
+
+
+                const all = await api(
+                    'GET',
+                    '/api/admin/products'
+                );
+
+
+                const row =
+                    all.find(x => x.id === id);
+
+
+                const f =
+                    document.getElementById('edit-form');
+
+
+                f.elements['title'].value =
+                    p.title || '';
+
+
+                f.elements['category_slug'].value =
+                    p.category_slug || 'men';
+
+
+                f.elements['department'].value =
+                    p.department || 'Clothing';
+
+
+                f.elements['subcategory'].value =
+                    p.subcategory || '';
+
+
+                f.elements['price'].value =
+                    p.price ?? '';
+
+
+                f.elements['compare_at_price'].value =
+                    p.compare_at_price ?? '';
+
+
+                f.elements['description'].value =
+                    p.description || '';
+
+
+                f.elements['material'].value =
+                    p.material || '';
+
+
+                f.elements['collection_tag'].value =
+                    p.collection_tag || '';
+
+
+                f.elements['is_new_arrival'].checked =
+                    !!p.is_new_arrival;
+
+
+                f.elements['is_active'].checked =
+                    row ? !!row.is_active : true;
+
+
+                renderEditImages(
+                    p.images || []
+                );
+
+
+                renderEditColors(
+                    p.colors || []
+                );
+
+
+                renderVariantSizeCheckboxes(
+                    p.department || 'Clothing'
+                );
+
+
+                renderEditVariants(
+                    p.variants || []
+                );
+
+
+                showProductView('edit');
+
+
+            } catch (e) {
+
+                console.error(
+                    "EDIT LOAD ERROR:",
+                    e
+                );
+
+
+                alert(
+                    "Could not load product:\n\n" +
+                    e.message
+                );
+            }
+        }
+
+
+        function renderEditImages(images) {
+            document.getElementById('edit-images').innerHTML = images.map((img) => `
+                <div class="relative w-20 h-24 bg-bhuraLightGrey overflow-hidden group">
+                    <img src="${img.url}" class="w-full h-full object-cover">
+                    ${img.color_name ? `<span class="absolute bottom-0 inset-x-0 bg-black/70 text-white text-[9px] uppercase tracking-wide text-center py-0.5 truncate px-1">${img.color_name}</span>` : ''}
+                    <button onclick="deleteEditImage(${img.id})" class="absolute top-1 right-1 bg-black/70 text-white text-[10px] w-5 h-5 leading-5 text-center opacity-0 group-hover:opacity-100">✕</button>
+                </div>`).join('') || '<p class="text-xs text-bhuraTextGrey">No images yet.</p>';
+        }
+
+        function renderEditColors(colors) {
+            document.getElementById('edit-colors').innerHTML = colors.map((c) => `
+                <span class="inline-flex items-center gap-2 border border-bhuraBorder pl-1 pr-2 py-1">
+                    <span class="w-4 h-4 rounded-full border border-bhuraBorder flex-shrink-0" style="background:${c.hex_code}"></span>
+                    <span class="text-xs">${c.name}</span>
+                    <button onclick="deleteColor(${c.id})" class="text-bhuraTextGrey hover:text-white text-[10px] ml-1">✕</button>
+                </span>`).join('') || '<p class="text-xs text-bhuraTextGrey">No colors yet — add one below.</p>';
+
+            // Keep the variant form's AND the image-upload's color dropdowns in sync
+            // with the real, swatch-backed colors.
+            const colorOptions = colors.length
+                ? colors.map((c) => `<option value="${c.name}">${c.name}</option>`).join('')
+                : '';
+            const variantColorSelect = document.getElementById('variant-color-select');
+            if (variantColorSelect) {
+                variantColorSelect.innerHTML = colorOptions || '<option value="">Add a color first</option>';
+            }
+            const imageColorSelect = document.getElementById('image-color-select');
+            if (imageColorSelect) {
+                imageColorSelect.innerHTML = '<option value="">No specific color</option>' + colorOptions;
+            }
+        }
+
+        async function addColor(event) {
+            event.preventDefault();
+            const f = event.target;
+            const payload = { name: f.elements.color_name.value.trim(), hex_code: f.elements.hex_code.value };
+            if (!payload.name) return;
+            try {
+                const p = await api('POST', `/api/admin/products/${currentProductId}/colors`, payload);
+                renderEditColors(p.colors);
+                f.reset();
+                f.elements.hex_code.value = '#111111';
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        async function deleteColor(colorId) {
+            if (!confirm('Remove this color? Any stock variants using it will be removed too.')) return;
+            const p = await api('DELETE', `/api/admin/products/${currentProductId}/colors/${colorId}`);
+            renderEditColors(p.colors);
+            renderEditVariants(p.variants);
+        }
+
+        function renderEditVariants(variants) {
+            document.getElementById('edit-variants-body').innerHTML = variants.map((v) => `
+                <tr>
+                    <td>${v.size}</td><td>${v.color_name || '—'}</td><td>${v.stock_qty}</td>
+                    <td><button class="btn-sm" onclick="deleteVariant(${v.id})">Remove</button></td>
+                </tr>`).join('') || `<tr><td colspan="4" class="text-center text-bhuraTextGrey py-4">No variants yet.</td></tr>`;
+        }
+
+
+        async function submitEditProduct(event) {
+
+            event.preventDefault();
+
+
+            if (!currentProductId) {
+
+                alert(
+                    "No product selected."
+                );
+
+                return;
+            }
+
+
+            const f = event.target;
+
+
+            const payload = {
+
+                title:
+                    f.elements['title'].value.trim(),
+
+                category_slug:
+                    f.elements['category_slug'].value,
+
+                department:
+                    f.elements['department'].value,
+
+                subcategory:
+                    f.elements['subcategory'].value.trim(),
+
+                price:
+                    Number(f.elements['price'].value),
+
+                compare_at_price:
+                    f.elements['compare_at_price'].value ? Number(f.elements['compare_at_price'].value) : null,
+
+                description:
+                    f.elements['description'].value.trim(),
+
+                material:
+                    f.elements['material'].value.trim(),
+
+                collection_tag:
+                    f.elements['collection_tag'].value.trim(),
+
+                is_new_arrival:
+                    f.elements['is_new_arrival'].checked,
+
+                is_active:
+                    f.elements['is_active'].checked
+            };
+
+
+            console.log(
+                "UPDATE PRODUCT ID:",
+                currentProductId
+            );
+
+
+            console.log(
+                "UPDATE PRODUCT PAYLOAD:",
+                payload
+            );
+
+
+            try {
+
+                const updated = await api(
+                    'PUT',
+                    `/api/admin/products/${currentProductId}`,
+                    payload
+                );
+
+
+                console.log(
+                    "UPDATED PRODUCT:",
+                    updated
+                );
+
+
+                alert(
+                    `Product "${updated.title}" updated successfully.`
+                );
+
+
+                await loadProducts();
+
+
+                showProductView('list');
+
+
+            } catch (e) {
+
+                console.error(
+                    "UPDATE PRODUCT ERROR:",
+                    e
+                );
+
+
+                alert(
+                    "Could not update product:\n\n" +
+                    e.message
+                );
+            }
+        }
+
+
+        async function deleteCurrentProduct() {
+
+            if (!currentProductId) {
+
+                alert(
+                    "No product selected."
+                );
+
+                return;
+            }
+
+
+            if (!confirm(
+                'Delete this product permanently?'
+            )) {
+                return;
+            }
+
+
+            try {
+
+                await api(
+                    'DELETE',
+                    `/api/admin/products/${currentProductId}`
+                );
+
+
+                alert(
+                    "Product deleted successfully."
+                );
+
+
+                currentProductId = null;
+
+
+                await loadProducts();
+
+
+                showProductView('list');
+
+
+            } catch (e) {
+
+                console.error(
+                    "DELETE PRODUCT ERROR:",
+                    e
+                );
+
+
+                alert(
+                    "Could not delete product:\n\n" +
+                    e.message
+                );
+            }
+        }
+
+
+        async function uploadEditImage(event) {
+
+            const file =
+                event.target.files[0];
+
+            if (!file) return;
+
+
+            const fd = new FormData();
+
+            fd.append(
+                'file',
+                file
+            );
+
+            fd.append(
+                'color_name',
+                document.getElementById('image-color-select')?.value || ''
+            );
+
+
+            const res = await fetch(
+                `/api/admin/products/${currentProductId}/images`,
+                {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: fd
+                }
+            );
+
+
+            if (res.status === 401) {
+
+                window.location.href =
+                    'login.html';
+
+                return;
+            }
+
+
+            const p =
+                await res.json();
+
+
+            renderEditImages(
+                p.images
+            );
+
+
+            event.target.value = '';
+        }
+
+
+        async function deleteEditImage(imageId) {
+
+            const p = await api(
+                'DELETE',
+                `/api/admin/products/${currentProductId}/images/${imageId}`
+            );
+
+
+            renderEditImages(
+                p.images
+            );
+        }
+
+
+        function renderVariantSizeCheckboxes(department) {
+            const wrap = document.getElementById('variant-size-checkboxes');
+            if (!wrap) return;
+            if (isDefaultDepartment(department)) {
+                wrap.innerHTML = sizesForDepartment(department).map((s) => `
+                    <label class="flex items-center gap-1.5 text-xs uppercase border border-bhuraBorder px-2.5 py-1.5 cursor-pointer hover:border-bhuraTextGrey">
+                        <input type="checkbox" name="bulk_size_${s}" value="${s}" class="accent-white">${s}
+                    </label>
+                `).join('');
+            } else {
+                wrap.innerHTML = `
+                    <input name="custom_bulk_sizes" placeholder="e.g. One Size — or a comma-separated list" class="field-input w-full">
+                `;
+            }
+        }
+
+        async function addVariantsBulk(event) {
+
+            event.preventDefault();
+
+            const f = event.target;
+            const colorName = f.elements.color_name.value;
+            const stockQty = Number(f.elements.stock_qty.value);
+            const currentDepartment = document.getElementById('edit-form').elements.department.value;
+            const checkedSizes = isDefaultDepartment(currentDepartment)
+                ? Array.from(f.querySelectorAll('#variant-size-checkboxes input:checked')).map((el) => el.value)
+                : (f.elements.custom_bulk_sizes?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+
+            if (!checkedSizes.length) {
+                alert('Check at least one size to add.');
+                return;
+            }
+
+            let p;
+            for (const size of checkedSizes) {
+                p = await api(
+                    'POST',
+                    `/api/admin/products/${currentProductId}/variants`,
+                    { size, color_name: colorName, stock_qty: stockQty }
+                );
+            }
+
+            renderEditVariants(p.variants);
+            f.querySelectorAll('#variant-size-checkboxes input:checked').forEach((el) => { el.checked = false; });
+            if (f.elements.custom_bulk_sizes) f.elements.custom_bulk_sizes.value = '';
+        }
+
+
+        async function deleteVariant(variantId) {
+
+            const p = await api(
+                'DELETE',
+                `/api/admin/products/${currentProductId}/variants/${variantId}`
+            );
+
+
+            renderEditVariants(
+                p.variants
+            );
+        }
+
+
+        /* ---------------- Orders ---------------- */
+
+
+        async function loadOrders() {
+
+            allOrdersCache = await api(
+                'GET',
+                '/api/admin/orders'
+            );
+            renderOrdersTable(allOrdersCache);
+        }
+
+        function renderOrdersTable(orders) {
+
+            document.getElementById(
+                'orders-table-body'
+            ).innerHTML =
+
+                orders.map((o) => `
+
+                    <tr>
+
+                        <td class="font-mono">
+                            ${o.order_number}
+                        </td>
+
+                        <td>
+                            ${o.customer}
+                        </td>
+
+                        <td>
+                            ${o.item_count}
+                        </td>
+
+                        <td class="num text-right">
+                            ${formatNPR(o.total)}
+                        </td>
+
+                        <td class="capitalize">
+                            ${o.payment_method.replace('_', ' ')}
+                        </td>
+
+                        <td>
+
+                            <select
+                                class="status-select"
+                                style="border-left-color:${statusColor(o.status)}; color:${statusTextColor(o.status) || 'inherit'}"
+                                onchange="updateOrderStatus(${o.id}, this.value); this.style.borderLeftColor = statusColor(this.value); this.style.color = statusTextColor(this.value) || 'inherit';">
+
+                                ${
+                                    [
+                                        'pending',
+                                        'confirmed',
+                                        'shipped',
+                                        'delivered',
+                                        'cancelled'
+                                    ]
+                                    .map((s) => `
+                                        <option
+                                            value="${s}"
+                                            ${s === o.status ? 'selected' : ''}>
+                                            ${s}
+                                        </option>
+                                    `).join('')
+                                }
+
+                            </select>
+
+                        </td>
+
+                        <td>
+                            ${new Date(o.created_at).toLocaleDateString()}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn-sm"
+                                onclick="viewOrder(${o.id})">
+                                View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `).join('')
+
+                ||
+
+                `
+                <tr>
+                    <td colspan="8"
+                        class="text-center text-bhuraTextGrey py-10">
+                        ${allOrdersCache.length === 0 ? "No orders yet — they'll appear here as customers check out." : 'No orders match these filters.'}
+                    </td>
+                </tr>
+                `;
+        }
+
+        function applyOrderFilters() {
+            const search = document.getElementById('filter-order-search').value.trim().toLowerCase();
+            const status = document.getElementById('filter-order-status').value;
+            const payment = document.getElementById('filter-order-payment').value;
+
+            const filtered = allOrdersCache.filter((o) => {
+                if (search && !o.order_number.toLowerCase().includes(search) && !o.customer.toLowerCase().includes(search)) return false;
+                if (status && o.status !== status) return false;
+                if (payment && o.payment_method !== payment) return false;
+                return true;
+            });
+            renderOrdersTable(filtered);
+        }
+
+
+        async function updateOrderStatus(
+            orderId,
+            status
+        ) {
+
+            await api(
+                'PATCH',
+                `/api/admin/orders/${orderId}/status`,
+                { status }
+            );
+        }
+
+
+        async function viewOrder(orderId) {
+
+            const o = await api(
+                'GET',
+                `/api/admin/orders/${orderId}`
+            );
+
+
+            const panel =
+                document.getElementById(
+                    'order-detail-panel'
+                );
+
+
+            panel.innerHTML = `
+
+                <div class="flex justify-between items-start mb-4">
+
+                    <div>
+
+                        <h3 class="text-sm font-black uppercase tracking-wide">
+                            ${o.order_number}
+                        </h3>
+
+                        <p class="text-xs text-bhuraTextGrey">
+                            ${new Date(o.created_at).toLocaleString()}
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        onclick="document.getElementById('order-detail-panel').classList.add('hidden')"
+                        class="text-xs text-bhuraTextGrey hover:text-bhuraWhite">
+
+                        ✕ Close
+
+                    </button>
+
+                </div>
+
+
+                <div class="text-xs uppercase tracking-wide space-y-1 mb-4">
+
+                    <p>
+                        <span class="text-bhuraTextGrey">
+                            Customer:
+                        </span>
+
+                        ${o.first_name}
+                        ${o.last_name}
+                        —
+                        ${o.email}
+                        —
+                        ${o.phone}
+                    </p>
+
+
+                    <p>
+
+                        <span class="text-bhuraTextGrey">
+                            Ship to:
+                        </span>
+
+                        ${o.address},
+                        ${o.city}
+                        ${o.postal_code}
+
+                    </p>
+
+
+                    <p>
+
+                        <span class="text-bhuraTextGrey">
+                            Payment:
+                        </span>
+
+                        ${o.payment_method.replace('_', ' ')}
+
+                        ${
+                            o.payment_reference
+                            ?
+                            `— Ref: ${o.payment_reference}`
+                            :
+                            ''
+                        }
+
+                    </p>
+
+
+                    ${
+                        o.payment_proof_path
+                        ?
+                        `
+                        <p>
+                            <a
+                                href="${o.payment_proof_path}"
+                                target="_blank"
+                                class="underline">
+                                View payment screenshot ↗
+                            </a>
+                        </p>
+                        `
+                        :
+                        ''
+                    }
+
+
+                    <p>
+
+                        <span class="text-bhuraTextGrey">
+                            Email receipt sent:
+                        </span>
+
+                        ${o.email_sent ? 'Yes' : 'No'}
+
+                    </p>
+
+                </div>
+
+
+                <table class="w-full mb-3">
+
+                    <thead>
+
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Total</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${
+                            o.items.map((i) => `
+
+                                <tr>
+
+                                    <td>
+
+                                        ${i.color_hex ? `<span class="inline-block w-2.5 h-2.5 rounded-full border border-bhuraBorder mr-1" style="background:${i.color_hex}"></span>` : ''}
+                                        ${i.product_title}
+
+                                        <span class="text-bhuraTextGrey">
+
+                                            ${
+                                                [
+                                                    i.color,
+                                                    i.size
+                                                ]
+                                                .filter(Boolean)
+                                                .join('/')
+                                            }
+
+                                        </span>
+
+                                    </td>
+
+                                    <td class="num text-right">
+                                        ${i.quantity}
+                                    </td>
+
+                                    <td class="num text-right">
+                                        ${formatNPR(i.line_total)}
+                                    </td>
+
+                                </tr>
+
+                            `).join('')
+                        }
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="text-right text-sm font-bold">
+
+                    Total:
+                    ${formatNPR(o.total)}
+
+                </div>
+
+
+                <a
+                    href="/api/orders/${o.order_number}/receipt.pdf?email=${encodeURIComponent(o.email)}"
+                    target="_blank"
+                    class="btn-outline inline-block mt-4">
+
+                    Download Receipt PDF
+
+                </a>
+            `;
+
+
+            panel.classList.remove('hidden');
+        }
+
+
+        /* ---------------- Ledger ---------------- */
+
+        function formatDateInput(d) { return d.toISOString().slice(0, 10); }
+
+        function setLedgerPreset(preset) {
+            const now = new Date();
+            let start, end;
+            if (preset === 'this_month') {
+                start = new Date(now.getFullYear(), now.getMonth(), 1);
+                end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            } else if (preset === 'last_month') {
+                start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                end = new Date(now.getFullYear(), now.getMonth(), 0);
+            } else {
+                start = new Date(2020, 0, 1);
+                end = now;
+            }
+            document.getElementById('ledger-start').value = formatDateInput(start);
+            document.getElementById('ledger-end').value = formatDateInput(end);
+            loadLedger();
+        }
+
+        async function loadLedger() {
+            let startInput = document.getElementById('ledger-start');
+            let endInput = document.getElementById('ledger-end');
+            if (!startInput.value || !endInput.value) {
+                const now = new Date();
+                startInput.value = formatDateInput(new Date(now.getFullYear(), now.getMonth(), 1));
+                endInput.value = formatDateInput(new Date(now.getFullYear(), now.getMonth() + 1, 0));
+            }
+            const start = startInput.value;
+            const end = endInput.value;
+
+            try {
+                const summary = await api('GET', `/api/admin/ledger/summary?start_date=${start}&end_date=${end}`);
+                document.getElementById('ledger-income').textContent = formatNPR(summary.income_total);
+                document.getElementById('ledger-order-count').textContent = `${summary.order_count} order${summary.order_count === 1 ? '' : 's'} (excl. cancelled)`;
+                document.getElementById('ledger-expenses').textContent = formatNPR(summary.expense_total);
+                const netEl = document.getElementById('ledger-net');
+                netEl.textContent = formatNPR(summary.net);
+                netEl.className = `text-2xl font-black ${summary.net < 0 ? 'text-red-400' : 'text-green-400'}`;
+
+                const catEntries = Object.entries(summary.expense_by_category).filter(([, amt]) => amt > 0).sort((a, b) => b[1] - a[1]);
+                const maxAmt = catEntries.length ? Math.max(...catEntries.map(([, amt]) => amt)) : 0;
+                document.getElementById('ledger-by-category').innerHTML = catEntries.length
+                    ? catEntries.map(([cat, amt]) => `
+                        <div class="bar-row">
+                            <span class="w-36 flex-shrink-0 text-bhuraTextGrey uppercase tracking-wide truncate">${cat}</span>
+                            <div class="bar-track"><div class="bar-fill" style="width:${maxAmt ? (amt / maxAmt * 100) : 0}%"></div></div>
+                            <span class="num w-24 flex-shrink-0 text-right">${formatNPR(amt)}</span>
+                        </div>`).join('')
+                    : '<p class="text-bhuraTextGrey text-xs uppercase tracking-wide">No expenses logged in this range yet.</p>';
+            } catch (e) {
+                alert('Could not load ledger summary: ' + e.message);
+            }
+
+            try {
+                const expenses = await api('GET', `/api/admin/expenses?start_date=${start}&end_date=${end}`);
+                renderExpensesTable(expenses);
+            } catch (e) {
+                document.getElementById('expenses-table-body').innerHTML = `<tr><td colspan="5" class="text-center text-bhuraTextGrey py-8">Could not load expenses.</td></tr>`;
+            }
+        }
+
+        function renderExpensesTable(expenses) {
+            document.getElementById('expenses-table-body').innerHTML = expenses.map((e) => `
+                <tr>
+                    <td class="num">${e.expense_date}</td>
+                    <td>${e.category}${e.is_recurring ? ' <span class="badge badge-outline ml-1">Recurring</span>' : ''}</td>
+                    <td class="text-bhuraTextGrey">${e.note || '—'}</td>
+                    <td class="num text-right">${formatNPR(e.amount)}</td>
+                    <td><button class="btn-danger-sm" onclick="deleteExpense(${e.id})">Delete</button></td>
+                </tr>
+            `).join('') || `<tr><td colspan="5" class="text-center text-bhuraTextGrey py-8">No expenses in this range — log your first one on the left.</td></tr>`;
+        }
+
+        async function submitExpense(event) {
+            event.preventDefault();
+            const f = event.target;
+            const payload = {
+                category: f.elements.category.value,
+                amount: Number(f.elements.amount.value),
+                expense_date: f.elements.expense_date.value,
+                note: f.elements.note.value.trim(),
+                is_recurring: f.elements.is_recurring.checked,
+            };
+            try {
+                await api('POST', '/api/admin/expenses', payload);
+                f.reset();
+                await loadLedger();
+            } catch (e) {
+                alert('Could not add expense: ' + e.message);
+            }
+        }
+
+        async function deleteExpense(expenseId) {
+            if (!confirm('Delete this expense entry?')) return;
+            try {
+                await api('DELETE', `/api/admin/expenses/${expenseId}`);
+                await loadLedger();
+            } catch (e) {
+                alert('Could not delete expense: ' + e.message);
+            }
+        }
+
+
+        /* ---------------- Settings ---------------- */
+
+
+        /* ---------------- Reviews ---------------- */
+
+        async function loadAllReviews() {
+            const tbody = document.getElementById('reviews-table-body');
+            try {
+                const reviews = await api('GET', '/api/admin/reviews');
+                tbody.innerHTML = reviews.map((r) => `
+                    <tr>
+                        <td>${r.product_title}</td>
+                        <td class="num">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</td>
+                        <td>${r.customer_name}${r.is_verified ? ' <span class="badge badge-outline ml-1">Verified</span>' : ''}</td>
+                        <td class="max-w-xs truncate text-bhuraTextGrey">${r.comment || '—'}</td>
+                        <td class="num">${new Date(r.created_at).toLocaleDateString()}</td>
+                        <td>${r.is_visible ? '<span class="badge badge-solid">Visible</span>' : '<span class="badge badge-outline">Hidden</span>'}</td>
+                        <td class="flex gap-2">
+                            <button class="btn-sm" onclick="toggleReviewVisibility(${r.id}, ${!r.is_visible})">${r.is_visible ? 'Hide' : 'Show'}</button>
+                            <button class="btn-danger-sm" onclick="deleteReviewAdmin(${r.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('') || `<tr><td colspan="7" class="text-center text-bhuraTextGrey py-10">No reviews yet — they'll appear here as customers leave them.</td></tr>`;
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-bhuraTextGrey py-10">Could not load reviews.</td></tr>`;
+            }
+        }
+
+        async function toggleReviewVisibility(reviewId, makeVisible) {
+            await api('PATCH', `/api/admin/reviews/${reviewId}?is_visible=${makeVisible}`);
+            await loadAllReviews();
+        }
+
+        async function deleteReviewAdmin(reviewId) {
+            if (!confirm('Delete this review? This cannot be undone.')) return;
+            await api('DELETE', `/api/admin/reviews/${reviewId}`);
+            await loadAllReviews();
+        }
+
+        /* ---------------- Returns ---------------- */
+
+        function returnStatusOptions(current) {
+            return ['requested', 'approved', 'rejected', 'received', 'refunded']
+                .map((s) => `<option value="${s}" ${s === current ? 'selected' : ''}>${s}</option>`).join('');
+        }
+
+        let allReturnsCache = [];
+
+        async function loadAllReturns() {
+            try {
+                allReturnsCache = await api('GET', '/api/admin/returns');
+                renderReturnsTable(allReturnsCache);
+            } catch (e) {
+                document.getElementById('returns-table-body').innerHTML = `<tr><td colspan="6" class="text-center text-bhuraTextGrey py-10">Could not load returns.</td></tr>`;
+            }
+        }
+
+        function renderReturnsTable(returns) {
+            const tbody = document.getElementById('returns-table-body');
+            tbody.innerHTML = returns.map((r) => `
+                <tr>
+                    <td class="num">${r.order_number}</td>
+                    <td class="max-w-xs truncate">${r.reason}</td>
+                    <td>
+                        <select class="status-select" style="border-left-color:${statusColor(r.status)}; color:${statusTextColor(r.status) || 'inherit'}"
+                            onchange="handleReturnStatusChange(${r.id}, this.value, this)">
+                            ${returnStatusOptions(r.status)}
+                        </select>
+                    </td>
+                    <td class="max-w-xs truncate text-bhuraTextGrey">${r.admin_note || '—'}</td>
+                    <td class="num">${new Date(r.created_at).toLocaleDateString()}</td>
+                    <td><button class="btn-sm" onclick="showTab('orders'); loadOrders().then(() => viewOrder(${r.order_id}))">View Order</button></td>
+                </tr>
+            `).join('') || `<tr><td colspan="6" class="text-center text-bhuraTextGrey py-10">${allReturnsCache.length === 0 ? 'No return requests yet.' : 'No returns in this date range.'}</td></tr>`;
+        }
+
+        function applyReturnFilters() {
+            const start = document.getElementById('filter-return-start').value;
+            const end = document.getElementById('filter-return-end').value;
+            const filtered = allReturnsCache.filter((r) => {
+                const requestedDate = r.created_at.slice(0, 10); // YYYY-MM-DD
+                if (start && requestedDate < start) return false;
+                if (end && requestedDate > end) return false;
+                return true;
+            });
+            renderReturnsTable(filtered);
+        }
+
+        async function handleReturnStatusChange(returnId, status, selectEl) {
+            let note = '';
+            if (status === 'rejected' || status === 'approved') {
+                note = prompt(`Optional note to include in the customer's email (status: ${status}):`) || '';
+            }
+            try {
+                await api('PATCH', `/api/admin/returns/${returnId}`, { status, admin_note: note });
+                selectEl.style.borderLeftColor = statusColor(status);
+                selectEl.style.color = statusTextColor(status) || 'inherit';
+                await loadAllReturns();
+                applyReturnFilters();
+            } catch (e) {
+                alert(e.message || 'Could not update return status.');
+                await loadAllReturns();
+                applyReturnFilters();
+            }
+        }
+
+        /* ---------------- Subscribers ---------------- */
+
+        let subscribersCache = [];
+
+        async function loadSubscribers() {
+            const start = document.getElementById('filter-sub-start').value;
+            const end = document.getElementById('filter-sub-end').value;
+            const category = document.getElementById('filter-sub-category').value;
+            const params = new URLSearchParams();
+            if (start) params.set('start_date', start);
+            if (end) params.set('end_date', end);
+            if (category) params.set('category', category);
+
+            const tbody = document.getElementById('subscribers-table-body');
+            try {
+                subscribersCache = await api('GET', `/api/admin/subscribers?${params.toString()}`);
+                document.getElementById('sub-select-all').checked = false;
+                tbody.innerHTML = subscribersCache.map((s) => `
+                    <tr>
+                        <td><input type="checkbox" class="subscriber-checkbox" value="${s.id}" onchange="updateSelectedCount()"></td>
+                        <td>${s.email}</td>
+                        <td class="capitalize">${s.category}</td>
+                        <td class="num">${new Date(s.subscribed_at).toLocaleDateString()}</td>
+                    </tr>
+                `).join('') || `<tr><td colspan="4" class="text-center text-bhuraTextGrey py-10">${subscribersCache.length === 0 ? 'No subscribers yet.' : 'No subscribers match these filters.'}</td></tr>`;
+                updateSelectedCount();
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-bhuraTextGrey py-10">Could not load subscribers.</td></tr>`;
+            }
+        }
+
+        function toggleAllSubscribers(checked) {
+            document.querySelectorAll('.subscriber-checkbox').forEach((cb) => { cb.checked = checked; });
+            updateSelectedCount();
+        }
+
+        function getSelectedSubscriberIds() {
+            return Array.from(document.querySelectorAll('.subscriber-checkbox:checked')).map((cb) => Number(cb.value));
+        }
+
+        function updateSelectedCount() {
+            const n = getSelectedSubscriberIds().length;
+            document.getElementById('sub-selected-count').textContent = `${n} subscriber${n === 1 ? '' : 's'} selected`;
+        }
+
+        async function handleSendOffer() {
+            const ids = getSelectedSubscriberIds();
+            const message = document.getElementById('offer-message').value.trim();
+            const subject = document.getElementById('offer-subject').value.trim();
+            if (!ids.length) { alert('Select at least one subscriber first.'); return; }
+            if (!message) { alert('Write a message to send.'); return; }
+            if (!confirm(`Send this offer to ${ids.length} subscriber${ids.length === 1 ? '' : 's'}?`)) return;
+
+            try {
+                const result = await api('POST', '/api/admin/subscribers/send-offer', { subscriber_ids: ids, message, subject });
+                alert(`Sent to ${result.sent} of ${result.found} subscriber(s).${result.failed.length ? ` (Email not configured or failed for: ${result.failed.join(', ')})` : ''}`);
+                document.getElementById('offer-message').value = '';
+                document.getElementById('offer-subject').value = '';
+            } catch (e) {
+                alert(e.message || 'Could not send the offer.');
+            }
+        }
+
+        /* ---------------- Site Photos (every non-product image) ---------------- */
+
+        let siteImageSlots = [];
+        let currentSiteImageSlot = null;
+
+        async function loadHeroImages() {
+            // Kept as the entry point showTab() already calls for this tab.
+            try {
+                siteImageSlots = await api('GET', '/api/admin/site-images/slots');
+            } catch (e) {
+                return;
+            }
+            const picker = document.getElementById('site-image-slot-picker');
+            const groups = {};
+            siteImageSlots.forEach((s) => { (groups[s.page] = groups[s.page] || []).push(s); });
+            picker.innerHTML = Object.entries(groups).map(([page, slots]) => `
+                <optgroup label="${page}">
+                    ${slots.map((s) => `<option value="${s.slot}">${s.label}</option>`).join('')}
+                </optgroup>
+            `).join('');
+            const toLoad = currentSiteImageSlot || siteImageSlots[0]?.slot;
+            if (toLoad) loadSiteImageSlot(toLoad);
+        }
+
+        async function loadSiteImageSlot(slot) {
+            currentSiteImageSlot = slot;
+            document.getElementById('site-image-slot-picker').value = slot;
+            const slotDef = siteImageSlots.find((s) => s.slot === slot);
+            const isMulti = slotDef?.mode === 'multi';
+            document.getElementById('site-image-form-title').textContent = isMulti ? 'Add A Photo To This Grid' : 'Replace This Photo';
+            document.getElementById('gallery-category-field').classList.toggle('hidden', slot !== 'gallery_grid');
+
+            const container = document.getElementById('site-image-current');
+            try {
+                const images = await api('GET', `/api/admin/site-images?slot=${encodeURIComponent(slot)}`);
+                container.innerHTML = images.map((img) => `
+                    <div class="bg-bhuraCard border border-bhuraBorder overflow-hidden">
+                        <div class="relative aspect-[16/9] bg-bhuraLightGrey">
+                            <img src="${img.url}" class="w-full h-full object-cover">
+                            ${!img.is_active ? '<div class="absolute inset-0 bg-black/60 flex items-center justify-center"><span class="badge badge-outline">Inactive</span></div>' : ''}
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <input value="${img.heading}" placeholder="Heading" onchange="updateSiteImageField(${img.id}, 'heading', this.value)" class="field-input text-xs">
+                            <input value="${img.subheading}" placeholder="Subheading / body text" onchange="updateSiteImageField(${img.id}, 'subheading', this.value)" class="field-input text-xs">
+                            <input value="${img.link_url}" placeholder="Links to (e.g. men.html)" onchange="updateSiteImageField(${img.id}, 'link_url', this.value)" class="field-input text-xs">
+                            <div class="flex gap-2">
+                                <input value="${img.width || ''}" type="number" min="1" placeholder="Width px" onchange="updateSiteImageField(${img.id}, 'width', this.value ? Number(this.value) : null)" class="field-input text-xs w-1/2">
+                                <input value="${img.height || ''}" type="number" min="1" placeholder="Height px" onchange="updateSiteImageField(${img.id}, 'height', this.value ? Number(this.value) : null)" class="field-input text-xs w-1/2">
+                            </div>
+                            ${img.width && img.height ? `<p class="text-[10px] text-bhuraTextGrey">${img.width} × ${img.height}px</p>` : ''}
+                            ${slot === 'gallery_grid' ? `
+                                <select onchange="updateSiteImageField(${img.id}, 'tag', this.value)" class="field-input text-xs">
+                                    <option value="studio" ${img.tag === 'studio' ? 'selected' : ''}>Studio Product Shoot</option>
+                                    <option value="editorial" ${img.tag === 'editorial' ? 'selected' : ''}>Urban Editorial</option>
+                                    <option value="details" ${img.tag === 'details' ? 'selected' : ''}>Fabric & Craft</option>
+                                </select>` : ''}
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="toggleSiteImageActive(${img.id}, ${!img.is_active})" class="btn-sm flex-1">${img.is_active ? 'Deactivate' : 'Activate'}</button>
+                                <button onclick="deleteSiteImageAdmin(${img.id})" class="btn-danger-sm flex-1">Delete</button>
+                            </div>
+                        </div>
+                    </div>`).join('') || '<p class="text-bhuraTextGrey text-xs uppercase tracking-widest col-span-full py-8 text-center">No photo set yet — the page shows its default until you add one.</p>';
+            } catch (e) {
+                container.innerHTML = '<p class="text-bhuraTextGrey text-xs uppercase tracking-widest col-span-full py-8 text-center">Could not load this spot.</p>';
+            }
+        }
+
+        async function submitSiteImage(event) {
+            event.preventDefault();
+            const f = event.target;
+            const fd = new FormData();
+            fd.append('slot', currentSiteImageSlot);
+            fd.append('file', f.elements.file.files[0]);
+            fd.append('heading', f.elements.heading.value.trim());
+            fd.append('subheading', f.elements.subheading.value.trim());
+            fd.append('link_url', f.elements.link_url.value.trim());
+            if (f.elements.width.value) fd.append('width', f.elements.width.value);
+            if (f.elements.height.value) fd.append('height', f.elements.height.value);
+            if (currentSiteImageSlot === 'gallery_grid') fd.append('tag', f.elements.tag.value);
+            try {
+                await fetch('/api/admin/site-images', { method: 'POST', credentials: 'same-origin', body: fd })
+                    .then((res) => { if (!res.ok) throw new Error('Upload failed'); return res.json(); });
+                f.reset();
+                await loadSiteImageSlot(currentSiteImageSlot);
+            } catch (e) {
+                alert(e.message || 'Could not upload this image.');
+            }
+        }
+
+        async function updateSiteImageField(imageId, field, value) {
+            await api('PATCH', `/api/admin/site-images/${imageId}`, { [field]: value });
+        }
+
+        async function toggleSiteImageActive(imageId, makeActive) {
+            await api('PATCH', `/api/admin/site-images/${imageId}`, { is_active: makeActive });
+            await loadSiteImageSlot(currentSiteImageSlot);
+        }
+
+        async function deleteSiteImageAdmin(imageId) {
+            if (!confirm('Delete this photo? This cannot be undone.')) return;
+            await api('DELETE', `/api/admin/site-images/${imageId}`);
+            await loadSiteImageSlot(currentSiteImageSlot);
+        }
+
+        async function loadSettings() {
+
+            currentSettings = await api(
+                'GET',
+                '/api/admin/settings'
+            );
+
+
+            const f =
+                document.getElementById(
+                    'settings-form'
+                );
+
+
+            f.elements.whatsapp_number.value =
+                currentSettings.whatsapp_number;
+
+
+            f.elements.merchant_name.value =
+                currentSettings.merchant_name;
+
+
+            f.elements.merchant_number.value =
+                currentSettings.merchant_number;
+
+
+            f.elements.contact_phone.value =
+                currentSettings.contact_phone || '';
+
+
+            f.elements.instagram_url.value =
+                currentSettings.instagram_url || '';
+
+
+            f.elements.tiktok_url.value =
+                currentSettings.tiktok_url || '';
+
+
+            f.elements.cod_enabled.checked =
+                currentSettings.cod_enabled;
+
+
+            f.elements.mobile_banking_enabled.checked =
+                currentSettings.mobile_banking_enabled;
+
+
+            document.getElementById(
+                'qr-preview'
+            ).innerHTML =
+
+                currentSettings.qr_image_url
+
+                ?
+
+                `
+                <img
+                    src="${currentSettings.qr_image_url}"
+                    class="w-40 h-40 object-contain border border-bhuraBorder p-2">
+                `
+
+                :
+
+                `
+                <p class="text-xs text-bhuraTextGrey uppercase">
+                    No QR code uploaded yet.
+                </p>
+                `;
+        }
+
+
+        async function saveSettings(event) {
+
+            event.preventDefault();
+
+            const f = event.target;
+
+
+            const payload = {
+
+                whatsapp_number:
+                    f.elements.whatsapp_number.value,
+
+                merchant_name:
+                    f.elements.merchant_name.value,
+
+                merchant_number:
+                    f.elements.merchant_number.value,
+
+                contact_phone:
+                    f.elements.contact_phone.value,
+
+                instagram_url:
+                    f.elements.instagram_url.value,
+
+                tiktok_url:
+                    f.elements.tiktok_url.value,
+
+                cod_enabled:
+                    f.elements.cod_enabled.checked,
+
+                mobile_banking_enabled:
+                    f.elements.mobile_banking_enabled.checked
+            };
+
+
+            try {
+
+                await api(
+                    'PUT',
+                    '/api/admin/settings',
+                    payload
+                );
+
+
+                alert(
+                    'Settings saved.'
+                );
+
+
+            } catch (e) {
+
+                alert(
+                    e.message
+                );
+            }
+        }
+
+
+        async function uploadQr(event) {
+
+            const file =
+                event.target.files[0];
+
+            if (!file) return;
+
+
+            const fd =
+                new FormData();
+
+
+            fd.append(
+                'file',
+                file
+            );
+
+
+            const res =
+                await fetch(
+                    '/api/admin/settings/qr',
+                    {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body: fd
+                    }
+                );
+
+
+            if (res.status === 401) {
+
+                window.location.href =
+                    'login.html';
+
+                return;
+            }
+
+
+            const data =
+                await res.json();
+
+
+            document.getElementById(
+                'qr-preview'
+            ).innerHTML = `
+
+                <img
+                    src="${data.qr_image_url}"
+                    class="w-40 h-40 object-contain border border-bhuraBorder p-2">
+
+            `;
+
+
+            event.target.value = '';
+        }
+
+
+        /* ---------------- Boot ---------------- */
+
+
+        async function boot() {
+
+            try {
+
+                const me =
+                    await fetch(
+                        '/api/admin/me',
+                        {
+                            credentials: 'same-origin'
+                        }
+                    );
+
+
+                if (!me.ok) {
+                    throw new Error(
+                        'unauthenticated'
+                    );
+                }
+
+
+                const data =
+                    await me.json();
+
+
+                document.getElementById(
+                    'whoami'
+                ).textContent =
+                    data.username;
+
+                document.getElementById(
+                    'whoami-mobile'
+                ).textContent =
+                    data.username;
+
+
+            } catch (e) {
+
+                window.location.href =
+                    'login.html';
+
+                return;
+            }
+
+
+            document.getElementById(
+                'auth-gate'
+            ).classList.add('hidden');
+
+
+            document.getElementById(
+                'app'
+            ).classList.remove('hidden');
+
+
+            loadProducts();
+        }
+
+
+        boot();
+
+    </script>
+
+</body>
+</html>
