@@ -97,7 +97,7 @@
 
     <section class="relative h-screen w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2000&auto=format&fit=crop" alt="BHURA Editorial Campaign" class="w-full h-full object-cover object-center opacity-70 filter grayscale contrast-125 scale-105 editorial-image-zoom transition-opacity duration-700">
+            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2000&auto=format&fit=crop" alt="BHURA Editorial Campaign" class="w-full h-full object-cover object-center opacity-0 filter grayscale contrast-125 scale-105 editorial-image-zoom transition-opacity duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
         </div>
         <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
@@ -381,40 +381,55 @@
         loadOnSaleSection();
         async function loadHeroImages() {
             let heroes = [];
+            const bgImg = document.getElementById('hero-bg-img');
+            
+            const showFallback = () => {
+                bgImg.classList.remove('opacity-0');
+                bgImg.classList.add('opacity-70');
+            };
+
             try {
                 heroes = await apiGet('/api/site-images/homepage_hero');
             } catch (e) {
-                return; // keep the default hardcoded hero — never let this break the homepage
+                return showFallback(); // keep the default hardcoded hero — never let this break the homepage
             }
-            if (!heroes.length) return; // no admin-added heroes yet — default stays as-is
+            if (!heroes.length) return showFallback(); // no admin-added heroes yet — default stays as-is
 
             let current = 0;
-            const bgImg = document.getElementById('hero-bg-img');
             const eyebrow = document.getElementById('hero-eyebrow');
             const subheading = document.getElementById('hero-subheading');
             const cta = document.getElementById('hero-cta');
             const dotsWrap = document.getElementById('hero-dots');
             const defaultEyebrow = eyebrow.textContent;
 
-            function applyHero(index) {
+            function applyHero(index, isFirstLoad = false) {
                 const h = heroes[index];
-                bgImg.style.opacity = '0';
-                setTimeout(() => {
+                
+                const swapContent = () => {
                     bgImg.src = h.url;
-                    bgImg.style.opacity = '';
-                }, 350);
-                eyebrow.textContent = h.heading || defaultEyebrow;
-                if (h.subheading) {
-                    subheading.textContent = h.subheading;
-                    subheading.classList.remove('hidden');
+                    eyebrow.textContent = h.heading || defaultEyebrow;
+                    if (h.subheading) {
+                        subheading.textContent = h.subheading;
+                        subheading.classList.remove('hidden');
+                    } else {
+                        subheading.classList.add('hidden');
+                    }
+                    cta.href = h.link_url || '#latest-drop';
+                    if (dotsWrap.children.length) {
+                        Array.from(dotsWrap.children).forEach((dot, i) => {
+                            dot.className = `w-1.5 h-1.5 rounded-full ${i === index ? 'bg-bhuraWhite' : 'bg-white/40'}`;
+                        });
+                    }
+                    bgImg.classList.remove('opacity-0');
+                    bgImg.classList.add('opacity-70');
+                };
+
+                if (isFirstLoad) {
+                    swapContent();
                 } else {
-                    subheading.classList.add('hidden');
-                }
-                cta.href = h.link_url || '#latest-drop';
-                if (dotsWrap.children.length) {
-                    Array.from(dotsWrap.children).forEach((dot, i) => {
-                        dot.className = `w-1.5 h-1.5 rounded-full ${i === index ? 'bg-bhuraWhite' : 'bg-white/40'}`;
-                    });
+                    bgImg.classList.remove('opacity-70');
+                    bgImg.classList.add('opacity-0');
+                    setTimeout(swapContent, 700);
                 }
             }
 
@@ -427,7 +442,7 @@
                     applyHero(current);
                 }, 6000);
             }
-            applyHero(0);
+            applyHero(0, true);
         }
         async function loadSingleSlotOverride(slot, applyFn) {
             try {
