@@ -245,7 +245,7 @@ SITE_IMAGE_SLOTS = {
     "homepage_hero": ("Homepage — Hero Banner (rotates)", "multi", "index.html"),
     "homepage_story": ("Homepage — Editorial Story Section", "single", "index.html"),
     "homepage_tile_men": ("Homepage — Men Tile", "single", "index.html"),
-    "homepage_tile_women": ("Homepage — Women Tile", "single", "index.html"),
+    "homepage_tile_collection": ("Homepage — Collection Tile", "single", "index.html"),
     "homepage_tile_new": ("Homepage — New Arrivals Tile", "single", "index.html"),
     "instagram_grid": ("Homepage — Instagram Grid", "multi", "index.html"),
     "men_hero": ("Men Page — Hero Banner", "single", "men.html"),
