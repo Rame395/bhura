@@ -60,7 +60,6 @@
             <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
             <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
                 <a href="men.html" class="hover:text-bhuraTextGrey transition-colors">Men</a>
-                <a href="women.html" class="hover:text-bhuraTextGrey transition-colors">Women</a>
                 <a href="#latest-drop" class="hover:text-bhuraTextGrey transition-colors">New Arrivals</a>
                 <a href="collections.html" class="hover:text-bhuraTextGrey transition-colors">Collection</a>
             <a href="blog.html" class="hover:text-bhuraTextGrey transition-colors">Blog</a>
@@ -84,7 +83,6 @@
     <div id="mobile-menu" class="fixed inset-0 bg-bhuraBlack text-bhuraWhite z-40 transform translate-x-full transition-transform duration-500 lg:hidden flex flex-col justify-center px-8">
         <nav class="flex flex-col space-y-6 text-3xl font-light tracking-wide uppercase">
             <a href="men.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Men</a>
-            <a href="women.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Women</a>
             <a href="#latest-drop" class="mobile-link hover:text-bhuraTextGrey transition-colors">New Arrivals</a>
             <a href="collections.html" class="mobile-link hover:text-bhuraTextGrey transition-colors">Collection</a>
             <a href="#story" class="mobile-link hover:text-bhuraTextGrey transition-colors">The Story</a>
@@ -180,14 +178,14 @@
                         <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">Shop Men →</span>
                     </div>
                 </a>
-                <a id="tile-women-link" href="women.html" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
+                <a id="tile-collection-link" href="collections.html" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
                     <div class="absolute inset-0 z-0">
-                        <img id="tile-women-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop" alt="Women Category" class="w-full h-full object-cover object-center filter grayscale contrast-110 editorial-image-zoom">
+                        <img id="tile-collection-img" src="https://images.unsplash.com/photo-1490114538077-0a4f40f274a7?q=80&w=1000&auto=format&fit=crop" alt="Collection Category" class="w-full h-full object-cover object-center filter grayscale contrast-110 editorial-image-zoom">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                     </div>
                     <div class="relative z-10 flex justify-between items-end">
-                        <h3 id="tile-women-heading" class="text-2xl font-black uppercase tracking-tight">Women</h3>
-                        <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">Shop Women →</span>
+                        <h3 id="tile-collection-heading" class="text-2xl font-black uppercase tracking-tight">Collection</h3>
+                        <span class="text-xs font-medium uppercase tracking-widest underline underline-offset-4">View Collection →</span>
                     </div>
                 </a>
                 <a id="tile-new-link" href="#latest-drop" class="group relative aspect-[4/5] bg-bhuraLightGrey overflow-hidden flex flex-col justify-end p-8 text-bhuraWhite">
@@ -271,7 +269,6 @@
                     <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-bhuraLightGrey">Shop</h4>
                     <ul class="space-y-3 text-xs tracking-wider uppercase text-bhuraTextGrey">
                         <li><a href="men.html" class="hover:text-bhuraWhite transition-colors">Men</a></li>
-                        <li><a href="women.html" class="hover:text-bhuraWhite transition-colors">Women</a></li>
                         <li><a href="#latest-drop" class="hover:text-bhuraWhite transition-colors">New Arrivals</a></li>
                         <li><a href="collections.html" class="hover:text-bhuraWhite transition-colors">Collections</a></li>
                     </ul>
@@ -463,7 +460,7 @@
         }
 
         function loadTileOverrides() {
-            [['homepage_tile_men', 'tile-men'], ['homepage_tile_women', 'tile-women'], ['homepage_tile_new', 'tile-new']].forEach(([slot, prefix]) => {
+            [['homepage_tile_men', 'tile-men'], ['homepage_tile_collection', 'tile-collection'], ['homepage_tile_new', 'tile-new']].forEach(([slot, prefix]) => {
                 loadSingleSlotOverride(slot, (img) => {
                     document.getElementById(`${prefix}-img`).src = img.url;
                     if (img.heading) document.getElementById(`${prefix}-heading`).textContent = img.heading;
