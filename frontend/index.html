@@ -397,14 +397,18 @@
             const subheading = document.getElementById('hero-subheading');
             const cta = document.getElementById('hero-cta');
             const dotsWrap = document.getElementById('hero-dots');
-            const defaultEyebrow = eyebrow.textContent;
+            const defaultEyebrowHTML = eyebrow.innerHTML;
 
             function applyHero(index, isFirstLoad = false) {
                 const h = heroes[index];
                 
                 const swapContent = () => {
                     bgImg.src = h.url;
-                    eyebrow.textContent = h.heading || defaultEyebrow;
+                    if (h.heading) {
+                        eyebrow.textContent = h.heading;
+                    } else {
+                        eyebrow.innerHTML = defaultEyebrowHTML;
+                    }
                     if (h.subheading) {
                         subheading.textContent = h.subheading;
                         subheading.classList.remove('hidden');
