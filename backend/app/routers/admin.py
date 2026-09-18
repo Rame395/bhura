@@ -163,6 +163,11 @@ def update_product(product_id: int, payload: schemas.ProductUpdateIn, db: Sessio
 @router.delete("/products/{product_id}")
 def delete_product(product_id: int, db: Session = Depends(get_db), admin: models.AdminUser = Depends(auth.get_current_admin)):
     product = _get_product_or_404(db, product_id)
+    
+    # Safely handle foreign key references before deleting
+    db.query(models.CartItem).filter(models.CartItem.product_id == product.id).delete()
+    db.query(models.OrderItem).filter(models.OrderItem.product_id == product.id).update({"product_id": None})
+    
     for img in product.images:
         delete_image_by_url(db, img.url)
     db.delete(product)
