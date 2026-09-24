@@ -1,6 +1,19 @@
 /* BHURA storefront — shared header/menu behavior. Loaded on every page, after api.js. */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const topBanner = document.getElementById("announcement-bar");
+  if (topBanner) {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        topBanner.style.height = "0";
+        topBanner.style.opacity = "0";
+      } else {
+        topBanner.style.height = "2rem";
+        topBanner.style.opacity = "1";
+      }
+    });
+  }
+
   const menuToggle = document.getElementById("menu-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
   if (menuToggle && mobileMenu) {

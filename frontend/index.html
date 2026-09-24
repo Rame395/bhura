@@ -56,6 +56,20 @@
 <body class="bg-bhuraOffWhite text-bhuraBlack font-sans antialiased selection:bg-bhuraBlack selection:text-bhuraWhite">
 
     <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-transparent text-bhuraWhite border-b border-white/10">
+        <!-- Announcement Bar -->
+        <div id="announcement-bar" class="w-full bg-bhuraWhite text-bhuraBlack h-8 flex justify-center sm:justify-end items-center px-6 lg:px-12 transition-all duration-500 overflow-hidden">
+            <div class="flex items-center gap-5">
+                <a href="https://www.instagram.com/bhurawear" target="_blank" rel="noopener noreferrer" class="hover:text-bhuraTextGrey transition-colors" aria-label="Instagram">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.tiktok.com/@bhura.wear" target="_blank" rel="noopener noreferrer" class="hover:text-bhuraTextGrey transition-colors" aria-label="TikTok">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+                <a href="https://www.facebook.com/share/19k84ddYeW/" target="_blank" rel="noopener noreferrer" class="hover:text-bhuraTextGrey transition-colors" aria-label="Facebook">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+            </div>
+        </div>
         <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
             <a href="index.html" class="text-2xl font-black tracking-widest uppercase flex items-center gap-2">BHURA</a>
             <nav class="hidden lg:flex items-center space-x-10 text-xs font-medium tracking-widest uppercase">
@@ -95,7 +109,7 @@
 
     <section class="relative h-screen w-full flex items-end justify-start bg-bhuraBlack text-bhuraWhite overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img id="hero-bg-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2000&auto=format&fit=crop" alt="BHURA Editorial Campaign" class="w-full h-full object-cover object-center opacity-0 filter grayscale contrast-125 scale-105 editorial-image-zoom transition-opacity duration-700">
+            <img id="hero-bg-img" alt="BHURA Editorial Campaign" class="w-full h-full object-cover object-center opacity-0 filter grayscale contrast-125 scale-105 editorial-image-zoom transition-opacity duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-bhuraBlack via-black/20 to-transparent"></div>
         </div>
         <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 lg:px-12 pb-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
@@ -301,13 +315,16 @@
     <script src="assets/js/shared.js"></script>
     <script>
         const header = document.getElementById('site-header');
+        const topBanner = document.getElementById('announcement-bar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 header.classList.remove('bg-transparent', 'text-bhuraWhite', 'border-white/10');
                 header.classList.add('bg-bhuraBlack', 'text-bhuraWhite', 'border-black/10');
+                if (topBanner) { topBanner.style.height = '0'; topBanner.style.opacity = '0'; }
             } else {
                 header.classList.add('bg-transparent', 'text-bhuraWhite', 'border-white/10');
                 header.classList.remove('bg-bhuraBlack', 'border-black/10');
+                if (topBanner) { topBanner.style.height = '2rem'; topBanner.style.opacity = '1'; }
             }
         });
 
@@ -381,8 +398,7 @@
             const bgImg = document.getElementById('hero-bg-img');
             
             const showFallback = () => {
-                bgImg.classList.remove('opacity-0');
-                bgImg.classList.add('opacity-70');
+                // No hardcoded image anymore, just leave it blank (black background)
             };
 
             try {
