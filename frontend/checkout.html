@@ -148,7 +148,7 @@ src="https://www.facebook.com/tr?id=1423190483332279&ev=PageView&noscript=1"
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 bg-bhuraWhite p-8 border border-bhuraLightGrey space-y-6 lg:sticky lg:top-28">
+                <div class="lg:col-span-5 bg-bhuraWhite p-5 sm:p-8 border border-bhuraLightGrey space-y-6 lg:sticky lg:top-28">
                     <h3 class="text-xs font-bold uppercase tracking-widest pb-4 border-b border-bhuraLightGrey">Order Summary</h3>
                     <div id="summary-items" class="space-y-4 pb-4 border-b border-bhuraLightGrey"></div>
                     <div class="space-y-3 text-xs uppercase tracking-wider text-bhuraTextGrey">
@@ -163,7 +163,10 @@ src="https://www.facebook.com/tr?id=1423190483332279&ev=PageView&noscript=1"
                         </button>
                         <p id="submit-error" class="hidden text-[11px] text-red-600 uppercase tracking-wider text-center mt-3"></p>
                     </div>
-                    <p class="text-[10px] font-mono text-bhuraTextGrey text-center uppercase tracking-widest pt-2">Proudly Made in Nepal <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg> • Secure SSL Checkout</p>
+                    <div class="text-[10px] font-mono text-bhuraTextGrey flex flex-col items-center gap-1.5 uppercase tracking-widest pt-4">
+                        <span class="flex items-center gap-1.5">Proudly Made in Nepal <svg width="15" height="18" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:-2px;flex-shrink:0;"><path d="M0,0 L72,35 L37,50 L72,88 L0,120 Z" fill="#003893"/><path d="M4,6 L65,35 L34,49 L65,83 L4,113 Z" fill="#DC143C"/><path d="M13,20 a9,9 0 1,0 12,13 a11,11 0 1,1 -12,-13 Z" fill="#FFFFFF"/><circle cx="20" cy="75" r="8" fill="#FFFFFF"/><g fill="#FFFFFF"><polygon points="20,62 22,68 18,68"/><polygon points="20,88 22,82 18,82"/><polygon points="7,75 13,73 13,77"/><polygon points="33,75 27,73 27,77"/><polygon points="11,66 16,70 12,71"/><polygon points="29,84 24,80 28,79"/><polygon points="29,66 24,70 28,71"/><polygon points="11,84 16,80 12,79"/></g></svg></span>
+                        <span>Secure SSL Checkout</span>
+                    </div>
                 </div>
             </form>
         </div>
@@ -201,7 +204,7 @@ src="https://www.facebook.com/tr?id=1423190483332279&ev=PageView&noscript=1"
                     </select>
                 ` : '';
                 return `
-                <div class="flex gap-4 items-center">
+                <div class="flex gap-3 sm:gap-4 items-center">
                     <a href="product.html?slug=${i.slug}" target="_blank" class="w-16 aspect-[3/4] bg-bhuraLightGrey overflow-hidden flex-shrink-0 hover:opacity-75 transition-opacity">
                         <img src="${i.image || ''}" alt="${i.title}" class="w-full h-full object-cover">
                     </a>
