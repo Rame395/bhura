@@ -43,7 +43,7 @@ def _order_to_schema(order: models.Order) -> schemas.OrderOut:
 
 
 @router.post("", response_model=schemas.OrderOut)
-async def create_order(
+def create_order(
     request: Request,
     response: Response,
     db: Session = Depends(get_db),
@@ -169,7 +169,7 @@ async def create_order(
         variant.stock_qty -= qty
 
     if payment_proof is not None and payment_proof.filename:
-        content = await payment_proof.read()
+        content = payment_proof.file.read()
         order.payment_proof_path = save_image_to_db(db, content, payment_proof.content_type)
 
     # Clear the cart now that the order owns the items.

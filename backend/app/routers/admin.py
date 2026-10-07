@@ -176,12 +176,12 @@ def delete_product(product_id: int, db: Session = Depends(get_db), admin: models
 
 
 @router.post("/products/{product_id}/images", response_model=schemas.ProductDetailOut)
-async def upload_product_image(product_id: int, file: UploadFile = File(...), color_name: str = Form(""), db: Session = Depends(get_db), admin: models.AdminUser = Depends(auth.get_current_admin)):
+def upload_product_image(product_id: int, file: UploadFile = File(...), color_name: str = Form(""), db: Session = Depends(get_db), admin: models.AdminUser = Depends(auth.get_current_admin)):
     product = _get_product_or_404(db, product_id)
     color_name = color_name.strip()
     if color_name and not any(c.name == color_name for c in product.colors):
         raise HTTPException(status_code=400, detail=f"'{color_name}' isn't one of this product's colors yet — add it as a color first.")
-    content = await file.read()
+    content = file.file.read()
     url = save_image_to_db(db, content, file.content_type)
 
     next_order = max([i.sort_order for i in product.images], default=-1) + 1
@@ -368,11 +368,11 @@ def update_admin_settings(payload: schemas.SettingsUpdateIn, db: Session = Depen
 
 
 @router.post("/settings/qr")
-async def upload_qr(file: UploadFile = File(...), db: Session = Depends(get_db), admin: models.AdminUser = Depends(auth.get_current_admin)):
+def upload_qr(file: UploadFile = File(...), db: Session = Depends(get_db), admin: models.AdminUser = Depends(auth.get_current_admin)):
     old_url = get_setting(db, "qr_image_path", "")
     delete_image_by_url(db, old_url)
 
-    content = await file.read()
+    content = file.file.read()
     url = save_image_to_db(db, content, file.content_type)
     set_setting(db, "qr_image_path", url)
     db.commit()
@@ -490,7 +490,7 @@ def list_site_images(slot: str | None = None, db: Session = Depends(get_db), adm
 
 
 @router.post("/site-images", response_model=schemas.SiteImageOut)
-async def upload_site_image(
+def upload_site_image(
     slot: str = Form(...),
     file: UploadFile = File(...),
     heading: str = Form(""),
@@ -512,7 +512,7 @@ async def upload_site_image(
     else:
         tag = None  # tag is only meaningful for gallery_grid — ignore it elsewhere
 
-    content = await file.read()
+    content = file.file.read()
 
     # If the admin didn't type dimensions, read the real ones from the file itself —
     # asked for, not required, and never wrong since it comes from the actual upload.
